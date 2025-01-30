@@ -1,5 +1,5 @@
 import {Decoder, Tag, encode} from 'cbor-x'
-import {cddlFromSrc} from '../'
+import {cddlFromSrc} from './cddlFromSrc'
 import {enrichError, limitedZip} from './helpers'
 import type {GenericArray, PrimitiveValue, TypeWithValue, Value} from './readableDatumTypes'
 import type {

@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import {describe, expect, test} from 'vitest'
+import {parseCbor} from '../'
 import {getAggregateMessage} from '../src/helpers'
-import {parseCbor} from '../src/parseCbor'
 import {fixtures} from './fixtures/parseCbor'
 
 describe('parseCbor', () => {
