@@ -5,7 +5,7 @@
   "expectedParsed": {
     "type": "GenericMap",
     "value": {
-      "type": "Map",
+      "type": "Table",
       "value": [
         [
           {

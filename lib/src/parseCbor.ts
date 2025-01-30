@@ -1,6 +1,7 @@
 import {Decoder, Tag, encode} from 'cbor-x'
 import {cddlFromSrc} from '../'
 import {enrichError, limitedZip} from './helpers'
+import type {GenericArray, PrimitiveValue, TypeWithValue, Value} from './readableDatumTypes'
 import type {
   CDDL,
   GroupChoice,
@@ -13,21 +14,11 @@ import type {
   TypeRule,
 } from './types'
 
-type PrimitiveValue = number | string
-type TypeWithValue = {
-  type: string
-  value: PrimitiveValue | TypeWithValue | NamedArray | GenericArray
-}
-type NamedArray = ({name: string} & TypeWithValue)[]
-type GenericArray = (PrimitiveValue | TypeWithValue | NamedArray | GenericArray)[]
-
 const isValidHexString = (hexString?: unknown): hexString is string =>
   typeof hexString === 'string' && !!hexString.match(/^([0-9a-fA-F]{2})*$/) /* hex encoded */
 
-const getRuleName = (rule: Rule): string => {
-  if ('Type' in rule) return rule.Type.rule.name.ident
-  return rule.Group.rule.name.ident
-}
+const getRuleName = (rule: Rule): string =>
+  ('Type' in rule ? rule.Type : rule.Group).rule.name.ident
 
 // Each type in the Type2 union has exactly 1 key
 const getType2Name = (type2: Type2) => Object.keys(type2)[0]!
@@ -60,9 +51,10 @@ const parseTypename = (cddl: CDDL, type: string, cbor: unknown): TypeWithValue =
   throw new Error(`Rule not found: ${type}`)
 }
 
-const getMemberKeyName = (memberKey?: MemberKey): string | null => {
-  if (!memberKey) return null
-  if (!('Bareword' in memberKey)) return null
+const getMemberKeyName = (memberKey?: MemberKey): string => {
+  if (!memberKey) throw new Error('Missing memberKey')
+  if (!('Bareword' in memberKey))
+    throw new Error(`Unsupported memberKey ${Object.keys(memberKey)[0]!}`)
   return memberKey.Bareword.ident.ident
 }
 
@@ -74,10 +66,10 @@ const getOccurrenceOfGroupEntry = (groupEntry: GroupEntry): Occurrence | undefin
 
 const checkOccurrence = (
   {occur}: Occurrence,
-  structure: {name: 'map'; cbor: Map<unknown, unknown>} | {name: 'array'; cbor: unknown[]},
+  structure: {name: 'table'; cbor: Map<unknown, unknown>} | {name: 'array'; cbor: unknown[]},
 ): void => {
   const [metricName, actualOccurrence] =
-    structure.name === 'map' ? ['size', structure.cbor.size] : ['length', structure.cbor.length]
+    structure.name === 'table' ? ['size', structure.cbor.size] : ['length', structure.cbor.length]
 
   if (occur.Exact?.lower && actualOccurrence < occur.Exact.lower)
     throw new Error(
@@ -99,31 +91,32 @@ const checkOccurrence = (
 
 const checkGroupEntry = (
   groupEntries: GroupEntry[],
-  structure: {name: 'map'; cbor: Map<unknown, unknown>} | {name: 'array'; cbor: unknown[]},
+  structure: {name: 'table'; cbor: Map<unknown, unknown>} | {name: 'array'; cbor: unknown[]},
 ): GroupEntry => {
   if (groupEntries.length !== 1)
     throw new Error(
-      `CDDL generic ${structure.name} has ${groupEntries.length} group entries, only 1 is supported`,
+      `CDDL ${structure.name} has ${groupEntries.length} group entries, only 1 is supported`,
     )
   const groupEntry = groupEntries[0]!
   const occurrence = getOccurrenceOfGroupEntry(groupEntry)
-  if (occurrence == null) throw new Error(`Generic ${structure.name} contains no occurrence symbol`)
+  if (occurrence == null) throw new Error(`CDDL ${structure.name} contains no occurrence symbol`)
   checkOccurrence(occurrence, structure)
   return groupEntry
 }
 
-const parseGenericMap = (
+// https://www.rfc-editor.org/rfc/rfc8610.html#section-3.5.2
+const parseTable = (
   cddl: CDDL,
   groupEntries: GroupEntry[],
   cbor: Map<unknown, unknown>,
 ): TypeWithValue => {
-  const groupEntry = checkGroupEntry(groupEntries, {name: 'map', cbor})
+  const groupEntry = checkGroupEntry(groupEntries, {name: 'table', cbor})
   if ('ValueMemberKey' in groupEntry) {
     const memberKey = groupEntry.ValueMemberKey.ge.member_key
-    if (!memberKey) throw new Error('CDDL generic map with no member key')
+    if (!memberKey) throw new Error('CDDL table with no member key')
     if ('Type1' in memberKey) {
       return {
-        type: 'Map',
+        type: 'Table',
         value: [...cbor.entries()].map(([cborKey, cborValue]) => {
           const mapEntryAsGenericArray: GenericArray = [
             parseType2AsSingleChoice(cddl, memberKey.Type1.t1.type2, cborKey),
@@ -134,65 +127,63 @@ const parseGenericMap = (
       }
     }
     throw new Error(
-      `CDDL generic map unsupported member key ${Object.keys(memberKey)[0]!}, only Type1 is supported`,
+      `Unsupported member key in CDDL table: ${Object.keys(memberKey)[0]!}, only Type1 is supported`,
     )
   }
-  throw new Error(`Unsupported groupEntry in generic map: ${Object.keys(groupEntry)[0]!}`)
+  throw new Error(
+    `Unsupported groupEntry in CDDL table: ${Object.keys(groupEntry)[0]!}, only ValueMemberKey is supported`,
+  )
 }
 
-const parseGenericArray = (
-  cddl: CDDL,
-  groupEntries: GroupEntry[],
-  cbor: unknown[],
-): GenericArray => {
+// https://www.rfc-editor.org/rfc/rfc8610.html#section-3.4
+const parseArray = (cddl: CDDL, groupEntries: GroupEntry[], cbor: unknown[]): GenericArray => {
   const groupEntry = checkGroupEntry(groupEntries, {name: 'array', cbor})
   if ('ValueMemberKey' in groupEntry)
     return cbor.map((cborItem) =>
       parseTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborItem),
     )
-  throw new Error(`Unsupported groupEntry in generic array: ${Object.keys(groupEntry)[0]!}`)
+  throw new Error(
+    `Unsupported groupEntry in CDDL array: ${Object.keys(groupEntry)[0]!}, only ValueMemberKey is supported`,
+  )
 }
 
-const parseArrayGroupEntries = (
+const parseSingletonArrayGroupEntry = (
   cddl: CDDL,
-  groupEntries: GroupEntry[],
-  cbor: unknown[],
-): TypeWithValue | NamedArray | GenericArray => {
+  groupEntry: GroupEntry,
+  cbor: unknown,
+): Value => {
+  if ('ValueMemberKey' in groupEntry) {
+    const typeChoices = groupEntry.ValueMemberKey.ge.entry_type.type_choices
+    if (typeChoices.length === 1)
+      return parseType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)
+    return parseTypeChoices(cddl, typeChoices, cbor)
+  }
+  if ('TypeGroupname' in groupEntry)
+    return parseTypename(cddl, groupEntry.TypeGroupname.ge.name.ident, cbor)
+  throw new Error(`Unsupported groupEntry: ${Object.keys(groupEntry)[0]!}`)
+}
+
+const parseArrayGroupEntries = (cddl: CDDL, groupEntries: GroupEntry[], cbor: unknown[]): Value => {
   if (groupEntries.length === 0) {
     if (cbor.length === 0) return []
     throw new Error(`CDDL expects empty array, but cbor is an array with length ${cbor.length}`)
   }
   if (groupEntries.some((groupEntry) => getOccurrenceOfGroupEntry(groupEntry) != null)) {
-    return parseGenericArray(cddl, groupEntries, cbor)
+    return parseArray(cddl, groupEntries, cbor)
   }
   if (groupEntries.length !== cbor.length)
     throw new Error(
       `CDDL expects Array with length ${groupEntries.length}, but cbor is an array with length ${cbor.length}`,
     )
-  if (groupEntries.length === 1) {
-    const groupEntry = groupEntries[0]!
-    const cborItem = cbor[0]!
-    if ('ValueMemberKey' in groupEntry) {
-      const typeChoices = groupEntry.ValueMemberKey.ge.entry_type.type_choices
-      if (typeChoices.length === 1)
-        return parseType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cborItem)
-      return parseTypeChoices(cddl, typeChoices, cborItem) // Inline singleton arrays
-    }
-    if ('TypeGroupname' in groupEntry)
-      return parseTypename(cddl, groupEntry.TypeGroupname.ge.name.ident, cbor)
-    throw new Error(`Unsupported groupEntry: ${Object.keys(groupEntry)[0]!}`)
-  }
+  // Inline singleton arrays
+  if (groupEntries.length === 1)
+    return parseSingletonArrayGroupEntry(cddl, groupEntries[0]!, cbor[0]!)
   return limitedZip(groupEntries, cbor).map(([groupEntry, cborItem], index) => {
     if ('ValueMemberKey' in groupEntry) {
-      const name = (
-        getMemberKeyName(groupEntry.ValueMemberKey.ge.member_key) ??
-        groupEntry.ValueMemberKey.trailing_comments?.join(',') ??
-        groupEntry.ValueMemberKey.leading_comments?.join(',')
-      )?.trim()
-      if (name == null)
-        throw new Error(
-          `GroupEntry without name on index ${index}, while Array has ${groupEntries.length} items`,
-        )
+      const name = enrichError(
+        () => getMemberKeyName(groupEntry.ValueMemberKey.ge.member_key)?.trim(),
+        `Error parsing ValueMemberKey on index ${index}, while Array has ${groupEntries.length} items`,
+      )
       return enrichError(() => {
         const typeWithValue = parseTypeChoices(
           cddl,
@@ -200,23 +191,12 @@ const parseArrayGroupEntries = (
           cborItem,
         )
         if (Array.isArray(typeWithValue))
-          throw new Error('Nested arrays are not supported, wrap the inner array to a new type')
+          throw new Error('Nested arrays are not supported. Wrap the inner array to a new type')
         return {
           name,
           ...typeWithValue,
         }
       }, `When parsing ValueMemberKey "${name}":`)
-    }
-    if ('TypeGroupname' in groupEntry) {
-      const name =
-        groupEntry.TypeGroupname.trailing_comments?.join(',') ??
-        groupEntry.TypeGroupname.leading_comments?.join(',')
-
-      if (name == null)
-        throw new Error(
-          `GroupEntry without name on index ${index}, while Array has ${groupEntries.length} items`,
-        )
-      return {name, ...parseTypename(cddl, groupEntry.TypeGroupname.ge.name.ident, cbor)}
     }
     throw new Error(`Unsupported groupEntry: ${Object.keys(groupEntry)[0]!}`)
   })
@@ -230,11 +210,7 @@ const groupChoicesToGroupEntries = (groupChoices: GroupChoice[]): GroupEntry[] =
   return groupChoices[0]!.group_entries.map(([groupEntry, _optionalComma]) => groupEntry)
 }
 
-const parseType2AsSingleChoice = (
-  cddl: CDDL,
-  type2: Type2,
-  cbor: unknown,
-): TypeWithValue | NamedArray | GenericArray => {
+const parseType2AsSingleChoice = (cddl: CDDL, type2: Type2, cbor: unknown): Value => {
   if ('Array' in type2) {
     const groupEntries = groupChoicesToGroupEntries(type2.Array.group.group_choices)
     if (typeof cbor !== 'object' || !Array.isArray(cbor))
@@ -258,20 +234,17 @@ const parseType2AsSingleChoice = (
     const groupEntries = groupChoicesToGroupEntries(type2.Map.group.group_choices)
     if (!(cbor instanceof Map))
       throw new Error(`CDDL expects Map, but CBOR is not a Map, but ${typeof cbor}`)
-    return parseGenericMap(cddl, groupEntries, cbor)
+    return parseTable(cddl, groupEntries, cbor)
   }
   throw new Error(`CDDL Type2 not implemented: ${getType2Name(type2)}`)
 }
 
 const parseType2AsMultiChoice = (cddl: CDDL, type2: Type2, cbor: unknown): TypeWithValue => {
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
-  if ('TaggedData' in type2)
+  const type2Name = getType2Name(type2)
+  if (['TaggedData', 'Array', 'Map'].includes(type2Name))
     throw new Error(
-      'CDDL Type2 TaggedData nested in multi-choice is not supported. Wrap it in a separate type.',
-    )
-  if ('Array' in type2)
-    throw new Error(
-      'CDDL Type2 Array nested in multi-choice is not supported. Wrap it in a separate type.',
+      `CDDL Type2 ${type2Name} nested in multi-choice is not supported. Wrap it in a separate type.`,
     )
   throw new Error(`CDDL Type2 not implemented: ${getType2Name(type2)}`)
 }
