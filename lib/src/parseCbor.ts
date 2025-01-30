@@ -23,17 +23,23 @@ const getRuleName = (rule: Rule): string =>
 // Each type in the Type2 union has exactly 1 key
 const getType2Name = (type2: Type2) => Object.keys(type2)[0]!
 
+enum PrimitiveType {
+  INT = 'int',
+  BYTES = 'bytes',
+  ANY = 'any',
+}
+
 const parsePrimitiveType = (typeName: string, cbor: unknown): PrimitiveValue | null => {
-  if (typeName === 'int') {
+  if (typeName === PrimitiveType.INT) {
     if (typeof cbor === 'number') return Number(cbor)
     if (typeof cbor === 'bigint') return BigInt(cbor).toString()
     throw new Error(`CDDL expects number, but cbor is ${typeof cbor}`)
   }
-  if (typeName === 'bytes') {
+  if (typeName === PrimitiveType.BYTES) {
     if (Buffer.isBuffer(cbor)) return cbor.toString('hex')
     throw new Error(`CDDL expects Buffer, but cbor is ${typeof cbor}`)
   }
-  if (typeName === 'any') {
+  if (typeName === PrimitiveType.ANY) {
     return encode(cbor).toString('hex')
   }
   return null
