@@ -1,8 +1,8 @@
-export type TypeWithValue = {
+export type ReadableDatum = {
   type: string
   value: Value
 }
-export type Value = PrimitiveValue | TypeWithValue | Struct | GenericArray
+export type Value = PrimitiveValue | ReadableDatum | Struct | GenericArray
 export type PrimitiveValue = number | string
-export type Struct = ({name: string} & TypeWithValue)[]
+export type Struct = ({name: string} & ReadableDatum)[]
 export type GenericArray = Value[]

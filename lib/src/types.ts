@@ -1,4 +1,4 @@
-export type CDDL = {
+export type CddlAst = {
   rules: Rule[]
   // We don't need comments here
   // comments?: Comments
