@@ -1,7 +1,8 @@
-import {describe, expect, test} from 'bun:test'
 import * as fs from 'node:fs'
+import {describe, expect, test} from 'vitest'
 import {cddlFromSrc} from '../'
-import launchpadNodeAst from './launchpad_node.ast.json'
+import wingridersLaunchpadNodeAst from './wingridersLaunchpadNode.ast.json'
+import wingridersRequestV2Ast from './wingridersRequestV2.ast.json'
 
 const removeUndefinedFields = (obj: unknown): unknown => {
   if (Array.isArray(obj)) {
@@ -19,9 +20,18 @@ const removeUndefinedFields = (obj: unknown): unknown => {
 
 describe('cddlFromSrc', () => {
   test('Parses CDDL for LaunchpadNode', async () => {
-    const cddlSchema = await fs.promises.readFile(`${__dirname}/launchpad_node.cddl`, 'utf8')
+    const cddlSchema = await fs.promises.readFile(
+      `${__dirname}/wingridersLaunchpadNode.cddl`,
+      'utf8',
+    )
     const cddl = await cddlFromSrc(cddlSchema)
-    expect(removeUndefinedFields(cddl)).toEqual(launchpadNodeAst)
+    expect(removeUndefinedFields(cddl)).toEqual(wingridersLaunchpadNodeAst)
+  })
+
+  test('Parses CDDL for WingridersRequestV2', async () => {
+    const cddlSchema = await fs.promises.readFile(`${__dirname}/wingridersRequestV2.cddl`, 'utf8')
+    const cddl = await cddlFromSrc(cddlSchema)
+    expect(removeUndefinedFields(cddl)).toEqual(wingridersRequestV2Ast)
   })
 
   test('Throws error for empty CDDL', async () => {
