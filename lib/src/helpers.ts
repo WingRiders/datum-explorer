@@ -1,4 +1,4 @@
-import {zip} from 'lodash'
+import {repeat, zip} from 'lodash'
 
 /**
  * Lodash's zip returns optional types because array can have different lengths.
@@ -14,3 +14,8 @@ export const enrichError = <T>(fn: () => T, context: string): T => {
     throw new Error(context, {cause: e})
   }
 }
+
+const INDENT = 2
+
+export const getAggregateMessage = (e: unknown, currentIndent = 0): string =>
+  `${repeat(' ', currentIndent)}${e instanceof Error ? e.message : JSON.stringify(e)}${e instanceof AggregateError && e.errors.length > 0 ? `\n${e.errors.map((inner) => getAggregateMessage(inner, currentIndent + INDENT)).join('\n')}` : (e instanceof Error && e.cause) ? `\n${getAggregateMessage(e.cause, currentIndent + INDENT)}` : ''}`

@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import {describe, expect, test} from 'vitest'
+import {getAggregateMessage} from '../src/helpers'
 import {parseCbor} from '../src/parseCbor'
 import {fixtures} from './fixtures/parseCbor'
 
@@ -9,6 +10,11 @@ describe('parseCbor', () => {
       `${__dirname}/fixtures/cddl/${cddlFileName}`,
       'utf8',
     )
-    expect(await parseCbor(cddlSchema, cbor)).toEqual(expectedParsed)
+    try {
+      const parsed = await parseCbor(cddlSchema, cbor)
+      expect(parsed).toEqual(expectedParsed)
+    } catch (e) {
+      throw new Error(getAggregateMessage(e))
+    }
   })
 })
