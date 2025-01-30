@@ -1,0 +1,32 @@
+{
+  "name": "Indigo CDP",
+  "cddlFileName": "indigoCdp.cddl",
+  "cbor": "d8799fd8799fd8799f581c767d3148ed3c84d3ba32b8892a037a14c603cd2e236d36b612d3d76bff4469455448190bd3d8799f1b000001948ea3b1401b0168de1a1f9c4e52ffffff",
+  "expectedParsed": {
+    "type": "CDPContent",
+    "value": [
+      {
+        "name": "owner",
+        "type": "PubKeyHash",
+        "value": {
+          "type": "bytes",
+          "value": "767d3148ed3c84d3ba32b8892a037a14c603cd2e236d36b612d3d76b"
+        }
+      },
+      { "name": "iAsset", "type": "bytes", "value": "69455448" },
+      { "name": "mintedAmount", "type": "int", "value": 3027 },
+      {
+        "name": "accumulatedFees",
+        "type": "InterestIAssetAmount",
+        "value": [
+          { "name": "lastUpdated", "type": "int", "value": "1737559880000" },
+          {
+            "name": "iAssetAmount",
+            "type": "int",
+            "value": "101575195396689490"
+          }
+        ]
+      }
+    ]
+  }
+}

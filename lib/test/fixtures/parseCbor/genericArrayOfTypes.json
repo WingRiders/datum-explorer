@@ -1,0 +1,18 @@
+{
+  "name": "generic array of types",
+  "cddlFileName": "genericArrayOfTypes.cddl",
+  "cbor": "82d87980d87980",
+  "expectedParsed": {
+    "type": "Types",
+    "value": [
+      {
+        "type": "Type",
+        "value": []
+      },
+      {
+        "type": "Type",
+        "value": []
+      }
+    ]
+  }
+}

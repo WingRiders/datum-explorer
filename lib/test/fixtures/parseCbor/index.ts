@@ -1,4 +1,11 @@
 import bigNumber from './bigNumber.json'
+import genericArrayOfInts from './genericArrayOfInts.json'
+import genericArrayOfTypes from './genericArrayOfTypes.json'
+import genericMap from './genericMap.json'
+import genericMap2 from './genericMap2.json'
+import indigoCdp from './indigoCdp.json'
+import indigoStabilityPool from './indigoStabilityPool.json'
+import indigoStabilityPoolAccount from './indigoStabilityPoolAccount.json'
 import minswapV2Order from './minswapV2Order.json'
 import minswapV2Pool from './minswapV2Pool.json'
 import sundaeV3Order from './sundaeV3Order.json'
@@ -17,6 +24,13 @@ type Fixture = {
 
 export const fixtures: Fixture[] = [
   bigNumber,
+  genericArrayOfInts,
+  genericArrayOfTypes,
+  genericMap,
+  genericMap2,
+  indigoCdp,
+  indigoStabilityPool,
+  indigoStabilityPoolAccount,
   minswapV2Order,
   minswapV2Pool,
   wingridersLaunchpadNode,

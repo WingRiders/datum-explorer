@@ -1,0 +1,72 @@
+{
+  "name": "Indigo stability pool",
+  "cddlFileName": "indigoStabilityPool.cddl",
+  "cbor": "d8799fd8799f4469555344d8799fd8799f1b0a6027d6cd7e558effd8799fc24d40918faab7fbd066778b2bcda8ffd8799f1b0f8c8536f8b1ca0aff0100ffa2d8799f0000ffd8799f1b084494e2d23b2b7effd8799f0100ffd8799f1b0f8c8536f8b1ca0affffff",
+  "expectedParsed": {
+    "type": "StabilityPool",
+    "value": [
+      { "name": "iAsset", "type": "bytes", "value": "69555344" },
+      {
+        "name": "snapshot",
+        "type": "StabilityPoolSnapshot",
+        "value": [
+          {
+            "name": "p",
+            "type": "SPInteger",
+            "value": { "type": "int", "value": "747641341667595662" }
+          },
+          {
+            "name": "d",
+            "type": "SPInteger",
+            "value": {
+              "type": "int",
+              "value": "5115651409925418901814721105320"
+            }
+          },
+          {
+            "name": "s",
+            "type": "SPInteger",
+            "value": { "type": "int", "value": "1120416878455540234" }
+          },
+          { "name": "epoch", "type": "int", "value": 1 },
+          { "name": "scale", "type": "int", "value": 0 }
+        ]
+      },
+      {
+        "name": "epochToScaleToSum",
+        "type": "EpochToScaleToSum",
+        "value": {
+          "type": "Map",
+          "value": [
+            [
+              {
+                "type": "EpochWithScale",
+                "value": [
+                  { "name": "epoch", "type": "int", "value": 0 },
+                  { "name": "scale", "type": "int", "value": 0 }
+                ]
+              },
+              {
+                "type": "SPInteger",
+                "value": { "type": "int", "value": "595764752630360958" }
+              }
+            ],
+            [
+              {
+                "type": "EpochWithScale",
+                "value": [
+                  { "name": "epoch", "type": "int", "value": 1 },
+                  { "name": "scale", "type": "int", "value": 0 }
+                ]
+              },
+              {
+                "type": "SPInteger",
+                "value": { "type": "int", "value": "1120416878455540234" }
+              }
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}

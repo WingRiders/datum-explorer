@@ -1,0 +1,39 @@
+{
+  "name": "generic map 2",
+  "cddlFileName": "genericMap2.cddl",
+  "cbor": "d90103a2d879820000d879811b084494e2d23b2b7ed879820100d879811b0f8c8536f8b1ca0a",
+  "expectedParsed": {
+    "type": "GenericMap",
+    "value": {
+      "type": "Map",
+      "value": [
+        [
+          {
+            "type": "EpochWithScale",
+            "value": [
+              { "name": "epoch", "type": "int", "value": 0 },
+              { "name": "scale", "type": "int", "value": 0 }
+            ]
+          },
+          {
+            "type": "SPInteger",
+            "value": { "type": "int", "value": "595764752630360958" }
+          }
+        ],
+        [
+          {
+            "type": "EpochWithScale",
+            "value": [
+              { "name": "epoch", "type": "int", "value": 1 },
+              { "name": "scale", "type": "int", "value": 0 }
+            ]
+          },
+          {
+            "type": "SPInteger",
+            "value": { "type": "int", "value": "1120416878455540234" }
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+GenericMap = {* EpochWithScale => SPInteger}
+
+EpochWithScale = #6.121([epoch: int, scale: int])
+
+SPInteger = #6.121([int])
+
