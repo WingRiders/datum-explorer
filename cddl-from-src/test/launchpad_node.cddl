@@ -1,0 +1,26 @@
+launchpad_node =
+    #6.121([
+        maybe_node_key ; key
+        maybe_node_key ; next
+        int            ; createdTime
+        big_int        ; committed
+    ])
+
+maybe_node_key =
+    just_node_key
+  / nothing
+
+nothing = #6.122([])
+
+just_node_key = #6.121([node_key])
+
+node_key =
+    #6.121([
+        bounded_bytes ; nodeOwner
+        int           ; index
+    ])
+
+big_int = int / big_uint / big_nint
+big_uint = #6.2(bounded_bytes)
+big_nint = #6.3(bounded_bytes)
+bounded_bytes = bytes .size (0..64)

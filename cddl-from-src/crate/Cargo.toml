@@ -1,0 +1,17 @@
+[package]
+name = "cddl-from-src"
+version = "0.1.0"
+authors = ["TechRiderWR <techrider@wingriders.com>"]
+description = "Simple WASM wrapper around `cddl_from_str` function"
+repository = "https://github.com/WingRiders/datum-explorer"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+cddl = { version = "0.9.4", features = ["ast-comments", "wasm-bindgen"] }
+wasm-bindgen = "0.2"
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false # Without this we get RangeError: WebAssembly.Table.grow(): failed to grow table by 4 at __wbindgen_init_externref_table

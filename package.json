@@ -1,0 +1,18 @@
+{
+  "name": "@wingriders/datum-explorer",
+  "workspaces": [
+    "cddl-from-src"
+  ],
+  "scripts": {
+    "clean": "turbo clean",
+    "build": "turbo build",
+    "check": "turbo check",
+    "fix": "turbo fix",
+    "test": "turbo test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "turbo": "^2.3.3"
+  },
+  "packageManager": "bun@1.1.43"
+}
