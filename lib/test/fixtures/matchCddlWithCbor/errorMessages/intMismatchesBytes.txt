@@ -1,0 +1,2 @@
+When parsing TypeRule "Bytes":
+  CDDL expects Buffer, but cbor is Number

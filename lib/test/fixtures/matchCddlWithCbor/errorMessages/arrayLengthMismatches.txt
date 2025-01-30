@@ -1,0 +1,2 @@
+When parsing TypeRule "LaunchpadNode":
+  CDDL expects Array with length 4, but cbor is an array with length 0

@@ -1,0 +1,2 @@
+When parsing TypeRule "LaunchpadNode":
+  CDDL expects TaggedData with tag = 121, but CBOR is Tag with tag = 128

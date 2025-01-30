@@ -19,3 +19,11 @@ const INDENT = 2
 
 export const getAggregateMessage = (e: unknown, currentIndent = 0): string =>
   `${repeat(' ', currentIndent)}${e instanceof Error ? e.message : JSON.stringify(e)}${e instanceof AggregateError && e.errors.length > 0 ? `\n${e.errors.map((inner) => getAggregateMessage(inner, currentIndent + INDENT)).join('\n')}` : (e instanceof Error && e.cause) ? `\n${getAggregateMessage(e.cause, currentIndent + INDENT)}` : ''}`
+
+export const betterTypeOf = (value: unknown): string => {
+  if (value === null) return 'Null'
+  if (value === undefined) return 'Undefined'
+  const type = Object.prototype.toString.call(value).slice(8, -1)
+  if (type === 'Object' && value.constructor) return value.constructor.name
+  return type
+}
