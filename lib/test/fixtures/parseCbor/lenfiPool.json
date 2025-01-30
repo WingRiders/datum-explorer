@@ -1,0 +1,129 @@
+{
+  "name": "Lenfi pool",
+  "cddlFileName": "lenfiPool.cddl",
+  "cbor": "d8799fd8799fd8799fd87a9f581c8021830afedd85fda1253da2be75b66c0e65c482148eb8ca690903cbffd8799fd8799fd87a9f581c67765d0e816fb5736e8e7a61f78dabb469616f62073561b8a10b1991ffffffffd8799f581cc0ee29a85b13209423b10447d3c2e6a50641a15c57770e27cb9d50734a57696e67526964657273ffd8799f4040ffd8799f581c13dfcd07acf9c62ae28f7578e637210dddd7f77b393d0983b89c270758202f426424960c554bf256c1e7f2ee74013271613fd6cffdbe1b2f337600ed774cffd8799f581c13dfcd07acf9c62ae28f7578e637210dddd7f77b393d0983b89c27075820f8259428ebb266c29dae73420bce6bf0b2f85b5cfb2e4682453fc1860498b1a3ffd8799f581c35d6d2e62a6814925df0b3fe65440ba9a6aab1e5ef68c2c0b1a8dfe0581c67765d0e816fb5736e8e7a61f78dabb469616f62073561b8a10b1991ff581c67765d0e816fb5736e8e7a61f78dabb469616f62073561b8a10b199158202ab3a5f3f244d5cc7acd9284f21d0e94300532daa0ca3fd1102c79a5e805fc87ff1b0000000121adb700001b0000000121adb700ff",
+  "expectedParsed": {
+    "type": "Pool",
+    "value": [
+      {
+        "name": "params",
+        "type": "Params",
+        "value": [
+          {
+            "name": "collateralAddress",
+            "type": "Address",
+            "value": [
+              {
+                "name": "paymentCredential",
+                "type": "ScriptCredential",
+                "value": {
+                  "type": "bytes",
+                  "value": "8021830afedd85fda1253da2be75b66c0e65c482148eb8ca690903cb"
+                }
+              },
+              {
+                "name": "stakeCredential",
+                "type": "StakeCredentials",
+                "value": {
+                  "type": "Inline",
+                  "value": {
+                    "type": "ScriptCredential",
+                    "value": {
+                      "type": "bytes",
+                      "value": "67765d0e816fb5736e8e7a61f78dabb469616f62073561b8a10b1991"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "loanCs",
+            "type": "Asset",
+            "value": [
+              {
+                "name": "policyId",
+                "type": "bytes",
+                "value": "c0ee29a85b13209423b10447d3c2e6a50641a15c57770e27cb9d5073"
+              },
+              {
+                "name": "assetName",
+                "type": "bytes",
+                "value": "57696e67526964657273"
+              }
+            ]
+          },
+          {
+            "name": "collateralCs",
+            "type": "Asset",
+            "value": [
+              { "name": "policyId", "type": "bytes", "value": "" },
+              { "name": "assetName", "type": "bytes", "value": "" }
+            ]
+          },
+          {
+            "name": "oracleCollateralAsset",
+            "type": "Asset",
+            "value": [
+              {
+                "name": "policyId",
+                "type": "bytes",
+                "value": "13dfcd07acf9c62ae28f7578e637210dddd7f77b393d0983b89c2707"
+              },
+              {
+                "name": "assetName",
+                "type": "bytes",
+                "value": "2f426424960c554bf256c1e7f2ee74013271613fd6cffdbe1b2f337600ed774c"
+              }
+            ]
+          },
+          {
+            "name": "oracleLoanAsset",
+            "type": "Asset",
+            "value": [
+              {
+                "name": "policyId",
+                "type": "bytes",
+                "value": "13dfcd07acf9c62ae28f7578e637210dddd7f77b393d0983b89c2707"
+              },
+              {
+                "name": "assetName",
+                "type": "bytes",
+                "value": "f8259428ebb266c29dae73420bce6bf0b2f85b5cfb2e4682453fc1860498b1a3"
+              }
+            ]
+          },
+          {
+            "name": "lpToken",
+            "type": "Asset",
+            "value": [
+              {
+                "name": "policyId",
+                "type": "bytes",
+                "value": "35d6d2e62a6814925df0b3fe65440ba9a6aab1e5ef68c2c0b1a8dfe0"
+              },
+              {
+                "name": "assetName",
+                "type": "bytes",
+                "value": "67765d0e816fb5736e8e7a61f78dabb469616f62073561b8a10b1991"
+              }
+            ]
+          },
+          {
+            "name": "poolNftName",
+            "type": "bytes",
+            "value": "67765d0e816fb5736e8e7a61f78dabb469616f62073561b8a10b1991"
+          },
+          {
+            "name": "poolConfigAssetName",
+            "type": "bytes",
+            "value": "2ab3a5f3f244d5cc7acd9284f21d0e94300532daa0ca3fd1102c79a5e805fc87"
+          }
+        ]
+      },
+      { "name": "balance", "type": "int", "value": "4860000000" },
+      { "name": "lentOut", "type": "int", "value": 0 },
+      { "name": "totalLpTokens", "type": "int", "value": "4860000000" }
+    ]
+  }
+}

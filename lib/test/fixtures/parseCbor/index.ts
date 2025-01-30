@@ -6,6 +6,8 @@ import genericMap2 from './genericMap2.json'
 import indigoCdp from './indigoCdp.json'
 import indigoStabilityPool from './indigoStabilityPool.json'
 import indigoStabilityPoolAccount from './indigoStabilityPoolAccount.json'
+import lenfiPool from './lenfiPool.json'
+import lenfiPoolConfig from './lenfiPoolConfig.json'
 import minswapV2Order from './minswapV2Order.json'
 import minswapV2Pool from './minswapV2Pool.json'
 import sundaeV3Order from './sundaeV3Order.json'
@@ -31,6 +33,8 @@ export const fixtures: Fixture[] = [
   indigoCdp,
   indigoStabilityPool,
   indigoStabilityPoolAccount,
+  lenfiPool,
+  lenfiPoolConfig,
   minswapV2Order,
   minswapV2Pool,
   wingridersLaunchpadNode,
