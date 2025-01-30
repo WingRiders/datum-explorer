@@ -1,0 +1,110 @@
+{
+  "type": "Pool",
+  "value": [
+    {
+      "name": "requestValidatorHash",
+      "type": "bytes",
+      "value": "c134d839a64a5dfb9b155869ef3f34280751a622f69958baa8ffd29c"
+    },
+    {
+      "name": "assetASymbol",
+      "type": "bytes",
+      "value": ""
+    },
+    {
+      "name": "assetAToken",
+      "type": "bytes",
+      "value": ""
+    },
+    {
+      "name": "assetBSymbol",
+      "type": "bytes",
+      "value": "c0ee29a85b13209423b10447d3c2e6a50641a15c57770e27cb9d5073"
+    },
+    {
+      "name": "assetBToken",
+      "type": "bytes",
+      "value": "57696e67526964657273"
+    },
+    {
+      "name": "swapFeeInBasis",
+      "type": "int",
+      "value": 30
+    },
+    {
+      "name": "protocolFeeInBasis",
+      "type": "int",
+      "value": 5
+    },
+    {
+      "name": "projectFeeInBasis",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "name": "reserveFeeInBasis",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "name": "feeBasis",
+      "type": "int",
+      "value": 10000
+    },
+    {
+      "name": "agentFeeAda",
+      "type": "int",
+      "value": 2000000
+    },
+    {
+      "name": "lastInteraction",
+      "type": "int",
+      "value": "1737395669000"
+    },
+    {
+      "name": "treasuryA",
+      "type": "int",
+      "value": 81077421
+    },
+    {
+      "name": "treasuryB",
+      "type": "int",
+      "value": 2823556334
+    },
+    {
+      "name": "projectTreasuryA",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "name": "projectTreasuryB",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "name": "reserveTreasuryA",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "name": "reserveTreasuryB",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "name": "projectBeneficiary",
+      "type": "Nothing",
+      "value": []
+    },
+    {
+      "name": "reserveBeneficiary",
+      "type": "Nothing",
+      "value": []
+    },
+    {
+      "name": "poolSpecifics",
+      "type": "ConstantProductPoolDatum",
+      "value": []
+    }
+  ]
+}

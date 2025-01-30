@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "declaration": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "emitDeclarationOnly": true,
+    "resolveJsonModule": true,
+    "composite": true
+  },
+  "include": ["src", "declarations.d.ts"],
+  "exclude": ["node_modules", "**/*.test.ts"],
+  "references": [{ "path": "../cddl-from-src" }]
+}

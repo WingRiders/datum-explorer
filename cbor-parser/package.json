@@ -1,0 +1,46 @@
+{
+  "name": "@wingriders/datum-explorer-cbor-parser",
+  "version": "0.0.1",
+  "description": "CBOR parser, matching with CDDL AST",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/WingRiders/datum-explorer.git",
+    "directory": "cbor-parser"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "author": "WingRiders",
+  "license": "MIT",
+  "files": ["dist"],
+  "keywords": ["cardano", "crypto", "cbor"],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "rollup -c",
+    "check": "bun biome check .",
+    "fix": "bun run check --write --unsafe",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@wingriders/datum-explorer-cddl-from-src": "workspace:*",
+    "cbor-x": "^1.6.0",
+    "borc": "^3.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/lodash": "^4.17.14",
+    "rollup": "^4.21.3",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.8.1",
+    "type-fest": "^4.32.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.1"
+  }
+}
