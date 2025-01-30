@@ -1,0 +1,51 @@
+{
+  "name": "Sundae V3 pool",
+  "cddlFileName": "sundaeV3Pool.cddl",
+  "cbor": "d8799f581cdfe69eaaf7b3785e6d8c1b5628d84b79094906ccf20c99b97dab49e29f9f4040ff9f581cbd1c2b36071e74d1685aa2c7fa35d906ebe399ca542f04813d5a53bc504352595354414c20414e414c59534953ffff1a0613d269181e181ed87a80001a1329b360ff",
+  "expectedParsed": {
+    "type": "Pool",
+    "value": [
+      {
+        "name": "identifier",
+        "type": "bytes",
+        "value": "dfe69eaaf7b3785e6d8c1b5628d84b79094906ccf20c99b97dab49e2"
+      },
+      {
+        "name": "assets",
+        "type": "Assets",
+        "value": [
+          {
+            "name": "assetA",
+            "type": "AssetClass",
+            "value": [
+              { "name": "policyId", "type": "bytes", "value": "" },
+              { "name": "assetName", "type": "bytes", "value": "" }
+            ]
+          },
+          {
+            "name": "assetB",
+            "type": "AssetClass",
+            "value": [
+              {
+                "name": "policyId",
+                "type": "bytes",
+                "value": "bd1c2b36071e74d1685aa2c7fa35d906ebe399ca542f04813d5a53bc"
+              },
+              {
+                "name": "assetName",
+                "type": "bytes",
+                "value": "4352595354414c20414e414c59534953"
+              }
+            ]
+          }
+        ]
+      },
+      { "name": "circulatingLp", "type": "int", "value": 101962345 },
+      { "name": "bidFeesPer10Thousand", "type": "int", "value": 30 },
+      { "name": "askFeesPer10Thousand", "type": "int", "value": 30 },
+      { "name": "feeManager", "type": "None", "value": [] },
+      { "name": "marketOpen", "type": "int", "value": 0 },
+      { "name": "protocolFees", "type": "int", "value": 321500000 }
+    ]
+  }
+}
