@@ -1,0 +1,133 @@
+{
+  "name": "Minswap V2 order",
+  "cddlFileName": "minswapV2Order.cddl",
+  "cbor": "d8799fd8799f581ca1aa106c1c76acf5ac4515d3583249c432fd06802cb88b58abc09775ffd8799fd8799f581ca1aa106c1c76acf5ac4515d3583249c432fd06802cb88b58abc09775ffd8799fd8799fd8799f581cafacf6bea29fa98ed2fe8e199de4eb49ef1d929374a64943ecf13591ffffffffd87980d8799fd8799f581ca1aa106c1c76acf5ac4515d3583249c432fd06802cb88b58abc09775ffd8799fd8799fd8799f581cafacf6bea29fa98ed2fe8e199de4eb49ef1d929374a64943ecf13591ffffffffd87980d8799f581cf5808c2c990d86da54bfc97d89cee6efa20cd8461616359478d96b4c5820a939812d08cfb6066e17d2914a7272c6b8c0197acdf68157d02c73649cc3efc0ffd8799fd87980d8799f1a773593feff1a75c95830d87980ff1a001e7cc8d87a80ff",
+  "expectedParsed": {
+    "type": "Order",
+    "value": [
+      {
+        "name": "canceller",
+        "type": "Signature",
+        "value": {
+          "type": "bytes",
+          "value": "a1aa106c1c76acf5ac4515d3583249c432fd06802cb88b58abc09775"
+        }
+      },
+      {
+        "name": "refundReceiver",
+        "type": "Address",
+        "value": [
+          {
+            "name": "paymentCredential",
+            "type": "KeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "a1aa106c1c76acf5ac4515d3583249c432fd06802cb88b58abc09775"
+            }
+          },
+          {
+            "name": "maybeStakeCredential",
+            "type": "StakeCredential",
+            "value": {
+              "type": "KeyCredential",
+              "value": {
+                "type": "bytes",
+                "value": "afacf6bea29fa98ed2fe8e199de4eb49ef1d929374a64943ecf13591"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "refundReceiverDatum",
+        "type": "NoDatum",
+        "value": []
+      },
+      {
+        "name": "successReceiver",
+        "type": "Address",
+        "value": [
+          {
+            "name": "paymentCredential",
+            "type": "KeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "a1aa106c1c76acf5ac4515d3583249c432fd06802cb88b58abc09775"
+            }
+          },
+          {
+            "name": "maybeStakeCredential",
+            "type": "StakeCredential",
+            "value": {
+              "type": "KeyCredential",
+              "value": {
+                "type": "bytes",
+                "value": "afacf6bea29fa98ed2fe8e199de4eb49ef1d929374a64943ecf13591"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "successReceiverDatum",
+        "type": "NoDatum",
+        "value": []
+      },
+      {
+        "name": "lpAsset",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "f5808c2c990d86da54bfc97d89cee6efa20cd8461616359478d96b4c"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "a939812d08cfb6066e17d2914a7272c6b8c0197acdf68157d02c73649cc3efc0"
+          }
+        ]
+      },
+      {
+        "name": "step",
+        "type": "OrderStep",
+        "value": [
+          {
+            "name": "direction",
+            "type": "BToA",
+            "value": []
+          },
+          {
+            "name": "swapAmountOption",
+            "type": "SpecificAmount",
+            "value": {
+              "type": "int",
+              "value": 1999999998
+            }
+          },
+          {
+            "name": "minimumReceived",
+            "type": "int",
+            "value": 1976129584
+          },
+          {
+            "name": "killable",
+            "type": "PendingOnFailed",
+            "value": []
+          }
+        ]
+      },
+      {
+        "name": "maxBatcherFee",
+        "type": "int",
+        "value": 1998024
+      },
+      {
+        "name": "expiredOptions",
+        "type": "None",
+        "value": []
+      }
+    ]
+  }
+}

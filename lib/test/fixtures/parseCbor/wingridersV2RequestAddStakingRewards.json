@@ -1,0 +1,121 @@
+{
+  "name": "WingRiders V2 request to add staking rewards",
+  "cddlFileName": "wingridersV2Request.cddl",
+  "cbor": "d8799f1a001e8480d8799fd8799f581cc75694c984aa6008bc5915ea42d6d4998b4b8c145c3961d6fb6ab3eaffd8799fd8799fd8799f581cc403e1760404ee0ba72afaa833e44d0c656eea2d7122c4b42cd83372ffffffffd8799fd8799f581cc75694c984aa6008bc5915ea42d6d4998b4b8c145c3961d6fb6ab3eaffd8799fd8799fd8799f581cc403e1760404ee0ba72afaa833e44d0c656eea2d7122c4b42cd83372ffffffff80d879801b00000194875b415f4040581cc0ee29a85b13209423b10447d3c2e6a50641a15c57770e27cb9d50734a57696e67526964657273d87d800101ff",
+  "expectedParsed": {
+    "type": "Request",
+    "value": [
+      {
+        "name": "oil",
+        "type": "int",
+        "value": 2000000
+      },
+      {
+        "name": "beneficiary",
+        "type": "Address",
+        "value": [
+          {
+            "name": "addressCredential",
+            "type": "PubKeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "c75694c984aa6008bc5915ea42d6d4998b4b8c145c3961d6fb6ab3ea"
+            }
+          },
+          {
+            "name": "addressStakingCredential",
+            "type": "JustStakingCredential",
+            "value": {
+              "type": "StakingHash",
+              "value": {
+                "type": "PubKeyCredential",
+                "value": {
+                  "type": "bytes",
+                  "value": "c403e1760404ee0ba72afaa833e44d0c656eea2d7122c4b42cd83372"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "ownerAddress",
+        "type": "Address",
+        "value": [
+          {
+            "name": "addressCredential",
+            "type": "PubKeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "c75694c984aa6008bc5915ea42d6d4998b4b8c145c3961d6fb6ab3ea"
+            }
+          },
+          {
+            "name": "addressStakingCredential",
+            "type": "JustStakingCredential",
+            "value": {
+              "type": "StakingHash",
+              "value": {
+                "type": "PubKeyCredential",
+                "value": {
+                  "type": "bytes",
+                  "value": "c403e1760404ee0ba72afaa833e44d0c656eea2d7122c4b42cd83372"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "compensationDatum",
+        "type": "any",
+        "value": "80"
+      },
+      {
+        "name": "datumType",
+        "type": "NoDatumType",
+        "value": []
+      },
+      {
+        "name": "deadline",
+        "type": "int",
+        "value": "1737437692255"
+      },
+      {
+        "name": "assetASymbol",
+        "type": "bytes",
+        "value": ""
+      },
+      {
+        "name": "assetAToken",
+        "type": "bytes",
+        "value": ""
+      },
+      {
+        "name": "assetBSymbol",
+        "type": "bytes",
+        "value": "c0ee29a85b13209423b10447d3c2e6a50641a15c57770e27cb9d5073"
+      },
+      {
+        "name": "assetBToken",
+        "type": "bytes",
+        "value": "57696e67526964657273"
+      },
+      {
+        "name": "requestAction",
+        "type": "AddStakingRewardsAction",
+        "value": []
+      },
+      {
+        "name": "scaleA",
+        "type": "int",
+        "value": 1
+      },
+      {
+        "name": "scaleB",
+        "type": "int",
+        "value": 1
+      }
+    ]
+  }
+}

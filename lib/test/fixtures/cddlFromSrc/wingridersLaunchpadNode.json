@@ -1,0 +1,539 @@
+{
+  "name": "WingRiders Launchpad node",
+  "cddlFileName": "wingridersLaunchpadNode.cddl",
+  "expectedAst": {
+    "rules": [
+      {
+        "Type": {
+          "rule": {
+            "name": { "ident": "LaunchpadNode", "span": [0, 13, 1] },
+            "is_type_choice_alternate": false,
+            "value": {
+              "type_choices": [
+                {
+                  "type1": {
+                    "type2": {
+                      "TaggedData": {
+                        "tag": 121,
+                        "t": {
+                          "type_choices": [
+                            {
+                              "type1": {
+                                "type2": {
+                                  "Array": {
+                                    "group": {
+                                      "group_choices": [
+                                        {
+                                          "group_entries": [
+                                            [
+                                              {
+                                                "ValueMemberKey": {
+                                                  "ge": {
+                                                    "member_key": {
+                                                      "Bareword": {
+                                                        "ident": {
+                                                          "ident": "key",
+                                                          "span": [29, 32, 2]
+                                                        },
+                                                        "span": [29, 42, 2]
+                                                      }
+                                                    },
+                                                    "entry_type": {
+                                                      "type_choices": [
+                                                        {
+                                                          "type1": {
+                                                            "type2": {
+                                                              "Typename": {
+                                                                "ident": {
+                                                                  "ident": "MaybeNodeKey",
+                                                                  "span": [
+                                                                    43, 55, 2
+                                                                  ]
+                                                                },
+                                                                "span": [
+                                                                  43, 55, 2
+                                                                ]
+                                                              }
+                                                            },
+                                                            "span": [43, 55, 2]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "span": [43, 55, 2]
+                                                    }
+                                                  },
+                                                  "span": [29, 68, 2]
+                                                }
+                                              },
+                                              { "optional_comma": true }
+                                            ],
+                                            [
+                                              {
+                                                "ValueMemberKey": {
+                                                  "ge": {
+                                                    "member_key": {
+                                                      "Bareword": {
+                                                        "ident": {
+                                                          "ident": "next",
+                                                          "span": [69, 73, 3]
+                                                        },
+                                                        "span": [69, 82, 3]
+                                                      }
+                                                    },
+                                                    "entry_type": {
+                                                      "type_choices": [
+                                                        {
+                                                          "type1": {
+                                                            "type2": {
+                                                              "Typename": {
+                                                                "ident": {
+                                                                  "ident": "MaybeNodeKey",
+                                                                  "span": [
+                                                                    83, 95, 3
+                                                                  ]
+                                                                },
+                                                                "span": [
+                                                                  83, 95, 3
+                                                                ]
+                                                              }
+                                                            },
+                                                            "span": [83, 95, 3]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "span": [83, 95, 3]
+                                                    }
+                                                  },
+                                                  "span": [69, 108, 3]
+                                                }
+                                              },
+                                              { "optional_comma": true }
+                                            ],
+                                            [
+                                              {
+                                                "ValueMemberKey": {
+                                                  "ge": {
+                                                    "member_key": {
+                                                      "Bareword": {
+                                                        "ident": {
+                                                          "ident": "createdTime",
+                                                          "span": [109, 120, 4]
+                                                        },
+                                                        "span": [109, 122, 4]
+                                                      }
+                                                    },
+                                                    "entry_type": {
+                                                      "type_choices": [
+                                                        {
+                                                          "type1": {
+                                                            "type2": {
+                                                              "Typename": {
+                                                                "ident": {
+                                                                  "ident": "int",
+                                                                  "span": [
+                                                                    123, 126, 4
+                                                                  ]
+                                                                },
+                                                                "span": [
+                                                                  123, 126, 4
+                                                                ]
+                                                              }
+                                                            },
+                                                            "span": [
+                                                              123, 126, 4
+                                                            ]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "span": [123, 126, 4]
+                                                    }
+                                                  },
+                                                  "span": [109, 139, 4]
+                                                }
+                                              },
+                                              { "optional_comma": true }
+                                            ],
+                                            [
+                                              {
+                                                "ValueMemberKey": {
+                                                  "ge": {
+                                                    "member_key": {
+                                                      "Bareword": {
+                                                        "ident": {
+                                                          "ident": "committed",
+                                                          "span": [140, 149, 5]
+                                                        },
+                                                        "span": [140, 153, 5]
+                                                      }
+                                                    },
+                                                    "entry_type": {
+                                                      "type_choices": [
+                                                        {
+                                                          "type1": {
+                                                            "type2": {
+                                                              "Typename": {
+                                                                "ident": {
+                                                                  "ident": "int",
+                                                                  "span": [
+                                                                    154, 157, 5
+                                                                  ]
+                                                                },
+                                                                "span": [
+                                                                  154, 157, 5
+                                                                ]
+                                                              }
+                                                            },
+                                                            "span": [
+                                                              154, 157, 5
+                                                            ]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "span": [154, 157, 5]
+                                                    }
+                                                  },
+                                                  "span": [140, 157, 5]
+                                                }
+                                              },
+                                              { "optional_comma": false }
+                                            ]
+                                          ],
+                                          "span": [29, 157, 2]
+                                        }
+                                      ],
+                                      "span": [29, 157, 2]
+                                    },
+                                    "span": [27, 170, 2]
+                                  }
+                                },
+                                "span": [27, 170, 2]
+                              }
+                            }
+                          ],
+                          "span": [27, 170, 2]
+                        },
+                        "span": [20, 170, 2]
+                      }
+                    },
+                    "span": [20, 171, 2]
+                  }
+                }
+              ],
+              "span": [20, 171, 2]
+            }
+          },
+          "span": [0, 171, 1]
+        }
+      },
+      {
+        "Type": {
+          "rule": {
+            "name": { "ident": "MaybeNodeKey", "span": [0, 12, 1] },
+            "is_type_choice_alternate": false,
+            "value": {
+              "type_choices": [
+                {
+                  "type1": {
+                    "type2": {
+                      "Typename": {
+                        "ident": {
+                          "ident": "JustNodeKey",
+                          "span": [19, 30, 2]
+                        },
+                        "span": [19, 30, 2]
+                      }
+                    },
+                    "span": [19, 30, 2]
+                  }
+                },
+                {
+                  "type1": {
+                    "type2": {
+                      "Typename": {
+                        "ident": { "ident": "Nothing", "span": [35, 42, 3] },
+                        "span": [35, 42, 3]
+                      }
+                    },
+                    "span": [35, 42, 3]
+                  }
+                }
+              ],
+              "span": [19, 42, 2]
+            }
+          },
+          "span": [0, 42, 1]
+        }
+      },
+      {
+        "Type": {
+          "rule": {
+            "name": { "ident": "Nothing", "span": [217, 224, 12] },
+            "is_type_choice_alternate": false,
+            "value": {
+              "type_choices": [
+                {
+                  "type1": {
+                    "type2": {
+                      "TaggedData": {
+                        "tag": 122,
+                        "t": {
+                          "type_choices": [
+                            {
+                              "type1": {
+                                "type2": {
+                                  "Array": {
+                                    "group": {
+                                      "group_choices": [
+                                        {
+                                          "group_entries": [],
+                                          "span": [235, 235, 12]
+                                        }
+                                      ],
+                                      "span": [235, 235, 12]
+                                    },
+                                    "span": [234, 236, 12]
+                                  }
+                                },
+                                "span": [234, 236, 12]
+                              }
+                            }
+                          ],
+                          "span": [234, 236, 12]
+                        },
+                        "span": [227, 236, 12]
+                      }
+                    },
+                    "span": [227, 237, 12]
+                  }
+                }
+              ],
+              "span": [227, 237, 12]
+            }
+          },
+          "span": [217, 237, 12]
+        }
+      },
+      {
+        "Type": {
+          "rule": {
+            "name": { "ident": "JustNodeKey", "span": [0, 11, 1] },
+            "is_type_choice_alternate": false,
+            "value": {
+              "type_choices": [
+                {
+                  "type1": {
+                    "type2": {
+                      "TaggedData": {
+                        "tag": 121,
+                        "t": {
+                          "type_choices": [
+                            {
+                              "type1": {
+                                "type2": {
+                                  "Array": {
+                                    "group": {
+                                      "group_choices": [
+                                        {
+                                          "group_entries": [
+                                            [
+                                              {
+                                                "ValueMemberKey": {
+                                                  "ge": {
+                                                    "entry_type": {
+                                                      "type_choices": [
+                                                        {
+                                                          "type1": {
+                                                            "type2": {
+                                                              "Typename": {
+                                                                "ident": {
+                                                                  "ident": "NodeKey",
+                                                                  "span": [
+                                                                    22, 29, 1
+                                                                  ]
+                                                                },
+                                                                "span": [
+                                                                  22, 29, 1
+                                                                ]
+                                                              }
+                                                            },
+                                                            "span": [22, 29, 1]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "span": [22, 29, 1]
+                                                    }
+                                                  },
+                                                  "span": [22, 29, 1]
+                                                }
+                                              },
+                                              { "optional_comma": false }
+                                            ]
+                                          ],
+                                          "span": [22, 29, 1]
+                                        }
+                                      ],
+                                      "span": [22, 29, 1]
+                                    },
+                                    "span": [21, 30, 1]
+                                  }
+                                },
+                                "span": [21, 30, 1]
+                              }
+                            }
+                          ],
+                          "span": [21, 30, 1]
+                        },
+                        "span": [14, 30, 1]
+                      }
+                    },
+                    "span": [14, 31, 1]
+                  }
+                }
+              ],
+              "span": [14, 31, 1]
+            }
+          },
+          "span": [0, 31, 1]
+        }
+      },
+      {
+        "Type": {
+          "rule": {
+            "name": { "ident": "NodeKey", "span": [272, 279, 16] },
+            "is_type_choice_alternate": false,
+            "value": {
+              "type_choices": [
+                {
+                  "type1": {
+                    "type2": {
+                      "TaggedData": {
+                        "tag": 121,
+                        "t": {
+                          "type_choices": [
+                            {
+                              "type1": {
+                                "type2": {
+                                  "Array": {
+                                    "group": {
+                                      "group_choices": [
+                                        {
+                                          "group_entries": [
+                                            [
+                                              {
+                                                "ValueMemberKey": {
+                                                  "ge": {
+                                                    "member_key": {
+                                                      "Bareword": {
+                                                        "ident": {
+                                                          "ident": "nodeOwner",
+                                                          "span": [295, 304, 17]
+                                                        },
+                                                        "span": [295, 306, 17]
+                                                      }
+                                                    },
+                                                    "entry_type": {
+                                                      "type_choices": [
+                                                        {
+                                                          "type1": {
+                                                            "type2": {
+                                                              "Typename": {
+                                                                "ident": {
+                                                                  "ident": "bytes",
+                                                                  "span": [
+                                                                    307, 312, 17
+                                                                  ]
+                                                                },
+                                                                "span": [
+                                                                  307, 312, 17
+                                                                ]
+                                                              }
+                                                            },
+                                                            "span": [
+                                                              307, 312, 17
+                                                            ]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "span": [307, 312, 17]
+                                                    }
+                                                  },
+                                                  "span": [295, 325, 17]
+                                                }
+                                              },
+                                              { "optional_comma": true }
+                                            ],
+                                            [
+                                              {
+                                                "ValueMemberKey": {
+                                                  "ge": {
+                                                    "member_key": {
+                                                      "Bareword": {
+                                                        "ident": {
+                                                          "ident": "index",
+                                                          "span": [326, 331, 18]
+                                                        },
+                                                        "span": [326, 337, 18]
+                                                      }
+                                                    },
+                                                    "entry_type": {
+                                                      "type_choices": [
+                                                        {
+                                                          "type1": {
+                                                            "type2": {
+                                                              "Typename": {
+                                                                "ident": {
+                                                                  "ident": "int",
+                                                                  "span": [
+                                                                    338, 341, 18
+                                                                  ]
+                                                                },
+                                                                "span": [
+                                                                  338, 341, 18
+                                                                ]
+                                                              }
+                                                            },
+                                                            "span": [
+                                                              338, 341, 18
+                                                            ]
+                                                          }
+                                                        }
+                                                      ],
+                                                      "span": [338, 341, 18]
+                                                    }
+                                                  },
+                                                  "span": [326, 341, 18]
+                                                }
+                                              },
+                                              { "optional_comma": false }
+                                            ]
+                                          ],
+                                          "span": [295, 341, 17]
+                                        }
+                                      ],
+                                      "span": [295, 341, 17]
+                                    },
+                                    "span": [293, 354, 17]
+                                  }
+                                },
+                                "span": [293, 354, 17]
+                              }
+                            }
+                          ],
+                          "span": [293, 354, 17]
+                        },
+                        "span": [286, 354, 17]
+                      }
+                    },
+                    "span": [286, 355, 17]
+                  }
+                }
+              ],
+              "span": [286, 355, 17]
+            }
+          },
+          "span": [272, 355, 16]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "WingRiders Launchpad node",
+  "cddlFileName": "wingridersLaunchpadNode.cddl",
+  "cbor": "d8799fd8799fd8799f581c9916b846579fc7109f6ab82fd94c7d9b47af8694ea8697a167b1bb0800ffffd87a801b0000018a5058c6f01a00989680ff",
+  "expectedParsed": {
+    "type": "LaunchpadNode",
+    "value": [
+      {
+        "name": "key",
+        "type": "JustNodeKey",
+        "value": {
+          "type": "NodeKey",
+          "value": [
+            {
+              "name": "nodeOwner",
+              "type": "bytes",
+              "value": "9916b846579fc7109f6ab82fd94c7d9b47af8694ea8697a167b1bb08"
+            },
+            {
+              "name": "index",
+              "type": "int",
+              "value": 0
+            }
+          ]
+        }
+      },
+      {
+        "name": "next",
+        "type": "Nothing",
+        "value": []
+      },
+      {
+        "name": "createdTime",
+        "type": "int",
+        "value": "1693565110000"
+      },
+      {
+        "name": "committed",
+        "type": "int",
+        "value": 10000000
+      }
+    ]
+  }
+}
