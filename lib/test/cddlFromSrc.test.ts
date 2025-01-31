@@ -1,6 +1,6 @@
 import * as fs from 'node:fs'
 import {describe, expect, test} from 'vitest'
-import {cddlFromSrc} from '../'
+import {cddlFromSrc} from '../src'
 import {fixtures} from './fixtures/cddlFromSrc'
 
 const removeUndefinedFields = (obj: unknown): unknown => {

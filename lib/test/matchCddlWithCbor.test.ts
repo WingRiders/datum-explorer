@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import {describe, expect, it, test} from 'vitest'
-import {matchCddlWithCbor} from '../'
+import {matchCddlWithCbor} from '../src'
 import {getAggregateMessage} from '../src/helpers'
 import {fixtures} from './fixtures/parseCbor'
 
