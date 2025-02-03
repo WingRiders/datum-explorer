@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import {describe, expect, it, test} from 'vitest'
 import {matchCddlWithCbor} from '../src'
 import {getAggregateMessage} from '../src/helpers'
-import {fixtures} from './fixtures/parseCbor'
+import {fixtures} from './fixtures/matchCddlWithCbor'
 
 const readCddlSchema = (cddlFileName: string) =>
   fs.promises.readFile(`${__dirname}/fixtures/cddl/${cddlFileName}`, 'utf8')

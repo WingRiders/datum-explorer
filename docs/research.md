@@ -52,7 +52,7 @@ We confirmed that the [Rust-based CDDL parser](https://github.com/anweiss/cddl/)
 1. **WASM Wrapper:**
     - We could create a simplified AST wrapper for our specific use case.
 2. **Full Parsing in Rust:**
-    - CBOR parsing and validation can be handled in Rust.
+    - CDDL decoding and validation can be handled in Rust.
     - Custom visitor patterns may be needed to simplify processing.
 
 ## Decision
