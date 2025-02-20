@@ -14,7 +14,7 @@ describe('fetchAndCacheCddlSchemas (integration test)', () => {
   })
 
   afterEach(() => {
-    expect(mockFetchIsDone).toBeTrue()
+    expect(mockFetchIsDone()).toBeTrue()
   })
 
   it('should fetch and cache new schemas based on GitHub GraphQL responses', async () => {

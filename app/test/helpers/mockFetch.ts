@@ -15,8 +15,22 @@ const mockedRequests: {mockRequestOptions: MockRequestOptions; response: MockRes
 
 let originalFetch: typeof fetch | null = null
 
-const mockedFetch: typeof fetch = async (requestInfo: RequestInfo, opts: RequestInit) => {
-  expect(mockedRequests).not.toBeEmpty()
+const mockedFetch: typeof fetch = async (requestInfo: RequestInfo | URL, opts: RequestInit) => {
+  const url =
+    typeof requestInfo === 'string'
+      ? requestInfo
+      : requestInfo instanceof URL
+        ? requestInfo.href
+        : requestInfo.url
+  const hostname = new URL(url).hostname
+
+  // Allow requests to localhost without mocking
+  if (hostname === 'localhost') {
+    if (originalFetch == null) throw new Error('Called mockedFetch while originalFetch is null')
+    return originalFetch(requestInfo, opts)
+  }
+  if (mockedRequests.length === 0)
+    throw new Error(`Cannot fetch from ${requestInfo}, it's not mocked`)
   const {mockRequestOptions, response} = mockedRequests.shift()
   expect(requestInfo.toString()).toBe(mockRequestOptions.url)
   expect(opts.method).toBe(mockRequestOptions.method)
@@ -45,7 +59,7 @@ export const mockFetch = (mockedRequestsOptions: MockRequestOptions, response: M
   mockedRequests.push({mockRequestOptions: mockedRequestsOptions, response})
 }
 
-export const mockFetchIsDone = mockedRequests.length === 0
+export const mockFetchIsDone = () => mockedRequests.length === 0
 
 export const clearFetchMocks = () => {
   mockedRequests.length = 0
