@@ -1,5 +1,4 @@
 import {Tag, encode} from 'cbor-x'
-import {cddlFromSrc} from './cddlFromSrc'
 import {
   getMemberKeyName,
   getOccurrenceOfGroupEntry,
@@ -8,7 +7,6 @@ import {
   groupChoicesToGroupEntries,
   handleUnsupportedType2AsMultiChoice,
 } from './common'
-import {decodeCbor} from './decodeCbor'
 import {
   ArrayLengthMismatchError,
   CBORIsNotBufferError,
@@ -256,9 +254,7 @@ const matchTypeRule = (cddl: CddlAst, typeRule: TypeRule, cbor: unknown): Readab
   }, `When parsing TypeRule "${type}":`)
 }
 
-export const matchCddlWithCbor = async (cddlSchemaRaw: string, cborStringRaw: string) => {
-  const cddl = await cddlFromSrc(cddlSchemaRaw)
-  const cbor: unknown = decodeCbor(cborStringRaw)
+export const matchCddlWithCbor = async (cddl: CddlAst, cbor: unknown) => {
   for (const rule of cddl.rules) {
     if ('Type' in rule) {
       // First TypeRule is the root

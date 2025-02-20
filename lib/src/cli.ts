@@ -1,6 +1,6 @@
 import * as fs from 'node:fs'
 import {Command} from 'commander'
-import {matchCddlWithCbor} from './matchCddlWithCbor'
+import {parseCbor} from './parseCbor'
 import {validateCddl} from './validateCddl'
 
 const program = new Command()
@@ -15,7 +15,7 @@ program
   .action(async (cddlFile, cbor) => {
     try {
       const cddlSchemaRaw = await fs.promises.readFile(cddlFile, 'utf-8')
-      const result = await matchCddlWithCbor(cddlSchemaRaw, cbor)
+      const result = await parseCbor(cddlSchemaRaw, cbor)
       console.log('Parsed CBOR:', result)
     } catch (err) {
       console.error('Error:', err instanceof Error ? err.message : String(err))

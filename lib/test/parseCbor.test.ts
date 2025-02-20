@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import {describe, expect, it, test} from 'vitest'
-import {matchCddlWithCbor} from '../src'
+import {parseCbor} from '../src'
 import {getAggregateMessage} from '../src/helpers'
 import {fixtures} from './fixtures/matchCddlWithCbor'
 
@@ -13,7 +13,7 @@ const checkCDDLParsingError = async (
   expectedCause: unknown,
 ) => {
   try {
-    await matchCddlWithCbor(cddlSchema, '00')
+    await parseCbor(cddlSchema, '00')
   } catch (e: unknown) {
     if (!(e instanceof Error)) throw new Error('Expected an instance of Error')
     expect(e.message).toEqual(expectedMessage)
@@ -35,7 +35,7 @@ const checkCborMatchingError = async (
   )
 
   try {
-    await matchCddlWithCbor(cddlSchema, cbor)
+    await parseCbor(cddlSchema, cbor)
   } catch (e: unknown) {
     expect(getAggregateMessage(e)).toEqual(expectedMessage.trim())
     return
@@ -43,11 +43,11 @@ const checkCborMatchingError = async (
   throw new Error('Expected an error to be thrown')
 }
 
-describe('matchCddlWithCbor', () => {
+describe('parseCbor', () => {
   test.each(fixtures)('Matches CBOR with $name', async ({cddlFileName, cbor, expectedParsed}) => {
     const cddlSchema = await readCddlSchema(cddlFileName)
     try {
-      const parsed = await matchCddlWithCbor(cddlSchema, cbor)
+      const parsed = await parseCbor(cddlSchema, cbor)
       expect(parsed).toEqual(expectedParsed)
     } catch (e) {
       throw new Error(getAggregateMessage(e))
