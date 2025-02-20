@@ -16,7 +16,10 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "cli": "bun run src/cli.ts",
