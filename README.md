@@ -48,7 +48,7 @@ cd app
 cp .env.example .env
 ```
 
-Update .env as needed, particularly the `GITHUB_AUTH_TOKEN`.
+Update .env as needed, particularly the `GITHUB_AUTH_TOKEN`. If it's left empty or omitted entirely, the application will automatically use mocked data instead of making requests to GitHub.
 
 How to obtain a GitHub token:
 - Go to [GitHub Developer Settings](https://github.com/settings/tokens).
@@ -75,9 +75,19 @@ bun dev
 
 Next.js will automatically find a free port and output the URL (e.g. http://localhost:3000).
 
-Access the API:
-- Visit http://localhost:3000/api/schemas to list all schemas.
-- Visit http://localhost:3000/api/schemas/wingriders/launchpadNode to see an example schema.
+### Triggering the cache update:
+
+The cache is normally updated automatically on a push event to the main branch.
+However, for local development, you need to trigger it manually:
+
+```shell
+curl -X POST -H 'X-GitHub-Event: push' -d '{"ref": "refs/heads/main"}' http://localhost:3000/api/github/webhook
+```
+
+### Accessing the API
+
+- Visit http://localhost:3000/api/schemas to list all cached schemas.
+- Visit http://localhost:3000/api/schemas/wingriders/launchpadNode to see an example schema stored in the cache.
 
 ### Running tests
 

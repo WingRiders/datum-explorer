@@ -7,12 +7,14 @@ const MAX_PROJECTS_IN_ONE_REQUEST = 100
 const REQUEST_TIMEOUT = 60 * 1000 // 1 minute
 
 const githubGqlUrl = 'https://api.github.com/graphql'
-const gqlClient = new GraphQLClient(githubGqlUrl, {
-  headers: config.GITHUB_AUTH_TOKEN ? {Authorization: `Bearer ${config.GITHUB_AUTH_TOKEN}`} : {},
-  // Add AbortSignal to the request with a specified timeout
-  fetch: (input: RequestInfo | URL, init?: RequestInit) =>
-    fetch(input, {...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT)}),
-})
+const gqlClient = config.GITHUB_AUTH_TOKEN
+  ? new GraphQLClient(githubGqlUrl, {
+      headers: {Authorization: `Bearer ${config.GITHUB_AUTH_TOKEN}`},
+      // Add AbortSignal to the request with a specified timeout
+      fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+        fetch(input, {...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT)}),
+    })
+  : null
 
 const projectsFolderGqlQuery = gql`
 query ProjectsFolder($repositoryOwner: String!, $repositoryName: String!, $projectsFolderPath: String!) {
@@ -40,11 +42,13 @@ type ProjectsFolderQueryResponse = {
 }
 
 /**
- * Fetch all project names and oids from the Datum Registry using Github GraphQL API
+ * Fetch all project names and oids from the Datum Registry using Github GraphQL API.
+ * If the gqlClient is not initialized, return mocked data.
  *
- * Throws an error if fetching from Github fails
+ * Throws an error if fetching from Github fails.
  */
 export const fetchProjectsFromDatumRegistry = async (): Promise<ProjectFolder[]> => {
+  if (gqlClient == null) return [{oid: 'oid1', name: 'wingriders'}]
   const gqlVariables = {
     repositoryOwner: config.REPOSITORY_OWNER,
     repositoryName: config.REPOSITORY_NAME,
@@ -117,9 +121,10 @@ type CddlSchema = {
 }
 
 /**
- * Fetch cddl schemas for given projects from the Datum Registry using Github GraphQL API
+ * Fetch cddl schemas for given projects from the Datum Registry using Github GraphQL API.
+ * If the gqlClient is not initialized, return mocked data.
  *
- * Throws an error if fetching from Github fails
+ * Throws an error if fetching from Github fails.
  */
 export const fetchSchemasForProjectsFromDatumRegistry = async (
   projectFolders: ProjectFolder[],
@@ -127,6 +132,14 @@ export const fetchSchemasForProjectsFromDatumRegistry = async (
   if (projectFolders.length === 0) {
     // No projects to fetch
     return []
+  }
+  if (gqlClient == null) {
+    return projectFolders.map((projectFolder, index) => ({
+      projectName: projectFolder.name,
+      projectGithubOid: projectFolder.oid,
+      fileName: `schema${index}.cddl`,
+      cddl: `Type${index} = []`,
+    }))
   }
 
   const gqlVariables = {
