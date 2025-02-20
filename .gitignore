@@ -4,4 +4,10 @@ node_modules
 /cddl-from-src/crate/target/**
 .turbo/
 dist
+
+# typescript
 *.tsbuildinfo
+next-env.d.ts
+
+# next
+/app/.next/
