@@ -27,3 +27,6 @@ export const deleteProjectFromCddlSchemasCache = (projectName: string) => {
 }
 
 export const getAllCddlSchemasFromCache = () => cddlSchemasCache
+
+export const deleteAllProjectsFromCddlSchemasCache = () =>
+  Object.keys(cddlSchemasCache).forEach(deleteProjectFromCddlSchemasCache)
