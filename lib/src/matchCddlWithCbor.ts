@@ -1,5 +1,13 @@
 import {Tag, encode} from 'cbor-x'
 import {cddlFromSrc} from './cddlFromSrc'
+import {
+  getMemberKeyName,
+  getOccurrenceOfGroupEntry,
+  getRuleName,
+  getType2Name,
+  groupChoicesToGroupEntries,
+  handleUnsupportedType2AsMultiChoice,
+} from './common'
 import {decodeCbor} from './decodeCbor'
 import {
   ArrayLengthMismatchError,
@@ -10,14 +18,11 @@ import {
   CBORisNotTagError,
   CDDLTableWithNoMemberKeyError,
   CDDLType2NotSupported,
-  CDDLType2NotSupportedInMultiChoiceError,
-  MissingMemberKeyError,
   MissingRootRuleError,
   NestedArraysNotSupportedError,
   NoOccurrenceSymbolError,
   NotATypeRuleError,
   OccurrenceError,
-  Only1GroupChoiceIsSupportedError,
   Only1GroupEntrySupportedError,
   RuleNotFoundError,
   TagMismatchError,
@@ -29,23 +34,7 @@ import {
 } from './errors'
 import {enrichError, limitedZip} from './helpers'
 import type {GenericArray, PrimitiveValue, ReadableDatum, Value} from './readableDatumTypes'
-import type {
-  CddlAst,
-  GroupChoice,
-  GroupEntry,
-  MemberKey,
-  Occurrence,
-  Rule,
-  Type2,
-  TypeChoice,
-  TypeRule,
-} from './types'
-
-const getRuleName = (rule: Rule): string =>
-  ('Type' in rule ? rule.Type : rule.Group).rule.name.ident
-
-// Each type in the Type2 union has exactly 1 key
-const getType2Name = (type2: Type2) => Object.keys(type2)[0]!
+import type {CddlAst, GroupEntry, Occurrence, Type2, TypeChoice, TypeRule} from './types'
 
 enum PrimitiveType {
   INT = 'int',
@@ -79,18 +68,6 @@ const parseTypename = (cddl: CddlAst, type: string, cbor: unknown): ReadableDatu
     }
   }
   throw new RuleNotFoundError(type)
-}
-
-const getMemberKeyName = (memberKey?: MemberKey): string => {
-  if (!memberKey) throw new MissingMemberKeyError()
-  if (!('Bareword' in memberKey)) throw new UnsupportedMemberKeyError(Object.keys(memberKey)[0]!)
-  return memberKey.Bareword.ident.ident
-}
-
-const getOccurrenceOfGroupEntry = (groupEntry: GroupEntry): Occurrence | undefined => {
-  if ('ValueMemberKey' in groupEntry) return groupEntry.ValueMemberKey.ge.occur
-  if ('TypeGroupname' in groupEntry) return groupEntry.TypeGroupname.ge.occur
-  return groupEntry.InlineGroup.occur
 }
 
 const checkOccurrence = (
@@ -181,8 +158,6 @@ const matchSingletonArrayGroupEntry = (
       return matchType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)
     return matchTypeChoices(cddl, typeChoices, cbor)
   }
-  if ('TypeGroupname' in groupEntry)
-    return parseTypename(cddl, groupEntry.TypeGroupname.ge.name.ident, cbor)
   throw new UnsupportedGroupEntryError(Object.keys(groupEntry)[0]!)
 }
 
@@ -222,11 +197,6 @@ const matchArrayGroupEntries = (
   })
 }
 
-const groupChoicesToGroupEntries = (groupChoices: GroupChoice[]): GroupEntry[] => {
-  if (groupChoices.length !== 1) throw new Only1GroupChoiceIsSupportedError(groupChoices.length)
-  return groupChoices[0]!.group_entries.map(([groupEntry, _optionalComma]) => groupEntry)
-}
-
 const matchType2AsSingleChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): Value => {
   if ('Array' in type2) {
     const groupEntries = groupChoicesToGroupEntries(type2.Array.group.group_choices)
@@ -240,7 +210,7 @@ const matchType2AsSingleChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): V
     const typeChoices = type2.TaggedData.t.type_choices
     if (typeChoices.length === 1)
       return matchType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor.value)
-    throw new TaggedDataWithMultipleChoicesNotSupportedError()
+    throw new TaggedDataWithMultipleChoicesNotSupportedError(typeChoices.length)
   }
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
   if ('Map' in type2) {
@@ -253,10 +223,7 @@ const matchType2AsSingleChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): V
 
 const matchType2AsMultiChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): ReadableDatum => {
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
-  const type2Name = getType2Name(type2)
-  if (['TaggedData', 'Array', 'Map'].includes(type2Name))
-    throw new CDDLType2NotSupportedInMultiChoiceError(type2Name)
-  throw new CDDLType2NotSupported(getType2Name(type2))
+  return handleUnsupportedType2AsMultiChoice(type2)
 }
 
 const matchTypeChoices = (
