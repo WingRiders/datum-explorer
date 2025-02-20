@@ -12,8 +12,8 @@
     "test": "turbo test"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "turbo": "^2.3.3"
+    "@types/bun": "^1.2.2",
+    "turbo": "^2.4.1"
   },
-  "packageManager": "bun@1.1.43"
+  "packageManager": "bun@1.2.2"
 }
