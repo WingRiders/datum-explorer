@@ -4,7 +4,18 @@ import {enrichError} from './helpers'
 import init, {cddl_from_src, type InitOutput} from './pkg/cddl_from_src'
 import type {CddlAst} from './types.ts'
 
-const wasmFilePath = path.resolve(__dirname, './pkg/cddl_from_src_bg.wasm')
+const getWasmFilePath = () => {
+  const possibleWasmFilePaths = [
+    path.resolve(__dirname, './pkg/cddl_from_src_bg.wasm'), // Used in source (e.g., for tests)
+    path.resolve(__dirname, '../cddl_from_src_bg.wasm'), // Used in built npm package (dist/)
+  ]
+  // Find the first existing file
+  const wasmFilePath = possibleWasmFilePaths.find(fs.existsSync)
+  if (wasmFilePath == null) {
+    throw new Error(`Failed to locate cddl_from_src_bg.wasm at ${possibleWasmFilePaths}`)
+  }
+  return wasmFilePath
+}
 
 let initialized: InitOutput | null = null
 
@@ -19,14 +30,16 @@ let initialized: InitOutput | null = null
  */
 export const cddlFromSrc = async (cddlSchema: string): Promise<CddlAst> => {
   if (initialized === null) {
+    let wasmFilePath: string | null = null
     try {
+      wasmFilePath = getWasmFilePath()
       const wasmBuffer = await fs.promises.readFile(wasmFilePath)
       initialized = await init({module_or_path: await WebAssembly.compile(wasmBuffer)})
     } catch (e: unknown) {
       initialized = null // Reset if initialization fails
       if (e instanceof Error)
         throw new Error(
-          `Failed to initialize WASM module: ${e.message}, wasmFilePath = ${wasmFilePath})`,
+          `Failed to initialize WASM module: ${e.message}${wasmFilePath != null ? `, wasmFilePath = ${wasmFilePath}` : ''})`,
         )
       throw e
     }
