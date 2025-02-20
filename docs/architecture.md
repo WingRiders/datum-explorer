@@ -89,15 +89,26 @@ sequenceDiagram
 
 #### Endpoints overview
 
-| Endpoint                  | HTTP Method | Description                           | Example Response              |
-|---------------------------|-------------|---------------------------------------|-------------------------------|
-| `/api/schemas`            | `GET`       | Returns a list of cached schemas.     | `{ "wingriders": [{ ... }] }` |
+| Endpoint                  | HTTP Method | Description                          | Example Response              |
+|---------------------------|-------------|--------------------------------------|-------------------------------|
+| `/api/healthcheck`        | `GET`       | Returns health info.                  | `{ "healthy": true, ... }`    |
+| `/api/schemas`            | `GET`       | Returns a list of cached schemas.    | `{ "wingriders": [{ ... }] }` |
 | `/api/schemas/[filePath]` | `GET`       | Returns a specific schema's content. | `{ "cddl": "..." }`           |
 | `/api/github/webhook`     | `POST`      | Triggers a cache update on push.     | `{ "message": "..." }`        |
 
 #### Endpoint details
 
-1. **`GET /api/schemas`**
+1. **`GET /api/healthcheck`**
+    - **Description**: Returns health info including total number of projects and CDDL schemas.
+    - **Response example**:
+      ```json
+      {
+        "healthy": true,
+        "projects": 0,
+        "schemas": 0
+      }
+      ```
+2. **`GET /api/schemas`**
     - **Description**: Returns a list of available schemas.
     - **Response example**:
       ```json
@@ -108,14 +119,14 @@ sequenceDiagram
       }
       ```
 
-2. **`GET /api/schemas/[filePath]`**
+3. **`GET /api/schemas/[filePath]`**
     - **Description**: Fetches a CDDL schema by its file path.
     - **Response example**:
       ```json
       { "cddl": "LaunchpadNode = ..." }
       ```
 
-3. **`POST /api/github/webhook`**
+4. **`POST /api/github/webhook`**
     - **Description**: Handles GitHub push events to update the schema cache.
     - **Expected payload**:
       ```json
