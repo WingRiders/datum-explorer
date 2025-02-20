@@ -5,24 +5,28 @@ Datum Explorer is an open-source project designed to decode, understand, and bui
 ## Feature roadmap
 
 - [x]  **CBOR Parsing Library**: A library for parsing CBOR data using schema definitions.
-- [ ]  **Schema Registry**: A public GitHub repository serving as a registry for schema definitions.
-- [ ]  **Backend Caching**: A backend application that caches schema definitions for efficient access.
+- [x]  **Schema Registry**: A public GitHub repository serving as a registry for schema definitions.
+- [x]  **Backend Caching**: A backend application that caches schema definitions for efficient access.
 - [ ]  **Frontend Decoder**: A user-friendly frontend application for decoding CBOR with the selected schema.
 - [ ]  **Smart Schema Suggestions**: An improved frontend feature that suggests relevant schemas based on the given CBOR.
 
-##
-
 Schema definitions are based on CDDL. Details about the supported CDDL features can be found in [cddlDatumSchemaDesign.md](./docs/cddlDatumSchemaDesign.md) document.
+
+---
 
 ## Architecture
 
 Architecture of the project can be found in the [architecture.md](./docs/architecture.md) document.
 
-## Development
+---
+
+## Development setup
 
 This project uses [Bun](https://bun.sh/) as the runtime and package manager and requires [Rust](https://www.rust-lang.org/) for building WebAssembly using wasm-pack.
 
-If you don't have them installed:
+### Prerequisites
+
+If you don't have Bun or Rust installed:
 - **Install Bun**: Follow the installation guide on the [Bun website](https://bun.sh/).
 - **Install Rust**: Install Rust using [rustup](https://rustup.rs/).
 
@@ -32,11 +36,48 @@ If you don't have them installed:
 bun install
 ```
 
-### Building the library
+---
+
+## Building and Running the Application
+
+### Environment Setup
+
+Before building or running the backend, copy the .env.example file and set up your environment variables:
+```shell
+cd app
+cp .env.example .env
+```
+
+Update .env as needed, particularly the `GITHUB_AUTH_TOKEN`.
+
+How to obtain a GitHub token:
+- Go to [GitHub Developer Settings](https://github.com/settings/tokens).
+- Generate a new token with read:public_repo permission.
+- Add the token to your .env file as `GITHUB_AUTH_TOKEN=<your-token>`.
+
+### Building the project
 
 ```shell
 bun run build
 ```
+
+### Running the Backend
+
+First, navigate to the app workspace:
+```shell
+cd app
+```
+
+Then, start the development server:
+```shell
+bun dev
+```
+
+Next.js will automatically find a free port and output the URL (e.g. http://localhost:3000).
+
+Access the API:
+- Visit http://localhost:3000/api/schemas to list all schemas.
+- Visit http://localhost:3000/api/schemas/wingriders/launchpadNode to see an example schema.
 
 ### Running tests
 
@@ -44,9 +85,16 @@ bun run build
 bun run test
 ```
 
-### Use the CLI tool
+---
+
+## CLI Tool
 
 The CLI tool provides commands for parsing CBOR data using a CDDL schema and validating CDDL schemas.
+
+ℹ️ Note: The CLI tool does not require a .env file.
+
+### Running the CLI Tool
+
 First, run `cd lib` to ensure the following commands execute in the correct workspace.
 
 #### Parsing CBOR with a CDDL schema
@@ -75,7 +123,7 @@ Example:
 bun cli validate-cddl launchpadNode.cddl
 ```
 
-#### Notes
+### Notes
 
 - Running `bun cli` without a command shows the help menu.
 - To run from the root folder, use the following flags:
