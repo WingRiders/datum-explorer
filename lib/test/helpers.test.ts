@@ -1,4 +1,4 @@
-import {describe, expect, it, vi} from 'vitest'
+import {describe, expect, it, mock} from 'bun:test'
 import {betterTypeOf, enrichError, limitedZip} from '../src/helpers'
 
 describe('limitedZip', () => {
@@ -50,14 +50,14 @@ describe('limitedZip', () => {
 
 describe('enrichError', () => {
   it('returns the result of the function if no error occurs', () => {
-    const fn = vi.fn(() => 42)
+    const fn = mock(() => 42)
     const result = enrichError(fn, 'Error occurred')
     expect(result).toBe(42)
     expect(fn).toHaveBeenCalledTimes(1)
   })
 
   it('throws an error with the provided context if the function throws', () => {
-    const fn = vi.fn(() => {
+    const fn = mock(() => {
       throw new Error('Original error')
     })
 

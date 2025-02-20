@@ -1,7 +1,8 @@
+import {describe, expect, it, test} from 'bun:test'
 import fs from 'node:fs'
-import {describe, expect, it, test} from 'vitest'
 import {parseCbor} from '../src'
 import {getAggregateMessage} from '../src/helpers'
+import type {ReadableDatum} from '../src/readableDatumTypes'
 import {fixtures} from './fixtures/matchCddlWithCbor'
 
 const readCddlSchema = (cddlFileName: string) =>
@@ -48,7 +49,7 @@ describe('parseCbor', () => {
     const cddlSchema = await readCddlSchema(cddlFileName)
     try {
       const parsed = await parseCbor(cddlSchema, cbor)
-      expect(parsed).toEqual(expectedParsed)
+      expect(parsed).toEqual(expectedParsed as ReadableDatum)
     } catch (e) {
       throw new Error(getAggregateMessage(e))
     }

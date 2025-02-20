@@ -1,5 +1,5 @@
+import {describe, expect, test} from 'bun:test'
 import fs from 'node:fs'
-import {describe, expect, test} from 'vitest'
 import {validateCddl} from '../src'
 import {getAggregateMessage} from '../src/helpers'
 import {fixtures} from './fixtures/validateCddl'

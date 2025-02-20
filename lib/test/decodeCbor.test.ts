@@ -1,5 +1,5 @@
+import {describe, expect, it} from 'bun:test'
 import {Tag} from 'cbor-x'
-import {describe, expect, it} from 'vitest'
 import {decodeCbor} from '../src/decodeCbor'
 import {NotAHexStringError} from '../src/errors'
 

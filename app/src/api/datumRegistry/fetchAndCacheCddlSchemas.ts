@@ -1,8 +1,10 @@
 import {groupBy} from 'lodash'
 import {
+  type CddlSchema,
   fetchProjectsFromDatumRegistry,
   fetchSchemasForProjectsFromDatumRegistry,
 } from './cardanoDatumRegistry'
+import {getRootTypeName} from './cddlSchema'
 import {
   addProjectToCddlSchemasCache,
   deleteProjectFromCddlSchemasCache,
@@ -42,15 +44,31 @@ export const fetchAndCacheCddlSchemas = async () => {
   projectsToRemove.forEach(({projectName}) => deleteProjectFromCddlSchemasCache(projectName))
 
   // saving new schemas to the cache
-  const newCddlSchemasGroupedByProjectName = groupBy(newCddlSchemas, 'projectName')
-  Object.entries(newCddlSchemasGroupedByProjectName).forEach(([projectName, schemas]) => {
-    // projectGithubOid is equal for all schemas with the same projectName, so we can take the first one
-    // schemas[0] is defined: schemas size at least 1 because of the groupBy
-    const projectGithubOid = schemas[0]!.projectGithubOid
-    addProjectToCddlSchemasCache(
-      projectName,
-      projectGithubOid,
-      Object.fromEntries(schemas.map(({fileName, cddl}) => [fileName, {cddl}])),
-    )
-  })
+  await saveCddlSchemasToCache(newCddlSchemas)
+}
+
+const saveCddlSchemasToCache = async (cddlSchemas: CddlSchema[]) => {
+  const cddlSchemasGroupedByProjectName = groupBy(cddlSchemas, 'projectName')
+  await Promise.all(
+    Object.entries(cddlSchemasGroupedByProjectName).map(async ([projectName, schemas]) => {
+      // projectGithubOid is equal for all schemas with the same projectName, so we can take the first one
+      // schemas[0] is defined: schemas size at least 1 because of the groupBy
+      const projectGithubOid = schemas[0]!.projectGithubOid
+      addProjectToCddlSchemasCache(
+        projectName,
+        projectGithubOid,
+        await cddlSchemasToRecord(schemas),
+      )
+    }),
+  )
+}
+
+const cddlSchemasToRecord = async (schemas: CddlSchema[]) => {
+  const cddlSchemasEntries = await Promise.all(
+    schemas.map(async ({fileName, cddl}) => [
+      fileName,
+      {cddl, rootTypeName: await getRootTypeName(cddl)},
+    ]),
+  )
+  return Object.fromEntries(cddlSchemasEntries)
 }

@@ -1,5 +1,5 @@
-import {describe, expect, test} from 'vitest'
-import type {GroupChoice, GroupEntry, MemberKey, Rule, Span, Type, Type2} from '../src'
+import {describe, expect, test} from 'bun:test'
+import type {GroupChoice, GroupEntry, MemberKey, Occurrence, Rule, Span, Type, Type2} from '../src'
 import {
   getMemberKeyName,
   getOccurrenceOfGroupEntry,
@@ -69,31 +69,35 @@ describe('groupChoicesToGroupEntries', () => {
   })
 
   test('returns group entries for a single group choice', () => {
-    const groupChoices: GroupChoice[] = [{group_entries: [[{entry: 'entry1'}, ',']]}] as any
-    expect(groupChoicesToGroupEntries(groupChoices)).toEqual([{entry: 'entry1'}])
+    const groupEntry: GroupEntry = {
+      ValueMemberKey: {ge: {entry_type: value}, span},
+    }
+    const groupChoices: GroupChoice[] = [{group_entries: [[groupEntry, {optional_comma: false}]]}]
+    expect(groupChoicesToGroupEntries(groupChoices)).toEqual([groupEntry])
   })
 })
 
 describe('getOccurrenceOfGroupEntry', () => {
+  const occur: Occurrence = {occur: {Exact: {lower: 1, upper: 1, span}}}
   test('returns occurrence for ValueMemberKey group entry', () => {
     const groupEntry: GroupEntry = {
-      ValueMemberKey: {ge: {occur: 'once'}},
-    } as any
-    expect(getOccurrenceOfGroupEntry(groupEntry)).toBe('once')
+      ValueMemberKey: {ge: {entry_type: value, occur}, span},
+    }
+    expect(getOccurrenceOfGroupEntry(groupEntry)).toBe(occur)
   })
 
   test('returns occurrence for TypeGroupname group entry', () => {
     const groupEntry: GroupEntry = {
-      TypeGroupname: {ge: {occur: 'optional'}},
-    } as any
-    expect(getOccurrenceOfGroupEntry(groupEntry)).toBe('optional')
+      TypeGroupname: {ge: {occur, name: {ident: '', span}}, span},
+    }
+    expect(getOccurrenceOfGroupEntry(groupEntry)).toBe(occur)
   })
 
   test('returns occurrence for InlineGroup group entry', () => {
     const groupEntry: GroupEntry = {
-      InlineGroup: {occur: 'multiple'},
-    } as any
-    expect(getOccurrenceOfGroupEntry(groupEntry)).toBe('multiple')
+      InlineGroup: {occur, group: {group_choices: [], span}, span},
+    }
+    expect(getOccurrenceOfGroupEntry(groupEntry)).toBe(occur)
   })
 })
 

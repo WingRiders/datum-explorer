@@ -126,25 +126,32 @@ export type Occurrence = {
   comments?: Comments
 }
 
-export type Occur = {
-  Exact: {
-    lower?: number
-    upper?: number
-    span: Span
-  }
-  ZeroOrMore: {
-    // *
-    span: Span
-  }
-  OneOrMore: {
-    // +
-    span: Span
-  }
-  Optional: {
-    // ?
-    span: Span
-  }
-}
+export type Occur =
+  | {
+      Exact: {
+        lower?: number
+        upper?: number
+        span: Span
+      }
+    }
+  | {
+      ZeroOrMore: {
+        // *
+        span: Span
+      }
+    }
+  | {
+      OneOrMore: {
+        // +
+        span: Span
+      }
+    }
+  | {
+      Optional: {
+        // ?
+        span: Span
+      }
+    }
 
 export type Operator = {
   operator: RangeCtlOp
