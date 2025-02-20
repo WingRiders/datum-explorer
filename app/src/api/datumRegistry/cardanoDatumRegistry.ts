@@ -62,6 +62,11 @@ export const fetchProjectsFromDatumRegistry = async (): Promise<ProjectFolder[]>
   }
 }
 
+const projectGqlAlias = (index: number) => `p${index}`
+
+const getIndexByProjectGqlAlias = (projectGqlAlias: string): number =>
+  Number(projectGqlAlias.slice(1))
+
 const cddlFilesFragmentGql = gql`
 fragment CddlFilesFragmentGql on Tree {
   entries {
@@ -79,7 +84,7 @@ const buildCddlFilesGqlQuery = (projectFolders: ProjectFolder[]): string => {
   return gql`
 query CddlFiles($repositoryOwner: String!, $repositoryName: String!) {
   repository(owner: $repositoryOwner, name: $repositoryName) {
-    ${projectFolders.map(({name, oid}) => `${name}: object(oid: "${oid}"){...CddlFilesFragmentGql}`).join('\n    ')}
+    ${projectFolders.map(({oid}, index) => `${projectGqlAlias(index)}: object(oid: "${oid}"){...CddlFilesFragmentGql}`).join('\n    ')}
   }
 }
 ${cddlFilesFragmentGql}
@@ -119,7 +124,6 @@ export const fetchSchemasForProjectsFromDatumRegistry = async (
     return []
   }
 
-  const githubOidByProjectName = new Map(projectFolders.map(({oid, name}) => [name, oid]))
   const gqlVariables = {
     repositoryOwner: config.REPOSITORY_OWNER,
     repositoryName: config.REPOSITORY_NAME,
@@ -130,14 +134,15 @@ export const fetchSchemasForProjectsFromDatumRegistry = async (
     try {
       const response: CddlFilesQueryResponse = await gqlClient.request(gqlQuery, gqlVariables)
       cddlSchemas.push(
-        ...Object.entries(response.repository).flatMap(([projectName, {entries}]) =>
-          entries.map(({name, object: {text}}) => ({
-            projectName,
-            projectGithubOid: githubOidByProjectName.get(projectName)!,
+        ...Object.entries(response.repository).flatMap(([projectGqlAlias, {entries}]) => {
+          const project = projectFoldersChunk[getIndexByProjectGqlAlias(projectGqlAlias)]
+          return entries.map(({name, object: {text}}) => ({
+            projectName: project.name,
+            projectGithubOid: project.oid,
             fileName: name,
             cddl: text,
-          })),
-        ),
+          }))
+        }),
       )
     } catch (e) {
       if (e instanceof ClientError) {
