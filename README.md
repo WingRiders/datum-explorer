@@ -120,6 +120,8 @@ Example:
 bun cli parse-cbor launchpadNode.cddl d8799fd8799fd8799f581c9916b846579fc7109f6ab82fd94c7d9b47af8694ea8697a167b1bb0800ffffd87a801b0000018a5058c6f01a00989680ff
 ```
 
+The CDDL schema file must be in the current directory. Existing schemas can be found in the [cardano-datum-registry](https://github.com/WingRiders/cardano-datum-registry) repository.
+
 #### Validating a CDDL schema
 
 To validate a CDDL schema file and check for unsupported features:
