@@ -38,4 +38,9 @@ program
     }
   })
 
+if (!process.argv.slice(2).length) {
+  program.outputHelp()
+  process.exit(0)
+}
+
 program.parse(process.argv)
