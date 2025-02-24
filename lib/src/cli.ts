@@ -38,7 +38,7 @@ program
     }
   })
 
-if (!process.argv.slice(2).length) {
+if (process.argv.length <= 2) {
   program.outputHelp()
   process.exit(0)
 }
