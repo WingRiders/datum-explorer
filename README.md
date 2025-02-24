@@ -87,7 +87,7 @@ curl -X POST -H 'X-GitHub-Event: push' -d '{"ref": "refs/heads/main"}' http://lo
 ### Accessing the API
 
 - Visit http://localhost:3000/api/schemas to list all cached schemas.
-- Visit http://localhost:3000/api/schemas/wingriders%2flaunchpadNode to see an example schema stored in the cache. Note, if `GITHUB_AUTH_TOKEN` is empty and mock data is used, this schema will not be found.
+- Visit http://localhost:3000/api/schemas/wingriders%2flaunchpadNode.cddl to see an example schema stored in the cache. Note, if `GITHUB_AUTH_TOKEN` is empty and mock data is used, this schema will not be found.
 
 ### Running tests
 
