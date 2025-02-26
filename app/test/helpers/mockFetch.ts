@@ -11,11 +11,14 @@ export type MockRequestOptions = {
   bodyMatcher?: RegExp
 }
 
-const mockedRequests: {mockRequestOptions: MockRequestOptions; response: MockResponse}[] = []
+const mockedRequests: {
+  mockRequestOptions: MockRequestOptions
+  response: MockResponse
+}[] = []
 
 let originalFetch: typeof fetch | null = null
 
-const mockedFetch: typeof fetch = async (requestInfo: RequestInfo | URL, opts: RequestInit) => {
+const mockedFetch: typeof fetch = async (requestInfo, opts) => {
   const url =
     typeof requestInfo === 'string'
       ? requestInfo
@@ -31,12 +34,12 @@ const mockedFetch: typeof fetch = async (requestInfo: RequestInfo | URL, opts: R
   }
   if (mockedRequests.length === 0)
     throw new Error(`Cannot fetch from ${requestInfo}, it's not mocked`)
-  const {mockRequestOptions, response} = mockedRequests.shift()
+  const {mockRequestOptions, response} = mockedRequests.shift()!
   expect(requestInfo.toString()).toBe(mockRequestOptions.url)
-  expect(opts.method).toBe(mockRequestOptions.method)
+  expect(opts?.method).toBe(mockRequestOptions.method)
   if (mockRequestOptions.bodyMatcher != null) {
-    expect(opts.body).toBeDefined()
-    expect(opts.body).toMatch(mockRequestOptions.bodyMatcher)
+    expect(opts?.body).toBeDefined()
+    expect(opts?.body).toMatch(mockRequestOptions.bodyMatcher)
   }
 
   const {body, status = 200} = response
@@ -49,6 +52,7 @@ const mockedFetch: typeof fetch = async (requestInfo: RequestInfo | URL, opts: R
       headers: {'Content-Type': 'application/json'},
     })
   }
+  throw new Error(`Unsupported response body type: ${typeof body}`)
 }
 
 export const mockFetch = (mockedRequestsOptions: MockRequestOptions, response: MockResponse) => {

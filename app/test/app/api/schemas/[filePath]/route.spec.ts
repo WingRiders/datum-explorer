@@ -23,7 +23,7 @@ describe('/schemas/[filePath] route', () => {
     }
     addProjectToCddlSchemasCache(project1.name, project1.oid, project1.schemas)
 
-    const response = await getSchemaResolver(undefined, {
+    const response = await getSchemaResolver(new Request('http://localhost'), {
       params: Promise.resolve({filePath: 'project1/schema1.cddl'}),
     })
     expect(await response.json()).toEqual({cddl: 'Pool = []'})
@@ -41,7 +41,7 @@ describe('/schemas/[filePath] route', () => {
     addProjectToCddlSchemasCache(project1.name, project1.oid, project1.schemas)
 
     // request a schema that not in the cache
-    const response = await getSchemaResolver(undefined, {
+    const response = await getSchemaResolver(new Request('http://localhost'), {
       params: Promise.resolve({filePath: 'project2/schema2.cddl'}),
     })
     expect(response.status).toBe(404)
@@ -52,7 +52,7 @@ describe('/schemas/[filePath] route', () => {
       {url: 'https://api.github.com/graphql', method: 'POST'},
       {status: 403, body: {message: 'Forbidden'}},
     )
-    const response = await getSchemaResolver(undefined, {
+    const response = await getSchemaResolver(new Request('http://localhost'), {
       params: Promise.resolve({filePath: 'project1/schema1.cddl'}),
     })
     expect(response.status).toBe(500)
