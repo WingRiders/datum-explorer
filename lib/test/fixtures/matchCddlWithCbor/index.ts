@@ -13,6 +13,7 @@ import minswapV2Pool from './minswapV2Pool.json'
 import sundaeV3Order from './sundaeV3Order.json'
 import sundaeV3Pool from './sundaeV3Pool.json'
 import wingridersLaunchpadNode from './wingridersLaunchpadNode.json'
+import wingridersV2EvolvePool from './wingridersV2EvolvePool.json'
 import wingridersV2Pool from './wingridersV2Pool.json'
 import wingridersV2RequestAddStakingRewards from './wingridersV2RequestAddStakingRewards.json'
 import wingridersV2RequestRoutedSwap from './wingridersV2RequestRoutedSwap.json'
@@ -38,6 +39,7 @@ export const fixtures: Fixture[] = [
   minswapV2Order,
   minswapV2Pool,
   wingridersLaunchpadNode,
+  wingridersV2EvolvePool,
   wingridersV2Pool,
   wingridersV2RequestAddStakingRewards,
   wingridersV2RequestRoutedSwap,
