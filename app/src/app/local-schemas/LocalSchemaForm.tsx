@@ -4,7 +4,7 @@ import {useEffect} from 'react'
 import {useForm} from 'react-hook-form'
 import {useShallow} from 'zustand/shallow'
 import {getErrorMessage} from '../../helpers/forms'
-import {useLocalSchemasStore} from '../../store/localSchemas'
+import {type LocalSchema, useLocalSchemasStore} from '../../store/localSchemas'
 
 const SCHEMA_NAME_MAX_LENGTH = 100
 
@@ -14,17 +14,15 @@ export type LocalSchemaFormInputs = {
 }
 
 type LocalSchemaFormProps = {
-  isAddingNew?: boolean
   submitButtonLabel: string
   onSubmit: (data: LocalSchemaFormInputs) => void
-  defaultValues?: LocalSchemaFormInputs
+  existingValues?: LocalSchemaFormInputs
 }
 
 export const LocalSchemaForm = ({
-  isAddingNew,
   submitButtonLabel,
   onSubmit,
-  defaultValues,
+  existingValues,
 }: LocalSchemaFormProps) => {
   const {localSchemas} = useLocalSchemasStore(useShallow(({localSchemas}) => ({localSchemas})))
 
@@ -34,17 +32,17 @@ export const LocalSchemaForm = ({
     handleSubmit,
     setValue,
     getValues,
-  } = useForm<LocalSchemaFormInputs>({defaultValues})
+  } = useForm<LocalSchemaFormInputs>({defaultValues: existingValues})
 
   useEffect(() => {
     const currentValues = getValues()
     const isCurrentValuesEmpty = !currentValues.name && !currentValues.cddl
 
-    if (isCurrentValuesEmpty && defaultValues) {
-      setValue('name', defaultValues.name)
-      setValue('cddl', defaultValues.cddl)
+    if (isCurrentValuesEmpty && existingValues) {
+      setValue('name', existingValues.name)
+      setValue('cddl', existingValues.cddl)
     }
-  }, [defaultValues, getValues, setValue])
+  }, [existingValues, getValues, setValue])
 
   return (
     <Stack spacing={2}>
@@ -54,10 +52,9 @@ export const LocalSchemaForm = ({
         {...register('name', {
           required: true,
           validate: (value) => {
-            if (isAddingNew && localSchemas.some((schema) => schema.name === value)) {
+            if (isDuplicateSchemaName(localSchemas, value, existingValues?.name)) {
               return 'Schema with this name already exists among your local schemas'
             }
-            return true
           },
           maxLength: {
             value: SCHEMA_NAME_MAX_LENGTH,
@@ -85,6 +82,9 @@ export const LocalSchemaForm = ({
         minRows={10}
         error={!!errors.cddl}
         helperText={getErrorMessage(errors.cddl)}
+        slotProps={{
+          input: {sx: {fontFamily: 'monospace'}},
+        }}
       />
 
       <Button variant="contained" onClick={handleSubmit(onSubmit)}>
@@ -93,3 +93,12 @@ export const LocalSchemaForm = ({
     </Stack>
   )
 }
+
+const isDuplicateSchemaName = (
+  localSchemas: LocalSchema[],
+  newName: string,
+  existingName?: string,
+) =>
+  localSchemas.some(
+    (schema) => (!existingName || schema.name !== existingName) && schema.name === newName,
+  )

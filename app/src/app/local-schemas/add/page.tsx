@@ -25,7 +25,7 @@ const AddLocalSchemaPage = () => {
         <Typography variant="h5">Add new local schema</Typography>
       </Stack>
 
-      <LocalSchemaForm isAddingNew submitButtonLabel="Add schema" onSubmit={handleSubmit} />
+      <LocalSchemaForm submitButtonLabel="Add schema" onSubmit={handleSubmit} />
     </Stack>
   )
 }

@@ -77,7 +77,7 @@ const EditLocalSchemaPage = ({params: paramsPromise}: {params: Promise<{schemaNa
         <LocalSchemaForm
           submitButtonLabel="Save"
           onSubmit={handleEditSubmit}
-          defaultValues={schema ? {name: schema.name, cddl: schema.cddl} : undefined}
+          existingValues={schema ? {name: schema.name, cddl: schema.cddl} : undefined}
         />
       </Stack>
 
