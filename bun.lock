@@ -16,7 +16,9 @@
         "@mui/icons-material": "^6.4.5",
         "@mui/material": "^6.4.5",
         "@mui/material-nextjs": "^6.4.3",
+        "@mui/x-tree-view": "^7.26.0",
         "@tanstack/react-query": "^5.66.9",
+        "@uidotdev/usehooks": "^2.4.1",
         "@wingriders/datum-explorer-lib": "workspace:^0.1.1",
         "graphql-request": "^7.1.2",
         "lodash": "^4.17.21",
@@ -205,6 +207,10 @@
 
     "@mui/utils": ["@mui/utils@6.4.3", "", { "dependencies": { "@babel/runtime": "^7.26.0", "@mui/types": "^7.2.21", "@types/prop-types": "^15.7.14", "clsx": "^2.1.1", "prop-types": "^15.8.1", "react-is": "^19.0.0" }, "peerDependencies": { "@types/react": "^17.0.0 || ^18.0.0 || ^19.0.0", "react": "^17.0.0 || ^18.0.0 || ^19.0.0" }, "optionalPeers": ["@types/react"] }, "sha512-jxHRHh3BqVXE9ABxDm+Tc3wlBooYz/4XPa0+4AI+iF38rV1/+btJmSUgG4shDtSWVs/I97aDn5jBCt6SF2Uq2A=="],
 
+    "@mui/x-internals": ["@mui/x-internals@7.26.0", "", { "dependencies": { "@babel/runtime": "^7.25.7", "@mui/utils": "^5.16.6 || ^6.0.0" }, "peerDependencies": { "react": "^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-VxTCYQcZ02d3190pdvys2TDg9pgbvewAVakEopiOgReKAUhLdRlgGJHcOA/eAuGLyK1YIo26A6Ow6ZKlSRLwMg=="],
+
+    "@mui/x-tree-view": ["@mui/x-tree-view@7.26.0", "", { "dependencies": { "@babel/runtime": "^7.25.7", "@mui/utils": "^5.16.6 || ^6.0.0", "@mui/x-internals": "7.26.0", "@types/react-transition-group": "^4.4.11", "clsx": "^2.1.1", "prop-types": "^15.8.1", "react-transition-group": "^4.4.5" }, "peerDependencies": { "@emotion/react": "^11.9.0", "@emotion/styled": "^11.8.1", "@mui/material": "^5.15.14 || ^6.0.0", "@mui/system": "^5.15.14 || ^6.0.0", "react": "^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0" }, "optionalPeers": ["@emotion/react", "@emotion/styled"] }, "sha512-adZwVj6/edNowi2RIeyGPTcfdP4EXtMGo0mk2LQogG8m8bZkZRjOQoQ7pkBF0UPMaIAwzCadq2OWj3MPH4DP5A=="],
+
     "@next/env": ["@next/env@15.1.6", "", {}, "sha512-d9AFQVPEYNr+aqokIiPLNK/MTyt3DWa/dpKveiAaVccUadFbhFEvY6FXYX2LJO2Hv7PHnLBu2oWwB4uBuHjr/w=="],
 
     "@next/swc-darwin-arm64": ["@next/swc-darwin-arm64@15.1.6", "", { "os": "darwin", "cpu": "arm64" }, "sha512-u7lg4Mpl9qWpKgy6NzEkz/w0/keEHtOybmIl0ykgItBxEM5mYotS5PmqTpo+Rhg8FiOiWgwr8USxmKQkqLBCrw=="],
@@ -303,6 +309,8 @@
     "@types/resolve": ["@types/resolve@1.20.2", "", {}, "sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q=="],
 
     "@types/ws": ["@types/ws@8.5.13", "", { "dependencies": { "@types/node": "*" } }, "sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA=="],
+
+    "@uidotdev/usehooks": ["@uidotdev/usehooks@2.4.1", "", { "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-1I+RwWyS+kdv3Mv0Vmc+p0dPYH0DTRAo04HLyXReYBL9AeseDWUJyi4THuksBJcu9F0Pih69Ak150VDnqbVnXg=="],
 
     "@wingriders/datum-explorer-lib": ["@wingriders/datum-explorer-lib@workspace:lib"],
 
