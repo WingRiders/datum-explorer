@@ -11,7 +11,7 @@ const HomePage = async () => {
   return (
     <Box sx={{p: 3, height: '100vh', boxSizing: 'border-box'}}>
       <Suspense>
-        <DatumParsing schemas={schemas} />
+        <DatumParsing remoteSchemas={schemas} />
       </Suspense>
     </Box>
   )

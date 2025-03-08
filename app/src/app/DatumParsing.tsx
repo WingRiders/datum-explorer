@@ -2,25 +2,43 @@
 
 import {Grid2, Stack, TextField} from '@mui/material'
 import {useRouter, useSearchParams} from 'next/navigation'
+import {useShallow} from 'zustand/shallow'
 import type {SchemasResponse} from '../api/types'
 import {ParsedDatum} from '../components/ParsedDatum'
 import {SchemaSelect} from '../components/SchemaSelect'
+import {useLocalSchemasStore} from '../store/localSchemas'
+import type {SchemaId} from '../types'
 
 type DatumParsingProps = {
-  schemas: SchemasResponse
+  remoteSchemas: SchemasResponse
 }
 
-export const DatumParsing = ({schemas}: DatumParsingProps) => {
+export const DatumParsing = ({remoteSchemas}: DatumParsingProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const selectedSchemaFilePath = searchParams.get('schema')
+  const selectedSchemaParam = searchParams.get('schema')
+  const isLocalSchema = searchParams.get('local')?.toLowerCase() === 'true'
   const datum = searchParams.get('datum')
 
-  const handleSelectedSchemaFilePathChange = (filePath: string) => {
+  const selectedSchemaId: SchemaId | null = selectedSchemaParam
+    ? isLocalSchema
+      ? {isLocal: true, schemaName: selectedSchemaParam}
+      : {isLocal: false, schemaFilePath: selectedSchemaParam}
+    : null
+
+  const {localSchemas} = useLocalSchemasStore(useShallow(({localSchemas}) => ({localSchemas})))
+
+  const handleSelectedSchemaIdChange = (id: SchemaId | null) => {
     const params = new URLSearchParams(searchParams)
-    if (filePath) {
-      params.set('schema', filePath)
+    if (id) {
+      if (id.isLocal) {
+        params.set('local', 'true')
+        params.set('schema', id.schemaName)
+      } else {
+        params.delete('local')
+        params.set('schema', id.schemaFilePath)
+      }
     } else {
       params.delete('schema')
     }
@@ -40,9 +58,10 @@ export const DatumParsing = ({schemas}: DatumParsingProps) => {
   return (
     <Stack spacing={3} height="100%">
       <SchemaSelect
-        selectedSchemaFilePath={selectedSchemaFilePath}
-        onSelectedSchemaFilePathChange={handleSelectedSchemaFilePathChange}
-        schemas={schemas}
+        selectedSchemaId={selectedSchemaId}
+        onSelectedSchemaIdChange={handleSelectedSchemaIdChange}
+        remoteSchemas={remoteSchemas}
+        localSchemas={localSchemas}
       />
 
       <Grid2 container direction="row" spacing={4} height="100%">
@@ -62,7 +81,7 @@ export const DatumParsing = ({schemas}: DatumParsingProps) => {
         </Grid2>
 
         <Grid2 size={{xs: 12, md: 6}}>
-          <ParsedDatum schemaFilePath={selectedSchemaFilePath} datumCbor={datum} />
+          <ParsedDatum schemaId={selectedSchemaId} datumCbor={datum} />
         </Grid2>
       </Grid2>
     </Stack>
