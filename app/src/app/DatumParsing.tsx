@@ -5,9 +5,12 @@ import {useRouter, useSearchParams} from 'next/navigation'
 import {useShallow} from 'zustand/shallow'
 import type {SchemasResponse} from '../api/types'
 import {ParsedDatum} from '../components/ParsedDatum'
+import {ParsedDatumDetect} from '../components/ParsedDatumDetect'
 import {SchemaSelect} from '../components/SchemaSelect'
 import {useLocalSchemasStore} from '../store/localSchemas'
-import type {SchemaId} from '../types'
+import type {SelectedSchemaId} from '../types'
+
+const DETECT_PARAM_VALUE = 'detect'
 
 type DatumParsingProps = {
   remoteSchemas: SchemasResponse
@@ -21,18 +24,23 @@ export const DatumParsing = ({remoteSchemas}: DatumParsingProps) => {
   const isLocalSchema = searchParams.get('local')?.toLowerCase() === 'true'
   const datum = searchParams.get('datum')
 
-  const selectedSchemaId: SchemaId | null = selectedSchemaParam
-    ? isLocalSchema
-      ? {isLocal: true, schemaName: selectedSchemaParam}
-      : {isLocal: false, schemaFilePath: selectedSchemaParam}
+  const selectedSchemaId: SelectedSchemaId | null = selectedSchemaParam
+    ? selectedSchemaParam === DETECT_PARAM_VALUE
+      ? 'detect'
+      : isLocalSchema
+        ? {isLocal: true, schemaName: selectedSchemaParam}
+        : {isLocal: false, schemaFilePath: selectedSchemaParam}
     : null
 
   const {localSchemas} = useLocalSchemasStore(useShallow(({localSchemas}) => ({localSchemas})))
 
-  const handleSelectedSchemaIdChange = (id: SchemaId | null) => {
+  const handleSelectedSchemaIdChange = (id: SelectedSchemaId | null) => {
     const params = new URLSearchParams(searchParams)
     if (id) {
-      if (id.isLocal) {
+      if (id === 'detect') {
+        params.delete('local')
+        params.set('schema', DETECT_PARAM_VALUE)
+      } else if (id.isLocal) {
         params.set('local', 'true')
         params.set('schema', id.schemaName)
       } else {
@@ -81,7 +89,11 @@ export const DatumParsing = ({remoteSchemas}: DatumParsingProps) => {
         </Grid2>
 
         <Grid2 size={{xs: 12, md: 6}}>
-          <ParsedDatum schemaId={selectedSchemaId} datumCbor={datum} />
+          {selectedSchemaId === 'detect' ? (
+            <ParsedDatumDetect datumCbor={datum} />
+          ) : (
+            <ParsedDatum schemaId={selectedSchemaId} datumCbor={datum} />
+          )}
         </Grid2>
       </Grid2>
     </Stack>

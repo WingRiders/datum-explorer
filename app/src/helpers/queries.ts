@@ -1,9 +1,13 @@
 import {type SkipToken, skipToken, useQuery} from '@tanstack/react-query'
 import type {ReadableDatum} from '@wingriders/datum-explorer-lib'
 import {useShallow} from 'zustand/shallow'
-import type {SchemaResponse} from '../api/types'
+import type {ParseCborDetectResponse, SchemaResponse} from '../api/types'
 import {useLocalSchemasStore} from '../store/localSchemas'
 import type {SchemaId} from '../types'
+import type {
+  ParseCborDetectWorkerInput,
+  ParseCborDetectWorkerResponse,
+} from '../workers/parseCborDetectWorker/types'
 import type {ParseCborWorkerInput, ParseCborWorkerResponse} from '../workers/parseCborWorker/types'
 
 type SchemaDetailsQueryArgs = {
@@ -79,4 +83,82 @@ export const useSchemaCddl = (schemaId: SchemaId | null) => {
     schemaCddl: schemaId?.isLocal ? localSchemaDetails?.cddl : remoteSchemaDetails?.cddl,
     isLoading: schemaId?.isLocal ? !isLocalSchemasStoreRehydrated : isLoadingRemoteSchemaDetails,
   }
+}
+
+type ParseCborDetectQueryArgs = {
+  datumCbor: string
+}
+
+type ParseCborDetectQueryResult = Array<
+  | {isLocal: true; schemaName: string; parsedDatum: ReadableDatum}
+  | {
+      isLocal: false
+      schemaFilePath: string
+      projectName: string
+      rootTypeName: string
+      parsedDatum: ReadableDatum
+    }
+>
+
+export const useParseCborDetectQuery = (
+  args: ParseCborDetectQueryArgs | SkipToken,
+  parseCborDetectWorker: Worker | null,
+) => {
+  const {localSchemas} = useLocalSchemasStore(
+    useShallow(({localSchemas}) => ({
+      localSchemas,
+    })),
+  )
+
+  return useQuery({
+    queryKey: ['parse-cbor-detect', args, localSchemas],
+    queryFn:
+      args !== skipToken && !!parseCborDetectWorker
+        ? async () => {
+            const localDetectPromise = new Promise<ParseCborDetectQueryResult>(
+              (resolve, reject) => {
+                parseCborDetectWorker.onmessage = (
+                  event: MessageEvent<ParseCborDetectWorkerResponse>,
+                ) =>
+                  resolve(
+                    event.data.map(({schemaName, parsedDatum}) => ({
+                      isLocal: true,
+                      schemaName,
+                      parsedDatum,
+                    })),
+                  )
+
+                parseCborDetectWorker.onerror = (event) => reject(event)
+
+                const input: ParseCborDetectWorkerInput = {
+                  cborStringRaw: args.datumCbor,
+                  schemas: localSchemas,
+                }
+                parseCborDetectWorker.postMessage(input)
+              },
+            )
+
+            const remoteDetectPromise: Promise<ParseCborDetectQueryResult> = fetch(
+              `/api/parse-cbor-detect?datum=${args.datumCbor}`,
+            )
+              .then((res) => res.json() as Promise<ParseCborDetectResponse>)
+              .then((data) =>
+                data.map(({schemaFilePath, projectName, rootTypeName, parsedDatum}) => ({
+                  isLocal: false,
+                  schemaFilePath,
+                  projectName,
+                  rootTypeName,
+                  parsedDatum,
+                })),
+              )
+
+            // executing both promises in parallel, there is a room for improvement - we could show results
+            // from one of the promises as soon as it resolves, and show results from the other promise later
+            const result = await Promise.all([localDetectPromise, remoteDetectPromise])
+            return result.flat()
+          }
+        : skipToken,
+    retry: false,
+    staleTime: Number.POSITIVE_INFINITY,
+  })
 }

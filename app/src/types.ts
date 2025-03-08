@@ -7,3 +7,5 @@ export type SchemaId =
       isLocal: true
       schemaName: string
     }
+
+export type SelectedSchemaId = SchemaId | 'detect'

@@ -2,13 +2,12 @@ import {Alert, AlertTitle, Stack, Typography} from '@mui/material'
 import {skipToken} from '@tanstack/react-query'
 import {useDebounce} from '@uidotdev/usehooks'
 import {useEffect, useRef} from 'react'
+import {DATUM_INPUT_FIELD_DEBOUNCE_DELAY} from '../constants'
 import {useParseCborQuery, useSchemaCddl} from '../helpers/queries'
 import type {SchemaId} from '../types'
 import {DatumDisplay} from './DatumDisplay/DatumDisplay'
 import {Spinner} from './Spinner'
 import {Center} from './utilities'
-
-const DEBOUNCE_DELAY = 100
 
 type ParsedDatumProps = {
   schemaId: SchemaId | null
@@ -25,7 +24,7 @@ export const ParsedDatum = ({schemaId, datumCbor}: ParsedDatumProps) => {
     return () => parseCborWorkerRef.current?.terminate()
   }, [])
 
-  const debouncedDatumCbor = useDebounce(datumCbor, DEBOUNCE_DELAY)
+  const debouncedDatumCbor = useDebounce(datumCbor, DATUM_INPUT_FIELD_DEBOUNCE_DELAY)
 
   const {schemaCddl, isLoading: isLoadingSchemaCddl} = useSchemaCddl(schemaId)
 
