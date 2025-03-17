@@ -1,0 +1,118 @@
+{
+  "type": "Request",
+  "value": [
+    {
+      "name": "oil",
+      "type": "int",
+      "value": 4000000
+    },
+    {
+      "name": "beneficiary",
+      "type": "Address",
+      "value": [
+        {
+          "name": "addressCredential",
+          "type": "ScriptCredential",
+          "value": {
+            "type": "bytes",
+            "value": "c134d839a64a5dfb9b155869ef3f34280751a622f69958baa8ffd29c"
+          }
+        },
+        {
+          "name": "addressStakingCredential",
+          "type": "Nothing",
+          "value": []
+        }
+      ]
+    },
+    {
+      "name": "ownerAddress",
+      "type": "Address",
+      "value": [
+        {
+          "name": "addressCredential",
+          "type": "PubKeyCredential",
+          "value": {
+            "type": "bytes",
+            "value": "23e523edc7a95c5a9bcb54ca58a8874bff6e7cbd9312775f9fe4fcf1"
+          }
+        },
+        {
+          "name": "addressStakingCredential",
+          "type": "JustStakingCredential",
+          "value": {
+            "type": "StakingHash",
+            "value": {
+              "type": "PubKeyCredential",
+              "value": {
+                "type": "bytes",
+                "value": "ddc2b7be44d168a2d97c91508e0bc03976c1001dee977ced456cd12f"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "compensationDatum",
+      "type": "any",
+      "value": "d8798d1a001e8480d87982d87981581c23e523edc7a95c5a9bcb54ca58a8874bff6e7cbd9312775f9fe4fcf1d87981d87981d87981581cddc2b7be44d168a2d97c91508e0bc03976c1001dee977ced456cd12fd87982d87981581c23e523edc7a95c5a9bcb54ca58a8874bff6e7cbd9312775f9fe4fcf1d87981d87981d87981581cddc2b7be44d168a2d97c91508e0bc03976c1001dee977ced456cd12f80d879801b0000019239bacecc4040581c8db269c3ec630e06ae29f74bc39edd1f87c819f1056206e879a1cd614c446a65644d6963726f555344d87982d879801a130adc3d0101"
+    },
+    {
+      "name": "datumType",
+      "type": "InlineDatumType",
+      "value": []
+    },
+    {
+      "name": "deadline",
+      "type": "int",
+      "value": "1727545396940"
+    },
+    {
+      "name": "assetASymbol",
+      "type": "bytes",
+      "value": ""
+    },
+    {
+      "name": "assetAToken",
+      "type": "bytes",
+      "value": ""
+    },
+    {
+      "name": "assetBSymbol",
+      "type": "bytes",
+      "value": "1d7f33bd23d85e1a25d87d86fac4f199c3197a2f7afeb662a0f34e1e"
+    },
+    {
+      "name": "assetBToken",
+      "type": "bytes",
+      "value": "776f726c646d6f62696c65746f6b656e"
+    },
+    {
+      "name": "requestAction",
+      "type": "SwapAction",
+      "value": [
+        {
+          "name": "swapDirection",
+          "type": "SwapBToA",
+          "value": []
+        },
+        {
+          "name": "minWantedTokens",
+          "type": "int",
+          "value": 749311281
+        }
+      ]
+    },
+    {
+      "name": "scaleA",
+      "type": "int",
+      "value": 1
+    },
+    {
+      "name": "scaleB",
+      "type": "int",
+      "value": 1
+    }
+  ]
+}

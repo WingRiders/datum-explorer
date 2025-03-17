@@ -1,6 +1,7 @@
 {
   "name": "@wingriders/datum-explorer",
   "workspaces": [
+    "cbor-parser",
     "cddl-from-src"
   ],
   "scripts": {
