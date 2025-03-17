@@ -55,5 +55,22 @@
       "semicolons": "asNeeded",
       "lineWidth": 100
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["src/cli.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": {
+              "level": "off",
+              "options": {
+                "allow": ["warn", "error"]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
