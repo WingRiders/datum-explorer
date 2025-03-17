@@ -10,15 +10,22 @@ export const POST = async (req: NextRequest) => {
   try {
     payload = await req.json()
   } catch (e) {
-    return Response.json({message: `Invalid JSON in the request body: ${e.message}`}, {status: 400})
+    return Response.json(
+      {
+        message: `Invalid JSON in the request body: ${e instanceof Error ? e.message : String(e)}`,
+      },
+      {status: 400},
+    )
   }
   if (typeof payload !== 'object')
     return Response.json(
-      {message: `Request body should be a JSON object, but it's ${typeof payload}`},
+      {
+        message: `Request body should be a JSON object, but it's ${typeof payload}`,
+      },
       {status: 400},
     )
   // GH push event must contain ref field: https://docs.github.com/en/webhooks/webhook-events-and-payloads#push
-  if (!('ref' in payload))
+  if (!payload || !('ref' in payload))
     return Response.json({message: 'No ref field in the payload'}, {status: 400})
   const expectedRef = `refs/heads/${config.REPOSITORY_BRANCH}`
   if (payload.ref !== expectedRef)
@@ -30,7 +37,11 @@ export const POST = async (req: NextRequest) => {
     await fetchAndCacheCddlSchemas()
   } catch (e) {
     return Response.json(
-      {message: `Failed to fetch and cache CDDL schemas: ${e.message}`},
+      {
+        message: `Failed to fetch and cache CDDL schemas: ${
+          e instanceof Error ? e.message : String(e)
+        }`,
+      },
       {status: 500},
     )
   }

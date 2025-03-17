@@ -11,7 +11,11 @@ export const GET = async () => {
       await fetchAndCacheCddlSchemas()
     } catch (e) {
       return Response.json(
-        {message: `Failed to fetch and cache CDDL schemas: ${e.message}`},
+        {
+          message: `Failed to fetch and cache CDDL schemas: ${
+            e instanceof Error ? e.message : String(e)
+          }`,
+        },
         {status: 500},
       )
     }
