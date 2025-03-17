@@ -1,27 +1,36 @@
 import {Edit} from '@mui/icons-material'
-import {Autocomplete, Box, IconButton, Stack, TextField} from '@mui/material'
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
+import {Autocomplete, IconButton, Stack, TextField} from '@mui/material'
 import {isEqual} from 'lodash'
 import {useRouter} from 'next/navigation'
 import {useMemo} from 'react'
 import type {SchemasResponse} from '../api/types'
 import type {LocalSchema} from '../store/localSchemas'
-import type {SchemaId} from '../types'
+import type {SchemaId, SelectedSchemaId} from '../types'
+import {Center} from './utilities'
 
 type SchemaSelectProps = {
-  selectedSchemaId: SchemaId | null
-  onSelectedSchemaIdChange: (id: SchemaId | null) => void
+  selectedSchemaId: SelectedSchemaId | null
+  onSelectedSchemaIdChange: (id: SelectedSchemaId | null) => void
   remoteSchemas: SchemasResponse
   localSchemas: LocalSchema[]
 }
 
 type SchemaSelectOption =
   | {
+      isDetectOption: true
+      isAddNewLocalSchemaOption?: false
+      label: string
+    }
+  | {
+      isDetectOption?: false
       isAddNewLocalSchemaOption?: false
       id: SchemaId
       categoryLabel: string
       label: string
     }
   | {
+      isDetectOption?: false
       isAddNewLocalSchemaOption: true
       categoryLabel: string
       label: string
@@ -64,22 +73,33 @@ export const SchemaSelect = ({
       label: 'Add new local schema',
     }
 
-    return [...localOptions, addLocalOption, ...remoteOptions]
+    const detectOption: SchemaSelectOption = {
+      isDetectOption: true,
+      label: 'Detect schema',
+    }
+
+    return [detectOption, ...localOptions, addLocalOption, ...remoteOptions]
   }, [remoteSchemas, localSchemas])
 
   const value = useMemo(
     () =>
-      options.find(
-        (option) => !option.isAddNewLocalSchemaOption && isEqual(option.id, selectedSchemaId),
-      ),
+      options.find((option) => {
+        if (option.isDetectOption) {
+          return selectedSchemaId === 'detect'
+        }
+
+        return !option.isAddNewLocalSchemaOption && isEqual(option.id, selectedSchemaId)
+      }),
     [options, selectedSchemaId],
   )
 
   return (
     <Autocomplete
       options={options}
-      groupBy={({categoryLabel}) => categoryLabel}
-      getOptionLabel={({label, categoryLabel}) => `${label} (${categoryLabel})`}
+      groupBy={(option) => (!option.isDetectOption ? option.categoryLabel : '')}
+      getOptionLabel={(option) =>
+        option.isDetectOption ? option.label : `${option.label} (${option.categoryLabel})`
+      }
       renderInput={(params) => <TextField {...params} label="Schema" />}
       renderOption={(props, option) => {
         return (
@@ -90,14 +110,27 @@ export const SchemaSelect = ({
             direction="row"
             justifyContent="flex-end"
             sx={{
-              fontStyle: option.isAddNewLocalSchemaOption ? 'italic' : 'normal',
+              fontStyle:
+                option.isAddNewLocalSchemaOption || option.isDetectOption ? 'italic' : 'normal',
               textDecoration: option.isAddNewLocalSchemaOption ? 'underline' : 'none',
             }}
           >
-            <Box component="span" flex={1} key="label">
-              {option.label}
-            </Box>
-            {!option.isAddNewLocalSchemaOption && option.id.isLocal && (
+            <Stack
+              component="span"
+              flex={1}
+              key="label"
+              direction="row"
+              alignItems="center"
+              spacing={1}
+            >
+              <span>{option.label}</span>
+              {option.isDetectOption && (
+                <Center>
+                  <AutoAwesomeIcon fontSize="inherit" />
+                </Center>
+              )}
+            </Stack>
+            {!option.isAddNewLocalSchemaOption && !option.isDetectOption && option.id.isLocal && (
               <IconButton
                 key="edit-button"
                 onClick={(e) => {
@@ -119,7 +152,7 @@ export const SchemaSelect = ({
         if (newValue?.isAddNewLocalSchemaOption) {
           router.push('/local-schemas/add')
         } else {
-          onSelectedSchemaIdChange(newValue?.id ?? null)
+          onSelectedSchemaIdChange(newValue?.isDetectOption ? 'detect' : (newValue?.id ?? null))
         }
       }}
       blurOnSelect
