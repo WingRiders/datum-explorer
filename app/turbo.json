@@ -1,0 +1,11 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "outputs": [
+        "next-env.d.ts",
+        ".next/**"
+      ]
+    }
+  }
+}

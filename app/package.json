@@ -1,0 +1,24 @@
+{
+  "name": "datum-explorer-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "check": "bun biome check src test",
+    "fix": "bun run check --write",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "next": "^15.1.6"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "19.0.8",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}
