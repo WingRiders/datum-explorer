@@ -1,0 +1,44 @@
+{
+  "name": "Indigo stability pool account",
+  "cddlFileName": "indigoStabilityPool.cddl",
+  "cbor": "d87a9fd8799f581c767d3148ed3c84d3ba32b8892a037a14c603cd2e236d36b612d3d76b4469555344d8799fd8799f00ffd8799f00ffd8799f00ff0000ffd8799fd87980ffffff",
+  "expectedParsed": {
+    "type": "Account",
+    "value": [
+      {
+        "name": "owner",
+        "type": "bytes",
+        "value": "767d3148ed3c84d3ba32b8892a037a14c603cd2e236d36b612d3d76b"
+      },
+      { "name": "iAsset", "type": "bytes", "value": "69555344" },
+      {
+        "name": "snapshot",
+        "type": "StabilityPoolSnapshot",
+        "value": [
+          {
+            "name": "p",
+            "type": "SPInteger",
+            "value": { "type": "int", "value": 0 }
+          },
+          {
+            "name": "d",
+            "type": "SPInteger",
+            "value": { "type": "int", "value": 0 }
+          },
+          {
+            "name": "s",
+            "type": "SPInteger",
+            "value": { "type": "int", "value": 0 }
+          },
+          { "name": "epoch", "type": "int", "value": 0 },
+          { "name": "scale", "type": "int", "value": 0 }
+        ]
+      },
+      {
+        "name": "request",
+        "type": "AccountAction",
+        "value": { "type": "Create", "value": [] }
+      }
+    ]
+  }
+}

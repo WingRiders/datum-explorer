@@ -1,8 +1,9 @@
-import {Tag, decode, encode} from 'cbor-x'
+import {Decoder, Tag, encode} from 'cbor-x'
 import {cddlFromSrc} from '../'
 import {enrichError, limitedZip} from './helpers'
 import type {
   CDDL,
+  GroupChoice,
   GroupEntry,
   MemberKey,
   Occurrence,
@@ -13,8 +14,12 @@ import type {
 } from './types'
 
 type PrimitiveValue = number | string
-type TypeWithValue = {type: string; value: PrimitiveValue | TypeWithValue | NamedArray}
+type TypeWithValue = {
+  type: string
+  value: PrimitiveValue | TypeWithValue | NamedArray | GenericArray
+}
 type NamedArray = ({name: string} & TypeWithValue)[]
+type GenericArray = (PrimitiveValue | TypeWithValue | NamedArray | GenericArray)[]
 
 const isValidHexString = (hexString?: unknown): hexString is string =>
   typeof hexString === 'string' && !!hexString.match(/^([0-9a-fA-F]{2})*$/) /* hex encoded */
@@ -67,17 +72,99 @@ const getOccurrenceOfGroupEntry = (groupEntry: GroupEntry): Occurrence | undefin
   return groupEntry.InlineGroup.occur
 }
 
+const checkOccurrence = (
+  {occur}: Occurrence,
+  structure: {name: 'map'; cbor: Map<unknown, unknown>} | {name: 'array'; cbor: unknown[]},
+): void => {
+  const [metricName, actualOccurrence] =
+    structure.name === 'map' ? ['size', structure.cbor.size] : ['length', structure.cbor.length]
+
+  if (occur.Exact?.lower && actualOccurrence < occur.Exact.lower)
+    throw new Error(
+      `${structure.name} ${metricName} ${actualOccurrence} is less than lower bound ${occur.Exact.lower} defined by Occurrence`,
+    )
+  if (occur.Exact?.upper && actualOccurrence > occur.Exact.upper)
+    throw new Error(
+      `${structure.name} ${metricName} ${actualOccurrence} is greater than upper bound ${occur.Exact.upper} defined by Occurrence`,
+    )
+  if (occur.OneOrMore && actualOccurrence < 1)
+    throw new Error(
+      `${structure.name} ${metricName} ${actualOccurrence} is less than OneOrMore defined by Occurrence`,
+    )
+  if (occur.Optional && actualOccurrence > 1)
+    throw new Error(
+      `${structure.name} ${metricName} ${actualOccurrence} is more than Optional defined by Occurrence`,
+    )
+}
+
+const checkGroupEntry = (
+  groupEntries: GroupEntry[],
+  structure: {name: 'map'; cbor: Map<unknown, unknown>} | {name: 'array'; cbor: unknown[]},
+): GroupEntry => {
+  if (groupEntries.length !== 1)
+    throw new Error(
+      `CDDL generic ${structure.name} has ${groupEntries.length} group entries, only 1 is supported`,
+    )
+  const groupEntry = groupEntries[0]!
+  const occurrence = getOccurrenceOfGroupEntry(groupEntry)
+  if (occurrence == null) throw new Error(`Generic ${structure.name} contains no occurrence symbol`)
+  checkOccurrence(occurrence, structure)
+  return groupEntry
+}
+
+const parseGenericMap = (
+  cddl: CDDL,
+  groupEntries: GroupEntry[],
+  cbor: Map<unknown, unknown>,
+): TypeWithValue => {
+  const groupEntry = checkGroupEntry(groupEntries, {name: 'map', cbor})
+  if ('ValueMemberKey' in groupEntry) {
+    const memberKey = groupEntry.ValueMemberKey.ge.member_key
+    if (!memberKey) throw new Error('CDDL generic map with no member key')
+    if ('Type1' in memberKey) {
+      return {
+        type: 'Map',
+        value: [...cbor.entries()].map(([cborKey, cborValue]) => {
+          const mapEntryAsGenericArray: GenericArray = [
+            parseType2AsSingleChoice(cddl, memberKey.Type1.t1.type2, cborKey),
+            parseTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborValue),
+          ]
+          return mapEntryAsGenericArray
+        }),
+      }
+    }
+    throw new Error(
+      `CDDL generic map unsupported member key ${Object.keys(memberKey)[0]!}, only Type1 is supported`,
+    )
+  }
+  throw new Error(`Unsupported groupEntry in generic map: ${Object.keys(groupEntry)[0]!}`)
+}
+
+const parseGenericArray = (
+  cddl: CDDL,
+  groupEntries: GroupEntry[],
+  cbor: unknown[],
+): GenericArray => {
+  const groupEntry = checkGroupEntry(groupEntries, {name: 'array', cbor})
+  if ('ValueMemberKey' in groupEntry)
+    return cbor.map((cborItem) =>
+      parseTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborItem),
+    )
+  throw new Error(`Unsupported groupEntry in generic array: ${Object.keys(groupEntry)[0]!}`)
+}
+
 const parseArrayGroupEntries = (
   cddl: CDDL,
   groupEntries: GroupEntry[],
   cbor: unknown[],
-): TypeWithValue | NamedArray => {
+): TypeWithValue | NamedArray | GenericArray => {
   if (groupEntries.length === 0) {
     if (cbor.length === 0) return []
     throw new Error(`CDDL expects empty array, but cbor is an array with length ${cbor.length}`)
   }
-  if (groupEntries.some((groupEntry) => getOccurrenceOfGroupEntry(groupEntry) != null))
-    throw new Error('Unsupported CDDL array containing an occurrence')
+  if (groupEntries.some((groupEntry) => getOccurrenceOfGroupEntry(groupEntry) != null)) {
+    return parseGenericArray(cddl, groupEntries, cbor)
+  }
   if (groupEntries.length !== cbor.length)
     throw new Error(
       `CDDL expects Array with length ${groupEntries.length}, but cbor is an array with length ${cbor.length}`,
@@ -135,26 +222,28 @@ const parseArrayGroupEntries = (
   })
 }
 
+const groupChoicesToGroupEntries = (groupChoices: GroupChoice[]): GroupEntry[] => {
+  if (groupChoices.length !== 1)
+    throw new Error(
+      `CDDL contains ${groupChoices.length} group choices. Only 1 group choice is supported`,
+    )
+  return groupChoices[0]!.group_entries.map(([groupEntry, _optionalComma]) => groupEntry)
+}
+
 const parseType2AsSingleChoice = (
   cddl: CDDL,
   type2: Type2,
   cbor: unknown,
-): TypeWithValue | NamedArray => {
+): TypeWithValue | NamedArray | GenericArray => {
   if ('Array' in type2) {
-    const groupChoices = type2.Array.group.group_choices
-    if (groupChoices.length !== 1)
-      throw new Error(
-        `CDDL rule contains ${groupChoices.length} group choices. Only 1 group choice is supported`,
-      )
+    const groupEntries = groupChoicesToGroupEntries(type2.Array.group.group_choices)
     if (typeof cbor !== 'object' || !Array.isArray(cbor))
       throw new Error(`CDDL expects Array, but cbor is ${typeof cbor} (not Array)`)
-    const groupEntries = groupChoices[0]!.group_entries.map(
-      ([groupEntry, _optionalComma]) => groupEntry,
-    )
     return parseArrayGroupEntries(cddl, groupEntries, cbor)
   }
   if ('TaggedData' in type2) {
-    if (!(cbor instanceof Tag)) throw new Error('CDDL expects TaggedData, but CBOR is not a Tag')
+    if (!(cbor instanceof Tag))
+      throw new Error(`CDDL expects TaggedData, but CBOR is not a Tag, but ${typeof cbor}`)
     if (type2.TaggedData.tag !== cbor.tag)
       throw new Error(
         `CDDL expects TaggedData with tag = ${type2.TaggedData.tag}, but CBOR is Tag with tag = ${cbor.tag}`,
@@ -165,6 +254,12 @@ const parseType2AsSingleChoice = (
     throw new Error('CDDL TaggedData with multiple type choices not supported')
   }
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
+  if ('Map' in type2) {
+    const groupEntries = groupChoicesToGroupEntries(type2.Map.group.group_choices)
+    if (!(cbor instanceof Map))
+      throw new Error(`CDDL expects Map, but CBOR is not a Map, but ${typeof cbor}`)
+    return parseGenericMap(cddl, groupEntries, cbor)
+  }
   throw new Error(`CDDL Type2 not implemented: ${getType2Name(type2)}`)
 }
 
@@ -219,7 +314,8 @@ const parseTypeRule = (cddl: CDDL, typeRule: TypeRule, cbor: unknown): TypeWithV
 export const parseCbor = async (cddlSchemaRaw: string, cborString: string) => {
   if (!isValidHexString(cborString)) throw new Error('CBOR is not a hex string')
   const cddl = await cddlFromSrc(cddlSchemaRaw)
-  const cbor: unknown = decode(Buffer.from(cborString, 'hex'))
+  const decoder = new Decoder({mapsAsObjects: false})
+  const cbor: unknown = decoder.decode(Buffer.from(cborString, 'hex'))
   for (const rule of cddl.rules) {
     if ('Type' in rule) {
       // First TypeRule is the root
