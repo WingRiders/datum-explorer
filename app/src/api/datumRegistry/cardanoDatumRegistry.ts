@@ -9,7 +9,9 @@ const REQUEST_TIMEOUT = 60 * 1000 // 1 minute
 const githubGqlUrl = 'https://api.github.com/graphql'
 const gqlClient = new GraphQLClient(githubGqlUrl, {
   headers: config.GITHUB_AUTH_TOKEN ? {Authorization: `Bearer ${config.GITHUB_AUTH_TOKEN}`} : {},
-  signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  // Add AbortSignal to the request with a specified timeout
+  fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+    fetch(input, {...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT)}),
 })
 
 const projectsFolderGqlQuery = gql`
