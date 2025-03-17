@@ -1,3 +1,2 @@
 export * from './cddlFromSrc'
-export * from './cddlSchema'
-export * from './parseCddlAst'
+export * from './types'
