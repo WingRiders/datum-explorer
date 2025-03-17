@@ -20,8 +20,11 @@ Architecture of the project can be found in the [architecture.md](./docs/archite
 
 ## Development
 
-This project uses [Bun](https://bun.sh/) as the runtime and package manager.
-If you don't have Bun installed, you can follow the installation guide on their website.
+This project uses [Bun](https://bun.sh/) as the runtime and package manager and requires [Rust](https://www.rust-lang.org/) for building WebAssembly using wasm-pack.
+
+If you don't have them installed:
+- **Install Bun**: Follow the installation guide on the [Bun website](https://bun.sh/).
+- **Install Rust**: Install Rust using [rustup](https://rustup.rs/).
 
 ### Installing dependencies
 
