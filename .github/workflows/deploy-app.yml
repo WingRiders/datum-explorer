@@ -1,0 +1,28 @@
+name: 'Deploy App'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - '.github/workflows/deploy.yml'
+      - '.github/workflows/deploy-app.yml'
+
+concurrency: app
+
+jobs:
+  deploy:
+    if: github.repository == 'WingRiders/datum-explorer'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: mainnet
+      service: datum-explorer
+      deploy: true
+      working_directory: .
+      dockerfile: app/Dockerfile
+    secrets:
+      aws-region: ${{ secrets.AWS_REGION }}
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
