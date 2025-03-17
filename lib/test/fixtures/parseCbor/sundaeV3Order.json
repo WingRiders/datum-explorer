@@ -1,0 +1,96 @@
+{
+  "name": "Sundae V3 order",
+  "cddlFileName": "sundaeV3Order.cddl",
+  "cbor": "d8799fd8799f581cdfe69eaaf7b3785e6d8c1b5628d84b79094906ccf20c99b97dab49e2ffd8799f581cf65a13570c85b43fb32b56b22c4ee6eeb52da3fe94f240c6b07ed9b8ff1a00138800d8799fd8799fd8799f581c9b5b5e02fcfcd35826831182b258f0a3bf0ef3d3fbfe7c86d00f16adffd8799fd8799fd8799f581cf65a13570c85b43fb32b56b22c4ee6eeb52da3fe94f240c6b07ed9b8ffffffffd8799fffffd87a9f9f581cbd1c2b36071e74d1685aa2c7fa35d906ebe399ca542f04813d5a53bc504352595354414c20414e414c59534953191035ff9f40401a00379bc0ffff43d87980ff",
+  "expectedParsed": {
+    "type": "Order",
+    "value": [
+      {
+        "name": "poolIdent",
+        "type": "Ident",
+        "value": {
+          "type": "bytes",
+          "value": "dfe69eaaf7b3785e6d8c1b5628d84b79094906ccf20c99b97dab49e2"
+        }
+      },
+      {
+        "name": "owner",
+        "type": "MultiSigScript",
+        "value": {
+          "type": "bytes",
+          "value": "f65a13570c85b43fb32b56b22c4ee6eeb52da3fe94f240c6b07ed9b8"
+        }
+      },
+      { "name": "maxProtocolFee", "type": "int", "value": 1280000 },
+      {
+        "name": "destination",
+        "type": "Fixed",
+        "value": [
+          {
+            "name": "address",
+            "type": "Address",
+            "value": [
+              {
+                "name": "paymentCredential",
+                "type": "KeyCredential",
+                "value": {
+                  "type": "bytes",
+                  "value": "9b5b5e02fcfcd35826831182b258f0a3bf0ef3d3fbfe7c86d00f16ad"
+                }
+              },
+              {
+                "name": "maybeStakeCredential",
+                "type": "StakeCredential",
+                "value": {
+                  "type": "KeyCredential",
+                  "value": {
+                    "type": "bytes",
+                    "value": "f65a13570c85b43fb32b56b22c4ee6eeb52da3fe94f240c6b07ed9b8"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "datum",
+            "type": "Datum",
+            "value": { "type": "NoDatum", "value": [] }
+          }
+        ]
+      },
+      {
+        "name": "details",
+        "type": "Swap",
+        "value": [
+          {
+            "name": "offer",
+            "type": "SingletonValue",
+            "value": [
+              {
+                "name": "policyId",
+                "type": "bytes",
+                "value": "bd1c2b36071e74d1685aa2c7fa35d906ebe399ca542f04813d5a53bc"
+              },
+              {
+                "name": "assetName",
+                "type": "bytes",
+                "value": "4352595354414c20414e414c59534953"
+              },
+              { "name": "quantity", "type": "int", "value": 4149 }
+            ]
+          },
+          {
+            "name": "minReceived",
+            "type": "SingletonValue",
+            "value": [
+              { "name": "policyId", "type": "bytes", "value": "" },
+              { "name": "assetName", "type": "bytes", "value": "" },
+              { "name": "quantity", "type": "int", "value": 3644352 }
+            ]
+          }
+        ]
+      },
+      { "name": "extension", "type": "any", "value": "43d87980" }
+    ]
+  }
+}
