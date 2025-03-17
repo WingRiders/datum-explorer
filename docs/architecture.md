@@ -108,6 +108,10 @@ sequenceDiagram
         "schemas": 0
       }
       ```
+    - **Errors**:
+  
+      _No errors._
+      
 2. **`GET /api/schemas`**
     - **Description**: Returns a list of available schemas.
     - **Response example**:
@@ -118,6 +122,10 @@ sequenceDiagram
         ]
       }
       ```
+    - **Errors**:
+      - **500: Failed to fetch and cache CDDL schemas**
+        
+        This error is returned when the server fails to fetch cddl schemas from the Datum Registry. This may occur if the GitHub API is unavailable or due to other internal errors.
 
 3. **`GET /api/schemas/[filePath]`**
     - **Description**: Fetches a CDDL schema by its file path.
@@ -125,6 +133,14 @@ sequenceDiagram
       ```json
       { "cddl": "LaunchpadNode = ..." }
       ```
+    - **Errors**:
+      - **404: Schema not found among cached schemas**
+        
+        This error indicates that the requested schema was not found among the cached schemas. If the schema corresponding to the provided `filePath` does not exist or has not yet been fetched from the registry.
+
+      - **500: Failed to fetch and cache CDDL schemas**
+        
+        This error is returned when the server fails to fetch cddl schemas from the Datum Registry. This may occur if the GitHub API is unavailable or due to other internal errors.
 
 4. **`POST /api/github/webhook`**
     - **Description**: Handles GitHub push events to update the schema cache.
@@ -136,6 +152,23 @@ sequenceDiagram
       ```json
       { "message": "CDDL schemas fetched and cached" }
       ```
+    - **Errors**:
+      - **400: Invalid JSON in the request body**
+        
+        This error indicates that provided JSON in the request body was malformed.
+
+      - **400: Request body should be a JSON object**
+        
+        This error is returned when provided request body is not a JSON object.
+
+      - **400: No ref field in the payload**
+        
+        This JSON payload in the request body does not contain the required `ref` filed.
+
+      - **500: Failed to fetch and cache CDDL schemas**
+        
+        This error is returned when the server fails to fetch cddl schemas from the Datum Registry. This may occur if the GitHub API is unavailable or due to other internal errors.
+      
 
 #### Component interaction
 
