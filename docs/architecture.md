@@ -24,6 +24,15 @@ ensuring high performance and seamless integration with modern web applications.
      - Checks for unsupported CDDL features and reports validation errors.
    - CLI tool
      - Uses CDDL - CBOR matching to display ReadableDatum for the given CDDL schema and raw CBOR data.
+2. Registry
+   - Holds the CDDL schema definitions.
+   - Allows the public to contribute new schemas and updates via a GitHub repository.
+3. Backend
+   - Built using [Next.js](https://nextjs.org/).
+   - Synchronizes the Registry from GitHub to an in-memory cache.
+   - Provides the following API endpoints:
+     - GET /schemas: Lists all schema files.
+     - GET /schemas/<filePath>: Returns the contents of a specific schema file (raw CDDL string).
 
 ## Library workflow
 
