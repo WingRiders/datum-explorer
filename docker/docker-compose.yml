@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: app/Dockerfile
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT}
+      - GITHUB_AUTH_TOKEN=${GITHUB_AUTH_TOKEN}
+      - REPOSITORY_OWNER=${REPOSITORY_OWNER}
+      - REPOSITORY_NAME=${REPOSITORY_NAME}
+      - REPOSITORY_BRANCH=${REPOSITORY_BRANCH}
+      - REPOSITORY_PROJECTS_DIR=${REPOSITORY_PROJECTS_DIR}
