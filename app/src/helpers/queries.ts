@@ -1,6 +1,9 @@
 import {type SkipToken, skipToken, useQuery} from '@tanstack/react-query'
 import type {ReadableDatum} from '@wingriders/datum-explorer-lib'
+import {useShallow} from 'zustand/shallow'
 import type {SchemaResponse} from '../api/types'
+import {useLocalSchemasStore} from '../store/localSchemas'
+import type {SchemaId} from '../types'
 import type {ParseCborWorkerInput, ParseCborWorkerResponse} from '../workers/parseCborWorker/types'
 
 type SchemaDetailsQueryArgs = {
@@ -56,3 +59,24 @@ export const useParseCborQuery = (
     retry: false,
     staleTime: Number.POSITIVE_INFINITY,
   })
+
+export const useSchemaCddl = (schemaId: SchemaId | null) => {
+  const {localSchemaDetails, isRehydrated: isLocalSchemasStoreRehydrated} = useLocalSchemasStore(
+    useShallow(({localSchemas, isRehydrated}) => ({
+      localSchemaDetails: schemaId?.isLocal
+        ? localSchemas.find((schema) => schema.name === schemaId.schemaName)
+        : undefined,
+      isRehydrated,
+    })),
+  )
+
+  const {data: remoteSchemaDetails, isLoading: isLoadingRemoteSchemaDetails} =
+    useSchemaDetailsQuery(
+      schemaId && !schemaId.isLocal ? {schemaFilePath: schemaId.schemaFilePath} : skipToken,
+    )
+
+  return {
+    schemaCddl: schemaId?.isLocal ? localSchemaDetails?.cddl : remoteSchemaDetails?.cddl,
+    isLoading: schemaId?.isLocal ? !isLocalSchemasStoreRehydrated : isLoadingRemoteSchemaDetails,
+  }
+}

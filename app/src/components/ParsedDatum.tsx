@@ -2,7 +2,8 @@ import {Alert, AlertTitle, Stack, Typography} from '@mui/material'
 import {skipToken} from '@tanstack/react-query'
 import {useDebounce} from '@uidotdev/usehooks'
 import {useEffect, useRef} from 'react'
-import {useParseCborQuery, useSchemaDetailsQuery} from '../helpers/queries'
+import {useParseCborQuery, useSchemaCddl} from '../helpers/queries'
+import type {SchemaId} from '../types'
 import {DatumDisplay} from './DatumDisplay/DatumDisplay'
 import {Spinner} from './Spinner'
 import {Center} from './utilities'
@@ -10,16 +11,12 @@ import {Center} from './utilities'
 const DEBOUNCE_DELAY = 100
 
 type ParsedDatumProps = {
-  schemaFilePath: string | null
+  schemaId: SchemaId | null
   datumCbor: string | null
 }
 
-export const ParsedDatum = ({schemaFilePath, datumCbor}: ParsedDatumProps) => {
+export const ParsedDatum = ({schemaId, datumCbor}: ParsedDatumProps) => {
   const parseCborWorkerRef = useRef<Worker>(null)
-
-  const {data: schemaDetails, isLoading: isLoadingSchemaDetails} = useSchemaDetailsQuery(
-    schemaFilePath ? {schemaFilePath} : skipToken,
-  )
 
   useEffect(() => {
     parseCborWorkerRef.current = new Worker(
@@ -30,30 +27,35 @@ export const ParsedDatum = ({schemaFilePath, datumCbor}: ParsedDatumProps) => {
 
   const debouncedDatumCbor = useDebounce(datumCbor, DEBOUNCE_DELAY)
 
+  const {schemaCddl, isLoading: isLoadingSchemaCddl} = useSchemaCddl(schemaId)
+
   const {
     data: readableDatum,
     isLoading: isLoadingParsing,
     error: parseError,
   } = useParseCborQuery(
-    schemaDetails && debouncedDatumCbor
-      ? {cddlSchemaRaw: schemaDetails.cddl, datumCbor: debouncedDatumCbor}
+    schemaCddl && debouncedDatumCbor
+      ? {
+          cddlSchemaRaw: schemaCddl,
+          datumCbor: debouncedDatumCbor,
+        }
       : skipToken,
     parseCborWorkerRef.current,
   )
 
-  if (!schemaFilePath || !debouncedDatumCbor)
+  if (!schemaId || !debouncedDatumCbor)
     return (
       <Center minHeight={150}>
         <Typography>Select schema and enter datum CBOR</Typography>
       </Center>
     )
 
-  if (isLoadingParsing || (isLoadingSchemaDetails && debouncedDatumCbor))
+  if (isLoadingParsing || (isLoadingSchemaCddl && debouncedDatumCbor))
     return (
       <Center minHeight={150}>
         <Stack direction="row" alignItems="center" spacing={2}>
           <Spinner />
-          <Typography>{isLoadingSchemaDetails ? 'Loading schema' : 'Parsing datum'}</Typography>
+          <Typography>{isLoadingSchemaCddl ? 'Loading schema' : 'Parsing datum'}</Typography>
         </Stack>
       </Center>
     )
