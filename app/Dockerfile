@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y curl build-essential unzip wget && \
+    apt-get install -y curl build-essential unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -32,6 +32,12 @@ RUN bun run build --filter=./app
 RUN bun install --production --frozen-lockfile
 
 FROM oven/bun:1.2.3-slim
+
+# Install wget
+RUN apt-get update && \
+    apt-get install -y wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
