@@ -1,0 +1,51 @@
+@font-face {
+  font-family: "Chakra Petch";
+  src: url("https://assets.wingriders.com/fonts/ChakraPetch-Regular.ttf");
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Chakra Petch";
+  src: url("https://assets.wingriders.com/fonts/ChakraPetch-Medium.ttf");
+  font-style: normal;
+  font-weight: medium;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Chakra Petch";
+  src: url("https://assets.wingriders.com/fonts/ChakraPetch-Bold.ttf");
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("https://assets.wingriders.com/fonts/DMSans-Regular.ttf");
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("https://assets.wingriders.com/fonts/DMSans-Medium.ttf");
+  font-style: normal;
+  font-weight: medium;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("https://assets.wingriders.com/fonts/DMSans-Bold.ttf");
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  font-family: "Chakra Petch", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

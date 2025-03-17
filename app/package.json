@@ -12,16 +12,25 @@
     "test:watch": "bun test --watch"
   },
   "dependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.5",
+    "@mui/material": "^6.4.5",
+    "@mui/material-nextjs": "^6.4.3",
+    "@tanstack/react-query": "^5.66.9",
     "@wingriders/datum-explorer-lib": "workspace:^0.1.1",
     "graphql-request": "^7.1.2",
     "lodash": "^4.17.21",
     "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest",
     "@types/react": "19.0.8",
+    "@types/react-dom": "^19.0.4",
     "dotenv": "^16.4.7",
     "typescript": "^5.7.3"
   }
