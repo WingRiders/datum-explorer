@@ -4,7 +4,9 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y curl build-essential unzip
+    apt-get install -y curl build-essential unzip wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Bun
 RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.2.3"
