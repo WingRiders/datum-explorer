@@ -1,16 +1,16 @@
-import type {GroupEntry} from '@wingriders/datum-explorer-cddl-from-src'
-import {
-  type CDDL,
-  type MemberKey,
-  type Occurrence,
-  type Rule,
-  type Type2,
-  type TypeChoice,
-  type TypeRule,
-  cddlFromSrc,
-} from '@wingriders/datum-explorer-cddl-from-src'
 import {Tag, decode, encode} from 'cbor-x'
+import {cddlFromSrc} from '../'
 import {enrichError, limitedZip} from './helpers'
+import type {
+  CDDL,
+  GroupEntry,
+  MemberKey,
+  Occurrence,
+  Rule,
+  Type2,
+  TypeChoice,
+  TypeRule,
+} from './types'
 
 type PrimitiveValue = number | string
 type TypeWithValue = {type: string; value: PrimitiveValue | TypeWithValue | NamedArray}

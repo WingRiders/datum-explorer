@@ -1,13 +1,13 @@
 import fs from 'node:fs'
 import {describe, expect, test} from 'vitest'
-import {parseCbor} from '../src/parseCbor.ts'
-import bigNumber from './fixtures/parsed/bigNumber.json'
-import minswapV2Order from './fixtures/parsed/minswapV2Order.json'
-import minswapV2Pool from './fixtures/parsed/minswapV2Pool.json'
-import wingridersLaunchpadNode from './fixtures/parsed/wingridersLaunchpadNode.json'
-import wingridersV2Pool from './fixtures/parsed/wingridersV2Pool.json'
-import wingridersV2RequestAddStakingRewards from './fixtures/parsed/wingridersV2RequestAddStakingRewards.json'
-import wingridersV2RequestRoutedSwap from './fixtures/parsed/wingridersV2RequestRoutedSwap.json'
+import {parseCbor} from '../src/parseCbor'
+import bigNumber from './fixtures/parsedCBOR/bigNumber.json'
+import minswapV2Order from './fixtures/parsedCBOR/minswapV2Order.json'
+import minswapV2Pool from './fixtures/parsedCBOR/minswapV2Pool.json'
+import wingridersLaunchpadNode from './fixtures/parsedCBOR/wingridersLaunchpadNode.json'
+import wingridersV2Pool from './fixtures/parsedCBOR/wingridersV2Pool.json'
+import wingridersV2RequestAddStakingRewards from './fixtures/parsedCBOR/wingridersV2RequestAddStakingRewards.json'
+import wingridersV2RequestRoutedSwap from './fixtures/parsedCBOR/wingridersV2RequestRoutedSwap.json'
 
 describe('parseCbor', () => {
   // https://cexplorer.io/tx/0641401bc37eba936b29aebe9adf98f70fd950c622f97b0a2d157f1a3c4a116f
