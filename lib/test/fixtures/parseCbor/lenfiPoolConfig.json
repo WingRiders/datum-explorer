@@ -1,0 +1,69 @@
+{
+  "name": "Lenfi pool config",
+  "cddlFileName": "lenfiPoolConfig.cddl",
+  "cbor": "d8799f1a0013d6201a0016e3601a00d0130bd8799f19271000193a981a000249f0194e201a0006ddd01961a8d8799fd8799f581c0c8b9cc1657e5139be7a331036c5499f0c2dc09fd8680e9773e4a01affd8799fd8799fd8799f581c6e0defd3cf3a4307652e956b3ca65789ca5b7836ae5494ebc546ad8affffffffff1a01156eba1a1b17d02e1a1b17d02e1a01a026161a02b594d1d8799f1a0006ddd01975301a000124f81a002dc6c0ffff",
+  "expectedParsed": {
+    "type": "PoolConfig",
+    "value": [
+      { "name": "liquidationThreshold", "type": "int", "value": 1300000 },
+      { "name": "initialCollateralRatio", "type": "int", "value": 1500000 },
+      { "name": "poolFee", "type": "int", "value": 13636363 },
+      {
+        "name": "loanFeeDetails",
+        "type": "PlatformFeeDetails",
+        "value": [
+          { "name": "tier1Fee", "type": "int", "value": 10000 },
+          { "name": "tier1Threshold", "type": "int", "value": 0 },
+          { "name": "tier2Fee", "type": "int", "value": 15000 },
+          { "name": "tier2Threshold", "type": "int", "value": 150000 },
+          { "name": "tier3Fee", "type": "int", "value": 20000 },
+          { "name": "tier3Threshold", "type": "int", "value": 450000 },
+          { "name": "liquidationFee", "type": "int", "value": 25000 },
+          {
+            "name": "platformFeeCollectorAddress",
+            "type": "Address",
+            "value": [
+              {
+                "name": "paymentCredential",
+                "type": "VerificationKeyCredential",
+                "value": {
+                  "type": "bytes",
+                  "value": "0c8b9cc1657e5139be7a331036c5499f0c2dc09fd8680e9773e4a01a"
+                }
+              },
+              {
+                "name": "stakeCredential",
+                "type": "StakeCredentials",
+                "value": {
+                  "type": "Inline",
+                  "value": {
+                    "type": "VerificationKeyCredential",
+                    "value": {
+                      "type": "bytes",
+                      "value": "6e0defd3cf3a4307652e956b3ca65789ca5b7836ae5494ebc546ad8a"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      { "name": "mergeActionFee", "type": "int", "value": 18181818 },
+      { "name": "minTransition", "type": "int", "value": 454545454 },
+      { "name": "minLoan", "type": "int", "value": 454545454 },
+      { "name": "minFee", "type": "int", "value": 27272726 },
+      { "name": "minLiquidationFee", "type": "int", "value": 45454545 },
+      {
+        "name": "interestParams",
+        "type": "InterestParams",
+        "value": [
+          { "name": "optimalUtilization", "type": "int", "value": 450000 },
+          { "name": "baseInterestRate", "type": "int", "value": 30000 },
+          { "name": "rslope1", "type": "int", "value": 75000 },
+          { "name": "rslope2", "type": "int", "value": 3000000 }
+        ]
+      }
+    ]
+  }
+}
