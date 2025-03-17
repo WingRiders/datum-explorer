@@ -8,22 +8,21 @@
     "start": "next start",
     "check": "bun biome check src test",
     "fix": "bun run check --write",
-    "test": "vitest --run",
-    "test:watch": "vitest"
+    "test": "bun test",
+    "test:watch": "bun test --watch"
   },
   "dependencies": {
     "@biomejs/biome": "^1.9.4",
-    "next": "^15.1.6",
+    "@wingriders/datum-explorer-lib": "workspace:^0.1.1",
     "graphql-request": "^7.1.2",
     "lodash": "^4.17.21",
+    "next": "^15.1.6",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/react": "19.0.8",
     "dotenv": "^16.4.7",
-    "nock": "^14.0.1",
-    "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
+    "typescript": "^5.7.3"
   }
 }

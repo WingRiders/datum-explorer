@@ -113,7 +113,7 @@ type CddlFilesQueryResponse = {
   }
 }
 
-type CddlSchema = {
+export type CddlSchema = {
   projectName: string
   projectGithubOid: string
   fileName: string

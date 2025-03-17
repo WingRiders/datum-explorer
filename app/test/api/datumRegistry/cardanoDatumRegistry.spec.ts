@@ -1,10 +1,10 @@
-import nock from 'nock'
-import {afterEach, describe, expect, it} from 'vitest'
+import {afterEach, describe, expect, it} from 'bun:test'
 import {
   fetchProjectsFromDatumRegistry,
   fetchSchemasForProjectsFromDatumRegistry,
 } from '../../../src/api/datumRegistry/cardanoDatumRegistry'
 import {GitHubFetchError} from '../../../src/api/datumRegistry/errors'
+import {clearFetchMocks, mockFetch} from '../../helpers/mockFetch'
 
 const mockProjectFolders = [
   {oid: 'abc123', name: 'Project1'},
@@ -13,7 +13,7 @@ const mockProjectFolders = [
 
 describe('fetchProjectsFromDatumRegistry', () => {
   afterEach(() => {
-    nock.cleanAll()
+    clearFetchMocks()
   })
 
   it('should fetch project folders from GitHub', async () => {
@@ -27,7 +27,15 @@ describe('fetchProjectsFromDatumRegistry', () => {
       },
     }
 
-    nock('https://api.github.com').post('/graphql').reply(200, mockResponse)
+    mockFetch(
+      {
+        url: 'https://api.github.com/graphql',
+        method: 'POST',
+      },
+      {
+        body: mockResponse,
+      },
+    )
 
     const result = await fetchProjectsFromDatumRegistry()
 
@@ -35,7 +43,10 @@ describe('fetchProjectsFromDatumRegistry', () => {
   })
 
   it('should throw GitHubFetchError on ClientError', async () => {
-    nock('https://api.github.com').post('/graphql').reply(403, {message: 'Forbidden'})
+    mockFetch(
+      {url: 'https://api.github.com/graphql', method: 'POST'},
+      {status: 403, body: {message: 'Forbidden'}},
+    )
 
     await expect(fetchProjectsFromDatumRegistry()).rejects.toThrow(GitHubFetchError)
   })
@@ -43,7 +54,7 @@ describe('fetchProjectsFromDatumRegistry', () => {
 
 describe('fetchSchemasForProjectsFromDatumRegistry', () => {
   afterEach(() => {
-    nock.cleanAll()
+    clearFetchMocks()
   })
 
   it('should fetch CDDL schemas for given project folders', async () => {
@@ -63,7 +74,15 @@ describe('fetchSchemasForProjectsFromDatumRegistry', () => {
       },
     }
 
-    nock('https://api.github.com').post('/graphql').reply(200, mockResponse)
+    mockFetch(
+      {
+        url: 'https://api.github.com/graphql',
+        method: 'POST',
+      },
+      {
+        body: mockResponse,
+      },
+    )
 
     const result = await fetchSchemasForProjectsFromDatumRegistry(mockProjectFolders)
 
@@ -90,7 +109,10 @@ describe('fetchSchemasForProjectsFromDatumRegistry', () => {
   })
 
   it('should throw GitHubFetchError on ClientError', async () => {
-    nock('https://api.github.com').post('/graphql').reply(403, {message: 'Forbidden'})
+    mockFetch(
+      {url: 'https://api.github.com/graphql', method: 'POST'},
+      {status: 403, body: {message: 'Forbidden'}},
+    )
 
     await expect(fetchSchemasForProjectsFromDatumRegistry(mockProjectFolders)).rejects.toThrow(
       GitHubFetchError,

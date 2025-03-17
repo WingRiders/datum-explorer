@@ -3,3 +3,9 @@ export class GitHubFetchError extends Error {
     super(`GitHub fetch error for query: ${queryName}, response status: ${responseStatus}`)
   }
 }
+
+export class CDDLDecodingError extends Error {
+  constructor(message: string) {
+    super(`CDDL parse error: ${message}`)
+  }
+}

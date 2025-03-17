@@ -1,5 +1,5 @@
+import {describe, expect, test} from 'bun:test'
 import * as fs from 'node:fs'
-import {describe, expect, test} from 'vitest'
 import {cddlFromSrc} from '../src'
 import {fixtures} from './fixtures/cddlFromSrc'
 

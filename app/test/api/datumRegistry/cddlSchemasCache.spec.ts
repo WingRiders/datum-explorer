@@ -1,4 +1,4 @@
-import {beforeEach, describe, expect, it} from 'vitest'
+import {beforeEach, describe, expect, it} from 'bun:test'
 import {
   addProjectToCddlSchemasCache,
   deleteAllProjectsFromCddlSchemasCache,
@@ -16,8 +16,8 @@ describe('cddlSchemasCache', () => {
     const projectName = 'project1'
     const projectGithubOid = '123abc'
     const schemas = {
-      'schema1.cddl': {cddl: 'cddl content 1'},
-      'schema2.cddl': {cddl: 'cddl content 2'},
+      'schema1.cddl': {cddl: 'Pool = []', rootTypeName: 'Pool'},
+      'schema2.cddl': {cddl: 'Request = []', rootTypeName: 'Request'},
     }
 
     addProjectToCddlSchemasCache(projectName, projectGithubOid, schemas)
@@ -32,7 +32,7 @@ describe('cddlSchemasCache', () => {
   it('should delete a project from the cache', () => {
     const projectName = 'project1'
     const projectGithubOid = '123abc'
-    const schemas = {'schema1.cddl': {cddl: 'cddl content 1'}}
+    const schemas = {'schema1.cddl': {cddl: 'Pool = []', rootTypeName: 'Pool'}}
 
     addProjectToCddlSchemasCache(projectName, projectGithubOid, schemas)
     deleteProjectFromCddlSchemasCache(projectName)
@@ -45,12 +45,12 @@ describe('cddlSchemasCache', () => {
     const project1 = {
       name: 'project1',
       oid: '123abc',
-      schemas: {'schema1.cddl': {cddl: 'cddl content 1'}},
+      schemas: {'schema1.cddl': {cddl: 'Pool = []', rootTypeName: 'Pool'}},
     }
     const project2 = {
       name: 'project2',
       oid: '456def',
-      schemas: {'schema2.cddl': {cddl: 'cddl content 2'}},
+      schemas: {'schema2.cddl': {cddl: 'Request = []', rootTypeName: 'Request'}},
     }
 
     addProjectToCddlSchemasCache(project1.name, project1.oid, project1.schemas)

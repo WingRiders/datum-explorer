@@ -1,6 +1,9 @@
+import {isEmpty} from 'lodash'
+
 type CddlSchemaRecords = {
   [fileName: string]: {
     cddl: string
+    rootTypeName: string
   }
 }
 
@@ -30,3 +33,8 @@ export const getAllCddlSchemasFromCache = () => cddlSchemasCache
 
 export const deleteAllProjectsFromCddlSchemasCache = () =>
   Object.keys(cddlSchemasCache).forEach(deleteProjectFromCddlSchemasCache)
+
+export const getCddlSchema = (projectName: string, fileName: string) =>
+  cddlSchemasCache[projectName]?.schemas[fileName]
+
+export const isCddlSchemasCacheEmpty = () => isEmpty(cddlSchemasCache)

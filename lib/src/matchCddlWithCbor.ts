@@ -75,23 +75,23 @@ const checkOccurrence = (
   const [metricName, actualOccurrence] =
     structure.name === 'table' ? ['size', structure.cbor.size] : ['length', structure.cbor.length]
 
-  if (occur.Exact?.lower && actualOccurrence < occur.Exact.lower)
+  if ('Exact' in occur && occur.Exact.lower && actualOccurrence < occur.Exact.lower)
     throw new OccurrenceError(
       structure.name,
       metricName,
       actualOccurrence,
       `less than lower bound ${occur.Exact.lower}`,
     )
-  if (occur.Exact?.upper && actualOccurrence > occur.Exact.upper)
+  if ('Exact' in occur && occur.Exact.upper && actualOccurrence > occur.Exact.upper)
     throw new OccurrenceError(
       structure.name,
       metricName,
       actualOccurrence,
       `more than upper bound ${occur.Exact.upper}`,
     )
-  if (occur.OneOrMore && actualOccurrence < 1)
+  if ('OneOrMore' in occur && occur.OneOrMore && actualOccurrence < 1)
     throw new OccurrenceError(structure.name, metricName, actualOccurrence, 'less than OneOrMore')
-  if (occur.Optional && actualOccurrence > 1)
+  if ('Optional' in occur && occur.Optional && actualOccurrence > 1)
     throw new OccurrenceError(structure.name, metricName, actualOccurrence, 'more than Optional')
 }
 
