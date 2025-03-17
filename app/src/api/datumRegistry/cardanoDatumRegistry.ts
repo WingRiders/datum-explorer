@@ -60,6 +60,9 @@ export const fetchProjectsFromDatumRegistry = async (): Promise<ProjectFolder[]>
     if (e instanceof ClientError) {
       throw new GitHubFetchError('ProjectsFolder', e.response.status)
     }
+    if (e instanceof Error) {
+      throw new Error(`Failed to fetch projects folder from Github: ${e.name}(${e.message})`)
+    }
     throw new Error('Failed to fetch projects folder from Github')
   }
 }
@@ -149,6 +152,9 @@ export const fetchSchemasForProjectsFromDatumRegistry = async (
     } catch (e) {
       if (e instanceof ClientError) {
         throw new GitHubFetchError('CddlFiles', e.response.status)
+      }
+      if (e instanceof Error) {
+        throw new Error(`Failed to fetch cddl files from Github: ${e.name}(${e.message})`)
       }
       throw new Error('Failed to fetch cddl files from Github')
     }
