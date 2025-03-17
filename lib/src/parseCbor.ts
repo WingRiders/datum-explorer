@@ -205,7 +205,7 @@ const parseArrayGroupEntries = (
           name,
           ...typeWithValue,
         }
-      }, `Error parsing ValueMemberKey ${name}`)
+      }, `When parsing ValueMemberKey "${name}":`)
     }
     if ('TypeGroupname' in groupEntry) {
       const name =
@@ -277,20 +277,22 @@ const parseType2AsMultiChoice = (cddl: CDDL, type2: Type2, cbor: unknown): TypeW
 }
 
 const parseTypeChoices = (cddl: CDDL, typeChoices: TypeChoice[], cbor: unknown): TypeWithValue => {
-  const errors: {msg: string; e: Error}[] = []
+  const errors: {typeName: string; e: Error}[] = []
   for (const typeChoice of typeChoices) {
     try {
       return parseType2AsMultiChoice(cddl, typeChoice.type1.type2, cbor)
     } catch (e: unknown) {
-      if (e instanceof Error)
-        errors.push({msg: `${getType2Name(typeChoice.type1.type2)}: ${e.message}`, e})
+      if (e instanceof Error) errors.push({typeName: getType2Name(typeChoice.type1.type2), e})
       else throw e
     }
   }
   if (typeChoices.length === 1)
-    throw new Error(`Failed to parse cbor with ${errors[0]!.msg}`, {cause: errors[0]!.e})
-  throw new Error(
-    `Failed to parse cbor with any of the type choices:\n${errors.map(({msg}) => msg).join('\n')}`,
+    throw new Error(`When parsing its only type choice ${errors[0]!.typeName}`, {
+      cause: errors[0]!.e,
+    })
+  throw new AggregateError(
+    errors.map(({e}) => e),
+    `Failed to parse cbor with any of the ${typeChoices.length} type choices`,
   )
 }
 
@@ -302,11 +304,7 @@ const parseTypeRule = (cddl: CDDL, typeRule: TypeRule, cbor: unknown): TypeWithV
       return {type, value: parseType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)}
     return parseTypeChoices(cddl, typeRule.value.type_choices, cbor)
   } catch (e: unknown) {
-    if (e instanceof Error)
-      throw new Error(
-        `Failed to parse cbor with TypeRule ${type} with ${typeChoices.length} type choices: ${e.message}`,
-        {cause: e},
-      )
+    if (e instanceof Error) throw new Error(`When parsing TypeRule "${type}":`, {cause: e})
     throw e
   }
 }
@@ -322,5 +320,5 @@ export const parseCbor = async (cddlSchemaRaw: string, cborString: string) => {
       return parseTypeRule(cddl, rule.Type.rule, cbor)
     }
   }
-  throw new Error('Could not find root rule, there is not TypeRule in CDDL')
+  throw new Error('Could not find root rule, there is no TypeRule in CDDL')
 }
