@@ -1,4 +1,4 @@
-import {afterEach, beforeEach, describe, expect, it} from 'bun:test'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 import {
   deleteAllProjectsFromCddlSchemasCache,
   getAllCddlSchemasFromCache,
@@ -14,7 +14,7 @@ describe('fetchAndCacheCddlSchemas (integration test)', () => {
   })
 
   afterEach(() => {
-    expect(mockFetchIsDone()).toBeTrue()
+    expect(mockFetchIsDone()).toBe(true)
   })
 
   it('should fetch and cache new schemas based on GitHub GraphQL responses', async () => {

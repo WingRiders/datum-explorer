@@ -1,4 +1,4 @@
-import {expect, it} from 'bun:test'
+import {expect, it} from 'vitest'
 import {
   deleteAllProjectsFromCddlSchemasCache,
   getAllCddlSchemasFromCache,
@@ -203,7 +203,7 @@ it('should handle schema changes across multiple fetch calls and validate API re
   })
 
   // Check that all mocked fetches are done
-  expect(mockFetchIsDone()).toBeTrue()
+  expect(mockFetchIsDone()).toBe(true)
 
   clearFetchMocks()
 })
