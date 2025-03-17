@@ -46,11 +46,38 @@ bun run test
 
 ### Use the CLI tool
 
+The CLI tool provides commands for parsing CBOR data using a CDDL schema and validating CDDL schemas.
+First, run `cd lib` to ensure the following commands execute in the correct workspace.
+
+#### Parsing CBOR with a CDDL schema
+
+To parse CBOR data using a specified CDDL schema file:
+
 ```shell
-bun --filter @wingriders/datum-explorer-lib cli <CDDL schema file name> <Raw CBOR data>
+bun cli parse-cbor <CDDL schema file name> <Raw CBOR string>
 ```
 
 Example:
 ```shell
-bun --filter @wingriders/datum-explorer-lib cli launchpadNode.cddl d8799fd8799fd8799f581c9916b846579fc7109f6ab82fd94c7d9b47af8694ea8697a167b1bb0800ffffd87a801b0000018a5058c6f01a00989680ff
+bun cli parse-cbor launchpadNode.cddl d8799fd8799fd8799f581c9916b846579fc7109f6ab82fd94c7d9b47af8694ea8697a167b1bb0800ffffd87a801b0000018a5058c6f01a00989680ff
 ```
+
+#### Validating a CDDL schema
+
+To validate a CDDL schema file and check for unsupported features:
+
+```shell
+bun cli validate-cddl <CDDL schema file name>
+```
+
+Example:
+```shell
+bun cli validate-cddl launchpadNode.cddl
+```
+
+#### Notes
+
+- Running `bun cli` without a command shows the help menu.
+- To run from the root folder, use the following flags:
+  - `--filter @wingriders/datum-explorer-lib` to run the CLI in the correct workspace.
+  - `--elide-lines=0` flag ensures full output without truncation.

@@ -13,12 +13,15 @@ ensuring high performance and seamless integration with modern web applications.
    - CBOR decoding
        - Uses the [cbor-x](https://github.com/kriszyp/cbor-x) library to parse raw CBOR string into a structured format.
    - CDDL - CBOR matching
-     - Uses CDDL decoding and CBOR decoding to obtain traversable structures
+     - Uses CDDL decoding and CBOR decoding to obtain traversable structures.
      - Matches the decoded CBOR against the CddlAst to produce a final JSON representation.
      - The pipeline involves several key intermediary structures:
          - **CddlAst**: Represents the AST produced by decoding the CDDL schema.
          - **cbor**: Represents the result of decoding the raw CBOR string by the cbor-x library. Its type is unknown and is unfolding when matching with CddlAst.
          - **ReadableDatum**: Represents the final matched structure.
+   - CDDL validation
+     - Uses CDDL decoding to obtain a traversable structure.
+     - Checks for unsupported CDDL features and reports validation errors.
    - CLI tool
      - Uses CDDL - CBOR matching to display ReadableDatum for the given CDDL schema and raw CBOR data.
 

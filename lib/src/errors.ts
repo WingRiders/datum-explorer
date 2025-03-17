@@ -36,7 +36,13 @@ export class CBORisNotMapError extends Error {
   }
 }
 export class TaggedDataWithMultipleChoicesNotSupportedError extends Error {
-  override readonly message = 'CDDL TaggedData with multiple type choices not supported'
+  constructor(typeChoicesLength: number, ruleName?: string) {
+    if (ruleName)
+      super(
+        `Rule ${ruleName} has TaggedData with ${typeChoicesLength} type choices, which are not supported.`,
+      )
+    else super(`CDDL TaggedData with ${typeChoicesLength} type choices not supported`)
+  }
 }
 
 export class TagMismatchError extends Error {
@@ -61,20 +67,28 @@ export class Only1GroupChoiceIsSupportedError extends Error {
   }
 }
 export class UnsupportedGroupEntryError extends Error {
-  constructor(groupEntry: string) {
-    super(`Unsupported groupEntry: ${groupEntry}`)
+  constructor(groupEntry: string, ruleName?: string) {
+    if (ruleName) super(`Rule ${ruleName} has unsupported groupEntry: ${groupEntry}`)
+    else super(`Unsupported groupEntry: ${groupEntry}`)
   }
 }
 export class UnsupportedMemberKeyError extends Error {
-  constructor(memberKey: string) {
-    super(`Unsupported member key: ${memberKey}, only Type1 is supported`)
+  constructor(memberKey: string, ruleName?: string) {
+    if (ruleName)
+      super(
+        `Rule ${ruleName} contains table with member key ${memberKey}. Only Type1 is supported.`,
+      )
+    else super(`Unsupported member key: ${memberKey}, only Type1 is supported`)
   }
 }
 export class CDDLTableWithNoMemberKeyError extends Error {
-  override readonly message = 'CDDL table with no member key'
+  constructor(ruleName?: string) {
+    if (ruleName) super(`Rule ${ruleName} contains table with no member key.`)
+    else super('CDDL table with no member key')
+  }
 }
 export class NestedArraysNotSupportedError extends Error {
-  override readonly message = 'Nested arrays are not supported. Wrap the inner array to a new type'
+  override readonly message = 'Nested arrays are not supported. Wrap the inner array to a new type.'
 }
 export class ArrayLengthMismatchError extends Error {
   constructor(groupEntriesLength: number, cborLength: number) {
@@ -89,8 +103,19 @@ export class NoOccurrenceSymbolError extends Error {
   }
 }
 export class Only1GroupEntrySupportedError extends Error {
-  constructor(structureName: string, groupEntriesLength: number) {
-    super(`CDDL ${structureName} has ${groupEntriesLength} group entries, only 1 is supported`)
+  constructor(structureName: string, groupEntriesLength: number, ruleName?: string) {
+    if (ruleName)
+      super(
+        `Rule ${ruleName} has ${structureName} with ${groupEntriesLength} group entries. Only 1 is supported.`,
+      )
+    else super(`CDDL ${structureName} has ${groupEntriesLength} group entries, only 1 is supported`)
+  }
+}
+export class OnlyValueMemberKeyGroupEntrySupportedError extends Error {
+  constructor(groupEntry: string, ruleName: string) {
+    super(
+      `Rule ${ruleName} has unsupported groupEntry ${groupEntry}. Only ValueMemberKey is supported.`,
+    )
   }
 }
 export class OccurrenceError extends Error {
@@ -106,8 +131,9 @@ export class OccurrenceError extends Error {
   }
 }
 export class RuleNotFoundError extends Error {
-  constructor(ruleName: string) {
-    super(`Rule not found: ${ruleName}`)
+  constructor(type: string, ruleName?: string) {
+    if (ruleName) super(`Rule ${ruleName} refers to undefined type ${type}.`)
+    else super(`Rule not found: ${type}`)
   }
 }
 export class NotATypeRuleError extends Error {
@@ -127,4 +153,34 @@ export class CBORIsNotNumberError extends Error {
 }
 export class MissingMemberKeyError extends Error {
   override readonly message = 'Missing memberKey'
+}
+
+export class GenericParamsNotSupportedError extends Error {
+  constructor(ruleName: string) {
+    super(`Rule ${ruleName} has generic params, which are not supported.`)
+  }
+}
+
+export class GenericArgsNotSupportedError extends Error {
+  constructor(ruleName: string, type: string) {
+    super(`Rule ${ruleName} refers to type ${type} with generic args, which are not supported.`)
+  }
+}
+
+export class GroupRuleIsNotSupportedError extends Error {
+  constructor(ruleName: string) {
+    super(`Rule ${ruleName} is not a TypeRule. Only TypeRules are supported.`)
+  }
+}
+
+export class CutNotSupportedError extends Error {
+  constructor(ruleName: string) {
+    super(`Rule ${ruleName} contains table with cut, which is not supported.`)
+  }
+}
+
+export class StructWithUnnamedField extends Error {
+  constructor(ruleName: string) {
+    super(`Rule ${ruleName} has a struct with unnamed field.`)
+  }
 }
