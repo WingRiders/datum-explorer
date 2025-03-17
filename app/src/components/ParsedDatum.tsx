@@ -45,7 +45,13 @@ export const ParsedDatum = ({schemaId, datumCbor}: ParsedDatumProps) => {
   if (!schemaId || !debouncedDatumCbor)
     return (
       <Center minHeight={150}>
-        <Typography>Select schema and enter datum CBOR</Typography>
+        <Typography>
+          {!schemaId && !debouncedDatumCbor
+            ? 'Select schema and enter datum CBOR'
+            : !schemaId
+              ? 'Select schema'
+              : 'Enter datum CBOR'}
+        </Typography>
       </Center>
     )
 
