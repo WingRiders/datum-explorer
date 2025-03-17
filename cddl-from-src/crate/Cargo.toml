@@ -10,7 +10,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-cddl = { version = "0.9.4", features = ["ast-comments", "wasm-bindgen"] }
+cddl = "0.9.4"
 wasm-bindgen = "0.2"
 
 [package.metadata.wasm-pack.profile.release]
