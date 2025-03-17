@@ -1,3 +1,4 @@
+import {enrichError} from './helpers'
 import init, {cddl_from_src} from './pkg/cddl_from_src'
 import cddl_from_src_wasm from './pkg/cddl_from_src_bg.wasm'
 import type {CddlAst} from './types.ts'
@@ -26,5 +27,5 @@ export const cddlFromSrc = async (cddlSchema: string): Promise<CddlAst> => {
   // Wait for the WASM module to initialize
   await initialized
 
-  return cddl_from_src(cddlSchema) as CddlAst // We assume CddlAst type is defined correctly and the validation is performed in the Rust library
+  return enrichError(() => cddl_from_src(cddlSchema), 'CDDL parsing error') as CddlAst // We assume CddlAst type is defined correctly and the validation is performed in the Rust library
 }

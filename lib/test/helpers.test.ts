@@ -1,5 +1,5 @@
 import {describe, expect, it, vi} from 'vitest'
-import {enrichError, limitedZip} from '../src/helpers'
+import {betterTypeOf, enrichError, limitedZip} from '../src/helpers'
 
 describe('limitedZip', () => {
   it('zips arrays of the same length', () => {
@@ -69,5 +69,106 @@ describe('enrichError', () => {
         }),
       }),
     )
+  })
+})
+
+describe('betterTypeOf', () => {
+  it('should return "Array" for arrays', () => {
+    expect(betterTypeOf([])).toBe('Array')
+    expect(betterTypeOf([1, 2, 3])).toBe('Array')
+  })
+
+  it('should return "Object" for plain objects', () => {
+    expect(betterTypeOf({})).toBe('Object')
+    expect(betterTypeOf({key: 'value'})).toBe('Object')
+  })
+
+  it('should return "Null" for null', () => {
+    expect(betterTypeOf(null)).toBe('Null')
+  })
+
+  it('should return "Undefined" for undefined', () => {
+    expect(betterTypeOf(undefined)).toBe('Undefined')
+  })
+
+  it('should return "Number" for numbers', () => {
+    expect(betterTypeOf(42)).toBe('Number')
+    expect(betterTypeOf(-3.14)).toBe('Number')
+    expect(betterTypeOf(Number.NaN)).toBe('Number')
+    expect(betterTypeOf(Number.POSITIVE_INFINITY)).toBe('Number')
+  })
+
+  it('should return "String" for strings', () => {
+    expect(betterTypeOf('hello')).toBe('String')
+    expect(betterTypeOf('')).toBe('String')
+  })
+
+  it('should return "Boolean" for booleans', () => {
+    expect(betterTypeOf(true)).toBe('Boolean')
+    expect(betterTypeOf(false)).toBe('Boolean')
+  })
+
+  it('should return "BigInt" for bigints', () => {
+    expect(betterTypeOf(BigInt(42))).toBe('BigInt')
+    expect(betterTypeOf(9007199254740991n)).toBe('BigInt')
+  })
+
+  it('should return "Symbol" for symbols', () => {
+    expect(betterTypeOf(Symbol('test'))).toBe('Symbol')
+  })
+
+  it('should return "Function" for functions', () => {
+    expect(betterTypeOf(() => {})).toBe('Function')
+    expect(betterTypeOf(function test() {})).toBe('Function')
+    expect(betterTypeOf(class {})).toBe('Function')
+  })
+
+  it('should return "Date" for Date objects', () => {
+    expect(betterTypeOf(new Date())).toBe('Date')
+  })
+
+  it('should return "RegExp" for regular expressions', () => {
+    expect(betterTypeOf(/regex/)).toBe('RegExp')
+  })
+
+  it('should return "Map" for Map objects', () => {
+    expect(betterTypeOf(new Map())).toBe('Map')
+  })
+
+  it('should return "Set" for Set objects', () => {
+    expect(betterTypeOf(new Set())).toBe('Set')
+  })
+
+  it('should return "WeakMap" for WeakMap objects', () => {
+    expect(betterTypeOf(new WeakMap())).toBe('WeakMap')
+  })
+
+  it('should return "WeakSet" for WeakSet objects', () => {
+    expect(betterTypeOf(new WeakSet())).toBe('WeakSet')
+  })
+
+  it('should return "Error" for Error objects', () => {
+    expect(betterTypeOf(new Error('test error'))).toBe('Error')
+  })
+
+  it('should return "Promise" for Promises', () => {
+    expect(betterTypeOf(Promise.resolve())).toBe('Promise')
+  })
+
+  it('should return "ArrayBuffer" for ArrayBuffer', () => {
+    expect(betterTypeOf(new ArrayBuffer(10))).toBe('ArrayBuffer')
+  })
+
+  it('should return "Uint8Array" for Uint8Array', () => {
+    expect(betterTypeOf(new Uint8Array())).toBe('Uint8Array')
+  })
+
+  it('should return "Int32Array" for Int32Array', () => {
+    expect(betterTypeOf(new Int32Array())).toBe('Int32Array')
+  })
+
+  it('should return "CustomClass" for instances of custom classes', () => {
+    class CustomClass {}
+    expect(betterTypeOf(new CustomClass())).toBe('CustomClass')
   })
 })

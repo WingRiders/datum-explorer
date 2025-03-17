@@ -1,5 +1,32 @@
 import {Decoder, Tag, encode} from 'cbor-x'
 import {cddlFromSrc} from './cddlFromSrc'
+import {
+  ArrayLengthMismatchError,
+  CBORIsNotBufferError,
+  CBORIsNotNumberError,
+  CBORisNotArrayError,
+  CBORisNotMapError,
+  CBORisNotTagError,
+  CDDLTableWithNoMemberKeyError,
+  CDDLType2NotSupported,
+  CDDLType2NotSupportedInMultiChoiceError,
+  MissingMemberKeyError,
+  MissingRootRuleError,
+  NestedArraysNotSupportedError,
+  NoOccurrenceSymbolError,
+  NotAHexStringError,
+  NotATypeRuleError,
+  OccurrenceError,
+  Only1GroupChoiceIsSupportedError,
+  Only1GroupEntrySupportedError,
+  RuleNotFoundError,
+  TagMismatchError,
+  TaggedDataWithMultipleChoicesNotSupportedError,
+  TheOnlyTypeChoiceError,
+  TypeChoicesAggregateError,
+  UnsupportedGroupEntryError,
+  UnsupportedMemberKeyError,
+} from './errors'
 import {enrichError, limitedZip} from './helpers'
 import type {GenericArray, PrimitiveValue, ReadableDatum, Value} from './readableDatumTypes'
 import type {
@@ -33,11 +60,11 @@ const matchPrimitiveType = (typeName: string, cbor: unknown): PrimitiveValue | n
   if (typeName === PrimitiveType.INT) {
     if (typeof cbor === 'number') return Number(cbor)
     if (typeof cbor === 'bigint') return BigInt(cbor).toString()
-    throw new Error(`CDDL expects number, but cbor is ${typeof cbor}`)
+    throw new CBORIsNotNumberError(cbor)
   }
   if (typeName === PrimitiveType.BYTES) {
     if (Buffer.isBuffer(cbor)) return cbor.toString('hex')
-    throw new Error(`CDDL expects Buffer, but cbor is ${typeof cbor}`)
+    throw new CBORIsNotBufferError(cbor)
   }
   if (typeName === PrimitiveType.ANY) {
     return encode(cbor).toString('hex')
@@ -51,16 +78,15 @@ const parseTypename = (cddl: CddlAst, type: string, cbor: unknown): ReadableDatu
   for (const rule of cddl.rules) {
     if (getRuleName(rule) === type) {
       if ('Type' in rule) return matchTypeRule(cddl, rule.Type.rule, cbor)
-      throw new Error(`Typename ${type} refers to rule, which is not a TypeRule`)
+      throw new NotATypeRuleError(type)
     }
   }
-  throw new Error(`Rule not found: ${type}`)
+  throw new RuleNotFoundError(type)
 }
 
 const getMemberKeyName = (memberKey?: MemberKey): string => {
-  if (!memberKey) throw new Error('Missing memberKey')
-  if (!('Bareword' in memberKey))
-    throw new Error(`Unsupported memberKey ${Object.keys(memberKey)[0]!}`)
+  if (!memberKey) throw new MissingMemberKeyError()
+  if (!('Bareword' in memberKey)) throw new UnsupportedMemberKeyError(Object.keys(memberKey)[0]!)
   return memberKey.Bareword.ident.ident
 }
 
@@ -78,21 +104,23 @@ const checkOccurrence = (
     structure.name === 'table' ? ['size', structure.cbor.size] : ['length', structure.cbor.length]
 
   if (occur.Exact?.lower && actualOccurrence < occur.Exact.lower)
-    throw new Error(
-      `${structure.name} ${metricName} ${actualOccurrence} is less than lower bound ${occur.Exact.lower} defined by Occurrence`,
+    throw new OccurrenceError(
+      structure.name,
+      metricName,
+      actualOccurrence,
+      `less than lower bound ${occur.Exact.lower}`,
     )
   if (occur.Exact?.upper && actualOccurrence > occur.Exact.upper)
-    throw new Error(
-      `${structure.name} ${metricName} ${actualOccurrence} is greater than upper bound ${occur.Exact.upper} defined by Occurrence`,
+    throw new OccurrenceError(
+      structure.name,
+      metricName,
+      actualOccurrence,
+      `more than upper bound ${occur.Exact.upper}`,
     )
   if (occur.OneOrMore && actualOccurrence < 1)
-    throw new Error(
-      `${structure.name} ${metricName} ${actualOccurrence} is less than OneOrMore defined by Occurrence`,
-    )
+    throw new OccurrenceError(structure.name, metricName, actualOccurrence, 'less than OneOrMore')
   if (occur.Optional && actualOccurrence > 1)
-    throw new Error(
-      `${structure.name} ${metricName} ${actualOccurrence} is more than Optional defined by Occurrence`,
-    )
+    throw new OccurrenceError(structure.name, metricName, actualOccurrence, 'more than Optional')
 }
 
 const checkGroupEntry = (
@@ -100,12 +128,10 @@ const checkGroupEntry = (
   structure: {name: 'table'; cbor: Map<unknown, unknown>} | {name: 'array'; cbor: unknown[]},
 ): GroupEntry => {
   if (groupEntries.length !== 1)
-    throw new Error(
-      `CDDL ${structure.name} has ${groupEntries.length} group entries, only 1 is supported`,
-    )
+    throw new Only1GroupEntrySupportedError(structure.name, groupEntries.length)
   const groupEntry = groupEntries[0]!
   const occurrence = getOccurrenceOfGroupEntry(groupEntry)
-  if (occurrence == null) throw new Error(`CDDL ${structure.name} contains no occurrence symbol`)
+  if (occurrence == null) throw new NoOccurrenceSymbolError(structure.name)
   checkOccurrence(occurrence, structure)
   return groupEntry
 }
@@ -119,7 +145,7 @@ const matchTable = (
   const groupEntry = checkGroupEntry(groupEntries, {name: 'table', cbor})
   if ('ValueMemberKey' in groupEntry) {
     const memberKey = groupEntry.ValueMemberKey.ge.member_key
-    if (!memberKey) throw new Error('CDDL table with no member key')
+    if (!memberKey) throw new CDDLTableWithNoMemberKeyError()
     if ('Type1' in memberKey) {
       return {
         type: 'Table',
@@ -132,13 +158,9 @@ const matchTable = (
         }),
       }
     }
-    throw new Error(
-      `Unsupported member key in CDDL table: ${Object.keys(memberKey)[0]!}, only Type1 is supported`,
-    )
+    throw new UnsupportedMemberKeyError(Object.keys(memberKey)[0]!)
   }
-  throw new Error(
-    `Unsupported groupEntry in CDDL table: ${Object.keys(groupEntry)[0]!}, only ValueMemberKey is supported`,
-  )
+  throw new UnsupportedGroupEntryError(Object.keys(groupEntry)[0]!)
 }
 
 // https://www.rfc-editor.org/rfc/rfc8610.html#section-3.4
@@ -148,9 +170,7 @@ const matchArray = (cddl: CddlAst, groupEntries: GroupEntry[], cbor: unknown[]):
     return cbor.map((cborItem) =>
       matchTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborItem),
     )
-  throw new Error(
-    `Unsupported groupEntry in CDDL array: ${Object.keys(groupEntry)[0]!}, only ValueMemberKey is supported`,
-  )
+  throw new UnsupportedGroupEntryError(Object.keys(groupEntry)[0]!)
 }
 
 const matchSingletonArrayGroupEntry = (
@@ -166,7 +186,7 @@ const matchSingletonArrayGroupEntry = (
   }
   if ('TypeGroupname' in groupEntry)
     return parseTypename(cddl, groupEntry.TypeGroupname.ge.name.ident, cbor)
-  throw new Error(`Unsupported groupEntry: ${Object.keys(groupEntry)[0]!}`)
+  throw new UnsupportedGroupEntryError(Object.keys(groupEntry)[0]!)
 }
 
 const matchArrayGroupEntries = (
@@ -174,17 +194,11 @@ const matchArrayGroupEntries = (
   groupEntries: GroupEntry[],
   cbor: unknown[],
 ): Value => {
-  if (groupEntries.length === 0) {
-    if (cbor.length === 0) return []
-    throw new Error(`CDDL expects empty array, but cbor is an array with length ${cbor.length}`)
-  }
   if (groupEntries.some((groupEntry) => getOccurrenceOfGroupEntry(groupEntry) != null)) {
     return matchArray(cddl, groupEntries, cbor)
   }
   if (groupEntries.length !== cbor.length)
-    throw new Error(
-      `CDDL expects Array with length ${groupEntries.length}, but cbor is an array with length ${cbor.length}`,
-    )
+    throw new ArrayLengthMismatchError(groupEntries.length, cbor.length)
   // Inline singleton arrays
   if (groupEntries.length === 1)
     return matchSingletonArrayGroupEntry(cddl, groupEntries[0]!, cbor[0]!)
@@ -200,63 +214,52 @@ const matchArrayGroupEntries = (
           groupEntry.ValueMemberKey.ge.entry_type.type_choices,
           cborItem,
         )
-        if (Array.isArray(typeWithValue))
-          throw new Error('Nested arrays are not supported. Wrap the inner array to a new type')
+        if (Array.isArray(typeWithValue)) throw new NestedArraysNotSupportedError()
         return {
           name,
           ...typeWithValue,
         }
       }, `When parsing ValueMemberKey "${name}":`)
     }
-    throw new Error(`Unsupported groupEntry: ${Object.keys(groupEntry)[0]!}`)
+    throw new UnsupportedGroupEntryError(Object.keys(groupEntry)[0]!)
   })
 }
 
 const groupChoicesToGroupEntries = (groupChoices: GroupChoice[]): GroupEntry[] => {
-  if (groupChoices.length !== 1)
-    throw new Error(
-      `CDDL contains ${groupChoices.length} group choices. Only 1 group choice is supported`,
-    )
+  if (groupChoices.length !== 1) throw new Only1GroupChoiceIsSupportedError(groupChoices.length)
   return groupChoices[0]!.group_entries.map(([groupEntry, _optionalComma]) => groupEntry)
 }
 
 const matchType2AsSingleChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): Value => {
   if ('Array' in type2) {
     const groupEntries = groupChoicesToGroupEntries(type2.Array.group.group_choices)
-    if (typeof cbor !== 'object' || !Array.isArray(cbor))
-      throw new Error(`CDDL expects Array, but cbor is ${typeof cbor} (not Array)`)
+    if (!Array.isArray(cbor)) throw new CBORisNotArrayError(cbor)
     return matchArrayGroupEntries(cddl, groupEntries, cbor)
   }
   if ('TaggedData' in type2) {
-    if (!(cbor instanceof Tag))
-      throw new Error(`CDDL expects TaggedData, but CBOR is not a Tag, but ${typeof cbor}`)
+    if (!(cbor instanceof Tag)) throw new CBORisNotTagError(cbor)
     if (type2.TaggedData.tag !== cbor.tag)
-      throw new Error(
-        `CDDL expects TaggedData with tag = ${type2.TaggedData.tag}, but CBOR is Tag with tag = ${cbor.tag}`,
-      )
+      throw new TagMismatchError(type2.TaggedData.tag, cbor.tag)
     const typeChoices = type2.TaggedData.t.type_choices
     if (typeChoices.length === 1)
       return matchType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor.value)
-    throw new Error('CDDL TaggedData with multiple type choices not supported')
+    throw new TaggedDataWithMultipleChoicesNotSupportedError()
   }
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
   if ('Map' in type2) {
     const groupEntries = groupChoicesToGroupEntries(type2.Map.group.group_choices)
-    if (!(cbor instanceof Map))
-      throw new Error(`CDDL expects Map, but CBOR is not a Map, but ${typeof cbor}`)
+    if (!(cbor instanceof Map)) throw new CBORisNotMapError(cbor)
     return matchTable(cddl, groupEntries, cbor)
   }
-  throw new Error(`CDDL Type2 not implemented: ${getType2Name(type2)}`)
+  throw new CDDLType2NotSupported(getType2Name(type2))
 }
 
 const matchType2AsMultiChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): ReadableDatum => {
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
   const type2Name = getType2Name(type2)
   if (['TaggedData', 'Array', 'Map'].includes(type2Name))
-    throw new Error(
-      `CDDL Type2 ${type2Name} nested in multi-choice is not supported. Wrap it in a separate type.`,
-    )
-  throw new Error(`CDDL Type2 not implemented: ${getType2Name(type2)}`)
+    throw new CDDLType2NotSupportedInMultiChoiceError(type2Name)
+  throw new CDDLType2NotSupported(getType2Name(type2))
 }
 
 const matchTypeChoices = (
@@ -264,40 +267,33 @@ const matchTypeChoices = (
   typeChoices: TypeChoice[],
   cbor: unknown,
 ): ReadableDatum => {
-  const errors: {typeName: string; e: Error}[] = []
+  const errors: Error[] = []
   for (const typeChoice of typeChoices) {
     try {
       return matchType2AsMultiChoice(cddl, typeChoice.type1.type2, cbor)
     } catch (e: unknown) {
-      if (e instanceof Error) errors.push({typeName: getType2Name(typeChoice.type1.type2), e})
-      else throw e
+      if (e instanceof Error) {
+        if (typeChoices.length === 1)
+          throw new TheOnlyTypeChoiceError(getType2Name(typeChoice.type1.type2), e)
+        errors.push(e)
+      } else throw e
     }
   }
-  if (typeChoices.length === 1)
-    throw new Error(`When parsing its only type choice ${errors[0]!.typeName}`, {
-      cause: errors[0]!.e,
-    })
-  throw new AggregateError(
-    errors.map(({e}) => e),
-    `Failed to parse cbor with any of the ${typeChoices.length} type choices`,
-  )
+  throw new TypeChoicesAggregateError(errors, typeChoices.length)
 }
 
 const matchTypeRule = (cddl: CddlAst, typeRule: TypeRule, cbor: unknown): ReadableDatum => {
   const type = typeRule.name.ident
   const typeChoices = typeRule.value.type_choices
-  try {
+  return enrichError(() => {
     if (typeChoices.length === 1)
       return {type, value: matchType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)}
     return matchTypeChoices(cddl, typeRule.value.type_choices, cbor)
-  } catch (e: unknown) {
-    if (e instanceof Error) throw new Error(`When parsing TypeRule "${type}":`, {cause: e})
-    throw e
-  }
+  }, `When parsing TypeRule "${type}":`)
 }
 
 export const matchCddlWithCbor = async (cddlSchemaRaw: string, cborStringRaw: string) => {
-  if (!isValidHexString(cborStringRaw)) throw new Error('CBOR is not a hex string')
+  if (!isValidHexString(cborStringRaw)) throw new NotAHexStringError()
   const cddl = await cddlFromSrc(cddlSchemaRaw)
   const decoder = new Decoder({mapsAsObjects: false})
   const cbor: unknown = decoder.decode(Buffer.from(cborStringRaw, 'hex'))
@@ -307,5 +303,5 @@ export const matchCddlWithCbor = async (cddlSchemaRaw: string, cborStringRaw: st
       return matchTypeRule(cddl, rule.Type.rule, cbor)
     }
   }
-  throw new Error('Could not find root rule, there is no TypeRule in CDDL')
+  throw new MissingRootRuleError()
 }
