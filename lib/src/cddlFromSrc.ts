@@ -1,6 +1,6 @@
 import init, {cddl_from_src} from './pkg/cddl_from_src'
 import cddl_from_src_wasm from './pkg/cddl_from_src_bg.wasm'
-import type {CDDL} from './types.ts'
+import type {CddlAst} from './types.ts'
 
 let initialized: Promise<void> | null = null
 
@@ -13,7 +13,7 @@ let initialized: Promise<void> | null = null
  * @returns A parsed representation of the schema as a JavaScript object.
  * @throws If the initialization or parsing fails.
  */
-export const cddlFromSrc = async (cddlSchema: string): Promise<CDDL> => {
+export const cddlFromSrc = async (cddlSchema: string): Promise<CddlAst> => {
   if (initialized === null) {
     // @ts-ignore
     initialized = init(cddl_from_src_wasm())
@@ -26,5 +26,5 @@ export const cddlFromSrc = async (cddlSchema: string): Promise<CDDL> => {
   // Wait for the WASM module to initialize
   await initialized
 
-  return cddl_from_src(cddlSchema) as CDDL // We assume CDDL type is defined correctly and the validation is performed in the Rust library
+  return cddl_from_src(cddlSchema) as CddlAst // We assume CddlAst type is defined correctly and the validation is performed in the Rust library
 }

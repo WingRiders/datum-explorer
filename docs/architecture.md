@@ -6,52 +6,61 @@ ensuring high performance and seamless integration with modern web applications.
 
 ## Components
 
-1. CDDL Parser
-   - Utilizes the [cddl](https://github.com/anweiss/cddl/) Rust crate to decode CDDL (Concise Data Definition Language) from a string into an Abstract Syntax Tree (AST).
-   - **WASM Wrapper**: Wraps the Rust library for use in web environments, enabling the decoding of CDDL into a structured AST.
-2. CBOR Parser
-   - Uses the [cbor-x](https://github.com/kriszyp/cbor-x) library to parse raw CBOR data into a structured format. It matches the parsed data against the CDDL AST to produce a final JSON representation.
-   - The decoding pipeline involves several key intermediary structures:
-     - **CddlAst**: Represents the AST produced by decoding the CDDL schema.
-     - **CborData**: Represents the raw CBOR data parsed using the cbor-x library.
-     - **ReadableDatum**: Represents the final matched structure.
-3. Backend
-   - Caches schema definitions from a public GitHub repository for reuse and efficient schema retrieval.
-4. Frontend
-   - Uses the library to decode CBOR data and display the parsed results.
-   - It includes functionality for selecting schemas fetched from Backend and suggesting schemas based on input CBOR.
+1. Library
+   - CDDL parsing
+     - Utilizes the [cddl](https://github.com/anweiss/cddl/) Rust crate to decode CDDL (Concise Data Definition Language) from a string into an Abstract Syntax Tree (AST).
+     - **WASM Wrapper**: Wraps the Rust library for use in web environments, enabling the decoding of CDDL into a structured AST.
+   - CBOR parsing
+       - Uses the [cbor-x](https://github.com/kriszyp/cbor-x) library to parse raw CBOR data into a structured format.
+   - CDDL - CBOR matching
+     - Uses CDDL parsing and CBOR parsing to obtain traversable structures
+     - Matches the parsed CBOR against the CddlAst to produce a final JSON representation.
+     - The pipeline involves several key intermediary structures:
+         - **CddlAst**: Represents the AST produced by parsing the CDDL schema.
+         - **cbor**: Represents the result of parsing the raw CBOR data by the cbor-x library. Its type is unknown and is unfolding when matching with CddlAst.
+         - **ReadableDatum**: Represents the final matched structure.
+   - CLI tool
+     - Uses CDDL - CBOR matching to display ReadableDatum for the given CDDL schema and raw CBOR data.
 
 ## Library workflow
 
 ```mermaid
 graph TD
-    A[CDDL Schema: string] -->|cddl_from_src| B[CDDL AST]
-    D[Raw CBOR: bytes] -->|cbor-x| E[CBOR parsed object]
-    B -->|Match| F[ReadableDatum object]
-    E -->|Match| F
+    %% Data nodes
+    cddlSchemaRaw[cddlSchemaRaw: string]
+    cddlAst[cddl: CddlAst]
+    cborString[cborStringRaw: string]
+    cbor
+    ReadableDatum
+    
+    %% Process nodes
+    match{matchCddlWithCbor}
+    cddlFromSrc{cddlFromSrc}
+    cbor-x{cbor-x}
+    
+    %% Connections
+    cddlSchemaRaw --> cddlFromSrc --> cddlAst
+    cborString --> cbor-x --> cbor
+    cddlAst --> match --> ReadableDatum
+    cbor --> match
 ```
 
 ## Component interaction
 
 ```mermaid
+---
+title: Use cli tool in the library to parse CBOR according to the selected CDDL schema
+---
 sequenceDiagram
     participant User
-    participant Frontend
-    participant Backend
     participant Library
-    participant GitHub
+    participant Filesystem
 
-    GitHub->>Backend: Regular update cache with CDDL schemas
-
-    User->>Frontend: Visit the page
-    Frontend->>Backend: Get list of available CDDL schemas
-    Backend-->>Frontend: Respond with list of available CDDL schemas
-    Frontend-->>User: Display the list of available CDDL schemas
-    User->>Frontend: Provide raw CBOR and select CDDL schema
-    Frontend->>Library: Call parseCbor with CDDL schema and raw CBOR
-    Library->>Library: Decode CDDL schema to CDDL AST
+    User->>Filesystem: Save CDDL schema to a file
+    User->>Library: Use cli tool with CDDL schema file name and raw CBOR
+    Library->>Filesystem: Read cddlSchemaRaw from the given file
+    Library->>Library: Decode cddlSchemaRaw to CddlAst
     Library->>Library: Parse raw CBOR to CBOR parsed object
-    Library->>Library: Match CBOR parsed object with CDDL AST
-    Library-->>Frontend: Return ReadableDatum object
-    Frontend-->>User: Display decoded data
+    Library->>Library: Match CBOR parsed object with CddlAst
+    Library-->>User: Display ReadableDatum object
 ```

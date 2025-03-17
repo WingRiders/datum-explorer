@@ -25,18 +25,29 @@ If you don't have Bun installed, you can follow the installation guide on their 
 
 ### Installing dependencies
 
-```
+```shell
 bun install
 ```
 
 ### Building the library
 
-```
+```shell
 bun run build
 ```
 
 ### Running tests
 
-```
+```shell
 bun run test
+```
+
+### Use the CLI tool
+
+```shell
+bun --filter @wingriders/datum-explorer-lib cli <CDDL schema file name> <Raw CBOR data>
+```
+
+Example:
+```shell
+bun --filter @wingriders/datum-explorer-lib cli launchpadNode.cddl d8799fd8799fd8799f581c9916b846579fc7109f6ab82fd94c7d9b47af8694ea8697a167b1bb0800ffffd87a801b0000018a5058c6f01a00989680ff
 ```

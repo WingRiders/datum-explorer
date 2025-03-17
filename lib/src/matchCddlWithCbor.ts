@@ -1,9 +1,9 @@
 import {Decoder, Tag, encode} from 'cbor-x'
 import {cddlFromSrc} from './cddlFromSrc'
 import {enrichError, limitedZip} from './helpers'
-import type {GenericArray, PrimitiveValue, TypeWithValue, Value} from './readableDatumTypes'
+import type {GenericArray, PrimitiveValue, ReadableDatum, Value} from './readableDatumTypes'
 import type {
-  CDDL,
+  CddlAst,
   GroupChoice,
   GroupEntry,
   MemberKey,
@@ -29,7 +29,7 @@ enum PrimitiveType {
   ANY = 'any',
 }
 
-const parsePrimitiveType = (typeName: string, cbor: unknown): PrimitiveValue | null => {
+const matchPrimitiveType = (typeName: string, cbor: unknown): PrimitiveValue | null => {
   if (typeName === PrimitiveType.INT) {
     if (typeof cbor === 'number') return Number(cbor)
     if (typeof cbor === 'bigint') return BigInt(cbor).toString()
@@ -45,12 +45,12 @@ const parsePrimitiveType = (typeName: string, cbor: unknown): PrimitiveValue | n
   return null
 }
 
-const parseTypename = (cddl: CDDL, type: string, cbor: unknown): TypeWithValue => {
-  const value = parsePrimitiveType(type, cbor)
+const parseTypename = (cddl: CddlAst, type: string, cbor: unknown): ReadableDatum => {
+  const value = matchPrimitiveType(type, cbor)
   if (value != null) return {type, value}
   for (const rule of cddl.rules) {
     if (getRuleName(rule) === type) {
-      if ('Type' in rule) return parseTypeRule(cddl, rule.Type.rule, cbor)
+      if ('Type' in rule) return matchTypeRule(cddl, rule.Type.rule, cbor)
       throw new Error(`Typename ${type} refers to rule, which is not a TypeRule`)
     }
   }
@@ -111,11 +111,11 @@ const checkGroupEntry = (
 }
 
 // https://www.rfc-editor.org/rfc/rfc8610.html#section-3.5.2
-const parseTable = (
-  cddl: CDDL,
+const matchTable = (
+  cddl: CddlAst,
   groupEntries: GroupEntry[],
   cbor: Map<unknown, unknown>,
-): TypeWithValue => {
+): ReadableDatum => {
   const groupEntry = checkGroupEntry(groupEntries, {name: 'table', cbor})
   if ('ValueMemberKey' in groupEntry) {
     const memberKey = groupEntry.ValueMemberKey.ge.member_key
@@ -125,8 +125,8 @@ const parseTable = (
         type: 'Table',
         value: [...cbor.entries()].map(([cborKey, cborValue]) => {
           const mapEntryAsGenericArray: GenericArray = [
-            parseType2AsSingleChoice(cddl, memberKey.Type1.t1.type2, cborKey),
-            parseTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborValue),
+            matchType2AsSingleChoice(cddl, memberKey.Type1.t1.type2, cborKey),
+            matchTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborValue),
           ]
           return mapEntryAsGenericArray
         }),
@@ -142,40 +142,44 @@ const parseTable = (
 }
 
 // https://www.rfc-editor.org/rfc/rfc8610.html#section-3.4
-const parseArray = (cddl: CDDL, groupEntries: GroupEntry[], cbor: unknown[]): GenericArray => {
+const matchArray = (cddl: CddlAst, groupEntries: GroupEntry[], cbor: unknown[]): GenericArray => {
   const groupEntry = checkGroupEntry(groupEntries, {name: 'array', cbor})
   if ('ValueMemberKey' in groupEntry)
     return cbor.map((cborItem) =>
-      parseTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborItem),
+      matchTypeChoices(cddl, groupEntry.ValueMemberKey.ge.entry_type.type_choices, cborItem),
     )
   throw new Error(
     `Unsupported groupEntry in CDDL array: ${Object.keys(groupEntry)[0]!}, only ValueMemberKey is supported`,
   )
 }
 
-const parseSingletonArrayGroupEntry = (
-  cddl: CDDL,
+const matchSingletonArrayGroupEntry = (
+  cddl: CddlAst,
   groupEntry: GroupEntry,
   cbor: unknown,
 ): Value => {
   if ('ValueMemberKey' in groupEntry) {
     const typeChoices = groupEntry.ValueMemberKey.ge.entry_type.type_choices
     if (typeChoices.length === 1)
-      return parseType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)
-    return parseTypeChoices(cddl, typeChoices, cbor)
+      return matchType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)
+    return matchTypeChoices(cddl, typeChoices, cbor)
   }
   if ('TypeGroupname' in groupEntry)
     return parseTypename(cddl, groupEntry.TypeGroupname.ge.name.ident, cbor)
   throw new Error(`Unsupported groupEntry: ${Object.keys(groupEntry)[0]!}`)
 }
 
-const parseArrayGroupEntries = (cddl: CDDL, groupEntries: GroupEntry[], cbor: unknown[]): Value => {
+const matchArrayGroupEntries = (
+  cddl: CddlAst,
+  groupEntries: GroupEntry[],
+  cbor: unknown[],
+): Value => {
   if (groupEntries.length === 0) {
     if (cbor.length === 0) return []
     throw new Error(`CDDL expects empty array, but cbor is an array with length ${cbor.length}`)
   }
   if (groupEntries.some((groupEntry) => getOccurrenceOfGroupEntry(groupEntry) != null)) {
-    return parseArray(cddl, groupEntries, cbor)
+    return matchArray(cddl, groupEntries, cbor)
   }
   if (groupEntries.length !== cbor.length)
     throw new Error(
@@ -183,7 +187,7 @@ const parseArrayGroupEntries = (cddl: CDDL, groupEntries: GroupEntry[], cbor: un
     )
   // Inline singleton arrays
   if (groupEntries.length === 1)
-    return parseSingletonArrayGroupEntry(cddl, groupEntries[0]!, cbor[0]!)
+    return matchSingletonArrayGroupEntry(cddl, groupEntries[0]!, cbor[0]!)
   return limitedZip(groupEntries, cbor).map(([groupEntry, cborItem], index) => {
     if ('ValueMemberKey' in groupEntry) {
       const name = enrichError(
@@ -191,7 +195,7 @@ const parseArrayGroupEntries = (cddl: CDDL, groupEntries: GroupEntry[], cbor: un
         `Error parsing ValueMemberKey on index ${index}, while Array has ${groupEntries.length} items`,
       )
       return enrichError(() => {
-        const typeWithValue = parseTypeChoices(
+        const typeWithValue = matchTypeChoices(
           cddl,
           groupEntry.ValueMemberKey.ge.entry_type.type_choices,
           cborItem,
@@ -216,12 +220,12 @@ const groupChoicesToGroupEntries = (groupChoices: GroupChoice[]): GroupEntry[] =
   return groupChoices[0]!.group_entries.map(([groupEntry, _optionalComma]) => groupEntry)
 }
 
-const parseType2AsSingleChoice = (cddl: CDDL, type2: Type2, cbor: unknown): Value => {
+const matchType2AsSingleChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): Value => {
   if ('Array' in type2) {
     const groupEntries = groupChoicesToGroupEntries(type2.Array.group.group_choices)
     if (typeof cbor !== 'object' || !Array.isArray(cbor))
       throw new Error(`CDDL expects Array, but cbor is ${typeof cbor} (not Array)`)
-    return parseArrayGroupEntries(cddl, groupEntries, cbor)
+    return matchArrayGroupEntries(cddl, groupEntries, cbor)
   }
   if ('TaggedData' in type2) {
     if (!(cbor instanceof Tag))
@@ -232,7 +236,7 @@ const parseType2AsSingleChoice = (cddl: CDDL, type2: Type2, cbor: unknown): Valu
       )
     const typeChoices = type2.TaggedData.t.type_choices
     if (typeChoices.length === 1)
-      return parseType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor.value)
+      return matchType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor.value)
     throw new Error('CDDL TaggedData with multiple type choices not supported')
   }
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
@@ -240,12 +244,12 @@ const parseType2AsSingleChoice = (cddl: CDDL, type2: Type2, cbor: unknown): Valu
     const groupEntries = groupChoicesToGroupEntries(type2.Map.group.group_choices)
     if (!(cbor instanceof Map))
       throw new Error(`CDDL expects Map, but CBOR is not a Map, but ${typeof cbor}`)
-    return parseTable(cddl, groupEntries, cbor)
+    return matchTable(cddl, groupEntries, cbor)
   }
   throw new Error(`CDDL Type2 not implemented: ${getType2Name(type2)}`)
 }
 
-const parseType2AsMultiChoice = (cddl: CDDL, type2: Type2, cbor: unknown): TypeWithValue => {
+const matchType2AsMultiChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): ReadableDatum => {
   if ('Typename' in type2) return parseTypename(cddl, type2.Typename.ident.ident, cbor)
   const type2Name = getType2Name(type2)
   if (['TaggedData', 'Array', 'Map'].includes(type2Name))
@@ -255,11 +259,15 @@ const parseType2AsMultiChoice = (cddl: CDDL, type2: Type2, cbor: unknown): TypeW
   throw new Error(`CDDL Type2 not implemented: ${getType2Name(type2)}`)
 }
 
-const parseTypeChoices = (cddl: CDDL, typeChoices: TypeChoice[], cbor: unknown): TypeWithValue => {
+const matchTypeChoices = (
+  cddl: CddlAst,
+  typeChoices: TypeChoice[],
+  cbor: unknown,
+): ReadableDatum => {
   const errors: {typeName: string; e: Error}[] = []
   for (const typeChoice of typeChoices) {
     try {
-      return parseType2AsMultiChoice(cddl, typeChoice.type1.type2, cbor)
+      return matchType2AsMultiChoice(cddl, typeChoice.type1.type2, cbor)
     } catch (e: unknown) {
       if (e instanceof Error) errors.push({typeName: getType2Name(typeChoice.type1.type2), e})
       else throw e
@@ -275,28 +283,28 @@ const parseTypeChoices = (cddl: CDDL, typeChoices: TypeChoice[], cbor: unknown):
   )
 }
 
-const parseTypeRule = (cddl: CDDL, typeRule: TypeRule, cbor: unknown): TypeWithValue => {
+const matchTypeRule = (cddl: CddlAst, typeRule: TypeRule, cbor: unknown): ReadableDatum => {
   const type = typeRule.name.ident
   const typeChoices = typeRule.value.type_choices
   try {
     if (typeChoices.length === 1)
-      return {type, value: parseType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)}
-    return parseTypeChoices(cddl, typeRule.value.type_choices, cbor)
+      return {type, value: matchType2AsSingleChoice(cddl, typeChoices[0]!.type1.type2, cbor)}
+    return matchTypeChoices(cddl, typeRule.value.type_choices, cbor)
   } catch (e: unknown) {
     if (e instanceof Error) throw new Error(`When parsing TypeRule "${type}":`, {cause: e})
     throw e
   }
 }
 
-export const parseCbor = async (cddlSchemaRaw: string, cborString: string) => {
-  if (!isValidHexString(cborString)) throw new Error('CBOR is not a hex string')
+export const matchCddlWithCbor = async (cddlSchemaRaw: string, cborStringRaw: string) => {
+  if (!isValidHexString(cborStringRaw)) throw new Error('CBOR is not a hex string')
   const cddl = await cddlFromSrc(cddlSchemaRaw)
   const decoder = new Decoder({mapsAsObjects: false})
-  const cbor: unknown = decoder.decode(Buffer.from(cborString, 'hex'))
+  const cbor: unknown = decoder.decode(Buffer.from(cborStringRaw, 'hex'))
   for (const rule of cddl.rules) {
     if ('Type' in rule) {
       // First TypeRule is the root
-      return parseTypeRule(cddl, rule.Type.rule, cbor)
+      return matchTypeRule(cddl, rule.Type.rule, cbor)
     }
   }
   throw new Error('Could not find root rule, there is no TypeRule in CDDL')
