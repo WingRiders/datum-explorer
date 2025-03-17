@@ -1,0 +1,6 @@
+node_modules
+.idea
+/cddl-from-src/src/pkg/**
+/cddl-from-src/crate/target/**
+.turbo/
+dist
