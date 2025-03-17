@@ -1,0 +1,19 @@
+launchpad_node =
+    #6.121([ key         : maybe_node_key
+           , next        : maybe_node_key
+           , createdTime : int
+           , committed   : int / #6.2(bytes) / #6.3(bytes)
+           ])
+
+maybe_node_key =
+    just_node_key
+  / nothing
+
+nothing = #6.122([])
+
+just_node_key = #6.121([node_key])
+
+node_key =
+    #6.121([ index     : int
+           , nodeOwner : bytes
+           ])

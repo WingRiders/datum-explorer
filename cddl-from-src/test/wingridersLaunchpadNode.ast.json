@@ -1,0 +1,649 @@
+{
+  "rules": [
+    {
+      "Type": {
+        "rule": {
+          "name": {
+            "ident": "launchpad_node",
+            "span": [0, 14, 1]
+          },
+          "is_type_choice_alternate": false,
+          "value": {
+            "type_choices": [
+              {
+                "type1": {
+                  "type2": {
+                    "TaggedData": {
+                      "tag": 121,
+                      "t": {
+                        "type_choices": [
+                          {
+                            "type1": {
+                              "type2": {
+                                "Array": {
+                                  "group": {
+                                    "group_choices": [
+                                      {
+                                        "group_entries": [
+                                          [
+                                            {
+                                              "ValueMemberKey": {
+                                                "ge": {
+                                                  "member_key": {
+                                                    "Bareword": {
+                                                      "ident": {
+                                                        "ident": "key",
+                                                        "span": [30, 33, 2]
+                                                      },
+                                                      "span": [30, 43, 2]
+                                                    }
+                                                  },
+                                                  "entry_type": {
+                                                    "type_choices": [
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "Typename": {
+                                                              "ident": {
+                                                                "ident": "maybe_node_key",
+                                                                "span": [
+                                                                  44, 58, 2
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                44, 58, 2
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [44, 58, 2]
+                                                        }
+                                                      }
+                                                    ],
+                                                    "span": [44, 58, 2]
+                                                  }
+                                                },
+                                                "span": [30, 71, 2]
+                                              }
+                                            },
+                                            {
+                                              "optional_comma": true
+                                            }
+                                          ],
+                                          [
+                                            {
+                                              "ValueMemberKey": {
+                                                "ge": {
+                                                  "member_key": {
+                                                    "Bareword": {
+                                                      "ident": {
+                                                        "ident": "next",
+                                                        "span": [72, 76, 3]
+                                                      },
+                                                      "span": [72, 85, 3]
+                                                    }
+                                                  },
+                                                  "entry_type": {
+                                                    "type_choices": [
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "Typename": {
+                                                              "ident": {
+                                                                "ident": "maybe_node_key",
+                                                                "span": [
+                                                                  86, 100, 3
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                86, 100, 3
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [86, 100, 3]
+                                                        }
+                                                      }
+                                                    ],
+                                                    "span": [86, 100, 3]
+                                                  }
+                                                },
+                                                "span": [72, 113, 3]
+                                              }
+                                            },
+                                            {
+                                              "optional_comma": true
+                                            }
+                                          ],
+                                          [
+                                            {
+                                              "ValueMemberKey": {
+                                                "ge": {
+                                                  "member_key": {
+                                                    "Bareword": {
+                                                      "ident": {
+                                                        "ident": "createdTime",
+                                                        "span": [114, 125, 4]
+                                                      },
+                                                      "span": [114, 127, 4]
+                                                    }
+                                                  },
+                                                  "entry_type": {
+                                                    "type_choices": [
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "Typename": {
+                                                              "ident": {
+                                                                "ident": "int",
+                                                                "span": [
+                                                                  128, 131, 4
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                128, 131, 4
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [128, 131, 4]
+                                                        }
+                                                      }
+                                                    ],
+                                                    "span": [128, 131, 4]
+                                                  }
+                                                },
+                                                "span": [114, 144, 4]
+                                              }
+                                            },
+                                            {
+                                              "optional_comma": true
+                                            }
+                                          ],
+                                          [
+                                            {
+                                              "ValueMemberKey": {
+                                                "ge": {
+                                                  "member_key": {
+                                                    "Bareword": {
+                                                      "ident": {
+                                                        "ident": "committed",
+                                                        "span": [145, 154, 5]
+                                                      },
+                                                      "span": [145, 158, 5]
+                                                    }
+                                                  },
+                                                  "entry_type": {
+                                                    "type_choices": [
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "Typename": {
+                                                              "ident": {
+                                                                "ident": "int",
+                                                                "span": [
+                                                                  159, 162, 5
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                159, 162, 5
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [159, 162, 5]
+                                                        }
+                                                      },
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "TaggedData": {
+                                                              "tag": 2,
+                                                              "t": {
+                                                                "type_choices": [
+                                                                  {
+                                                                    "type1": {
+                                                                      "type2": {
+                                                                        "Typename": {
+                                                                          "ident": {
+                                                                            "ident": "bytes",
+                                                                            "span": [
+                                                                              170,
+                                                                              175,
+                                                                              5
+                                                                            ]
+                                                                          },
+                                                                          "span": [
+                                                                            170,
+                                                                            175,
+                                                                            5
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "span": [
+                                                                        170,
+                                                                        175, 5
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "span": [
+                                                                  170, 175, 5
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                165, 175, 5
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [165, 176, 5]
+                                                        }
+                                                      },
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "TaggedData": {
+                                                              "tag": 3,
+                                                              "t": {
+                                                                "type_choices": [
+                                                                  {
+                                                                    "type1": {
+                                                                      "type2": {
+                                                                        "Typename": {
+                                                                          "ident": {
+                                                                            "ident": "bytes",
+                                                                            "span": [
+                                                                              184,
+                                                                              189,
+                                                                              5
+                                                                            ]
+                                                                          },
+                                                                          "span": [
+                                                                            184,
+                                                                            189,
+                                                                            5
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "span": [
+                                                                        184,
+                                                                        189, 5
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "span": [
+                                                                  184, 189, 5
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                179, 189, 5
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [179, 190, 5]
+                                                        }
+                                                      }
+                                                    ],
+                                                    "span": [159, 190, 5]
+                                                  }
+                                                },
+                                                "span": [145, 190, 5]
+                                              }
+                                            },
+                                            {
+                                              "optional_comma": false
+                                            }
+                                          ]
+                                        ],
+                                        "span": [30, 190, 2]
+                                      }
+                                    ],
+                                    "span": [30, 190, 2]
+                                  },
+                                  "span": [28, 203, 2]
+                                }
+                              },
+                              "span": [28, 203, 2]
+                            }
+                          }
+                        ],
+                        "span": [28, 203, 2]
+                      },
+                      "span": [21, 203, 2]
+                    }
+                  },
+                  "span": [21, 204, 2]
+                }
+              }
+            ],
+            "span": [21, 204, 2]
+          }
+        },
+        "span": [0, 204, 1]
+      }
+    },
+    {
+      "Type": {
+        "rule": {
+          "name": {
+            "ident": "maybe_node_key",
+            "span": [0, 14, 1]
+          },
+          "is_type_choice_alternate": false,
+          "value": {
+            "type_choices": [
+              {
+                "type1": {
+                  "type2": {
+                    "Typename": {
+                      "ident": {
+                        "ident": "just_node_key",
+                        "span": [21, 34, 2]
+                      },
+                      "span": [21, 34, 2]
+                    }
+                  },
+                  "span": [21, 34, 2]
+                }
+              },
+              {
+                "type1": {
+                  "type2": {
+                    "Typename": {
+                      "ident": {
+                        "ident": "nothing",
+                        "span": [39, 46, 3]
+                      },
+                      "span": [39, 46, 3]
+                    }
+                  },
+                  "span": [39, 46, 3]
+                }
+              }
+            ],
+            "span": [21, 46, 2]
+          }
+        },
+        "span": [0, 46, 1]
+      }
+    },
+    {
+      "Type": {
+        "rule": {
+          "name": {
+            "ident": "nothing",
+            "span": [254, 261, 12]
+          },
+          "is_type_choice_alternate": false,
+          "value": {
+            "type_choices": [
+              {
+                "type1": {
+                  "type2": {
+                    "TaggedData": {
+                      "tag": 122,
+                      "t": {
+                        "type_choices": [
+                          {
+                            "type1": {
+                              "type2": {
+                                "Array": {
+                                  "group": {
+                                    "group_choices": [
+                                      {
+                                        "group_entries": [],
+                                        "span": [272, 272, 12]
+                                      }
+                                    ],
+                                    "span": [272, 272, 12]
+                                  },
+                                  "span": [271, 273, 12]
+                                }
+                              },
+                              "span": [271, 273, 12]
+                            }
+                          }
+                        ],
+                        "span": [271, 273, 12]
+                      },
+                      "span": [264, 273, 12]
+                    }
+                  },
+                  "span": [264, 274, 12]
+                }
+              }
+            ],
+            "span": [264, 274, 12]
+          }
+        },
+        "span": [254, 274, 12]
+      }
+    },
+    {
+      "Type": {
+        "rule": {
+          "name": {
+            "ident": "just_node_key",
+            "span": [0, 13, 1]
+          },
+          "is_type_choice_alternate": false,
+          "value": {
+            "type_choices": [
+              {
+                "type1": {
+                  "type2": {
+                    "TaggedData": {
+                      "tag": 121,
+                      "t": {
+                        "type_choices": [
+                          {
+                            "type1": {
+                              "type2": {
+                                "Array": {
+                                  "group": {
+                                    "group_choices": [
+                                      {
+                                        "group_entries": [
+                                          [
+                                            {
+                                              "ValueMemberKey": {
+                                                "ge": {
+                                                  "entry_type": {
+                                                    "type_choices": [
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "Typename": {
+                                                              "ident": {
+                                                                "ident": "node_key",
+                                                                "span": [
+                                                                  24, 32, 1
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                24, 32, 1
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [24, 32, 1]
+                                                        }
+                                                      }
+                                                    ],
+                                                    "span": [24, 32, 1]
+                                                  }
+                                                },
+                                                "span": [24, 32, 1]
+                                              }
+                                            },
+                                            {
+                                              "optional_comma": false
+                                            }
+                                          ]
+                                        ],
+                                        "span": [24, 32, 1]
+                                      }
+                                    ],
+                                    "span": [24, 32, 1]
+                                  },
+                                  "span": [23, 33, 1]
+                                }
+                              },
+                              "span": [23, 33, 1]
+                            }
+                          }
+                        ],
+                        "span": [23, 33, 1]
+                      },
+                      "span": [16, 33, 1]
+                    }
+                  },
+                  "span": [16, 34, 1]
+                }
+              }
+            ],
+            "span": [16, 34, 1]
+          }
+        },
+        "span": [0, 34, 1]
+      }
+    },
+    {
+      "Type": {
+        "rule": {
+          "name": {
+            "ident": "node_key",
+            "span": [312, 320, 16]
+          },
+          "is_type_choice_alternate": false,
+          "value": {
+            "type_choices": [
+              {
+                "type1": {
+                  "type2": {
+                    "TaggedData": {
+                      "tag": 121,
+                      "t": {
+                        "type_choices": [
+                          {
+                            "type1": {
+                              "type2": {
+                                "Array": {
+                                  "group": {
+                                    "group_choices": [
+                                      {
+                                        "group_entries": [
+                                          [
+                                            {
+                                              "ValueMemberKey": {
+                                                "ge": {
+                                                  "member_key": {
+                                                    "Bareword": {
+                                                      "ident": {
+                                                        "ident": "index",
+                                                        "span": [336, 341, 17]
+                                                      },
+                                                      "span": [336, 347, 17]
+                                                    }
+                                                  },
+                                                  "entry_type": {
+                                                    "type_choices": [
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "Typename": {
+                                                              "ident": {
+                                                                "ident": "int",
+                                                                "span": [
+                                                                  348, 351, 17
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                348, 351, 17
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [348, 351, 17]
+                                                        }
+                                                      }
+                                                    ],
+                                                    "span": [348, 351, 17]
+                                                  }
+                                                },
+                                                "span": [336, 364, 17]
+                                              }
+                                            },
+                                            {
+                                              "optional_comma": true
+                                            }
+                                          ],
+                                          [
+                                            {
+                                              "ValueMemberKey": {
+                                                "ge": {
+                                                  "member_key": {
+                                                    "Bareword": {
+                                                      "ident": {
+                                                        "ident": "nodeOwner",
+                                                        "span": [365, 374, 18]
+                                                      },
+                                                      "span": [365, 376, 18]
+                                                    }
+                                                  },
+                                                  "entry_type": {
+                                                    "type_choices": [
+                                                      {
+                                                        "type1": {
+                                                          "type2": {
+                                                            "Typename": {
+                                                              "ident": {
+                                                                "ident": "bytes",
+                                                                "span": [
+                                                                  377, 382, 18
+                                                                ]
+                                                              },
+                                                              "span": [
+                                                                377, 382, 18
+                                                              ]
+                                                            }
+                                                          },
+                                                          "span": [377, 382, 18]
+                                                        }
+                                                      }
+                                                    ],
+                                                    "span": [377, 382, 18]
+                                                  }
+                                                },
+                                                "span": [365, 382, 18]
+                                              }
+                                            },
+                                            {
+                                              "optional_comma": false
+                                            }
+                                          ]
+                                        ],
+                                        "span": [336, 382, 17]
+                                      }
+                                    ],
+                                    "span": [336, 382, 17]
+                                  },
+                                  "span": [334, 395, 17]
+                                }
+                              },
+                              "span": [334, 395, 17]
+                            }
+                          }
+                        ],
+                        "span": [334, 395, 17]
+                      },
+                      "span": [327, 395, 17]
+                    }
+                  },
+                  "span": [327, 396, 17]
+                }
+              }
+            ],
+            "span": [327, 396, 17]
+          }
+        },
+        "span": [312, 396, 16]
+      }
+    }
+  ]
+}
