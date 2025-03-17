@@ -1,0 +1,39 @@
+Feature: Datum explorer
+
+
+  Scenario: Check datum CBOR
+	Given Schema is selected
+	When User inserts CBOR
+	Then Decoded values are shown
+
+  Scenario: Add custom schema
+    When User adds new local schema
+    * Chooses a name
+	* Adds corresponding CDDL
+	* Adds schema
+	Then Schema is successfully added
+	* Schema is automatically selected
+	* Schema is under "Your local schemas"
+
+  Scenario: Edit schema
+	Given User has a custom schema created
+	When User chooses to edit schema with the pen icon
+	* Edits
+	* Saves
+	Then Schema is updated in "Your local schemas"
+
+  Scenario: Delete schema
+	Given User has a custom schema created
+	When User chooses to edit schema
+	* Chooses to delete the schema
+	Then Schema is deleted
+
+  Scenario: Detect schema
+	Given User chooses the "Detect schema" option
+	When User inserts datum CBOR
+	Then App will decode and display matching results
+
+  Scenario: No matching schema
+	Given User chooses the "Detect schema" option
+	When User inserts an unknown datum CBOR
+	Then App will display a message that the datum cannot be parsed by available schemas
