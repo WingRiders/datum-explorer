@@ -1,5 +1,6 @@
-import {Decoder, Tag, encode} from 'cbor-x'
+import {Tag, encode} from 'cbor-x'
 import {cddlFromSrc} from './cddlFromSrc'
+import {decodeCbor} from './decodeCbor'
 import {
   ArrayLengthMismatchError,
   CBORIsNotBufferError,
@@ -14,7 +15,6 @@ import {
   MissingRootRuleError,
   NestedArraysNotSupportedError,
   NoOccurrenceSymbolError,
-  NotAHexStringError,
   NotATypeRuleError,
   OccurrenceError,
   Only1GroupChoiceIsSupportedError,
@@ -40,9 +40,6 @@ import type {
   TypeChoice,
   TypeRule,
 } from './types'
-
-const isValidHexString = (hexString?: unknown): hexString is string =>
-  typeof hexString === 'string' && !!hexString.match(/^([0-9a-fA-F]{2})*$/) /* hex encoded */
 
 const getRuleName = (rule: Rule): string =>
   ('Type' in rule ? rule.Type : rule.Group).rule.name.ident
@@ -293,10 +290,8 @@ const matchTypeRule = (cddl: CddlAst, typeRule: TypeRule, cbor: unknown): Readab
 }
 
 export const matchCddlWithCbor = async (cddlSchemaRaw: string, cborStringRaw: string) => {
-  if (!isValidHexString(cborStringRaw)) throw new NotAHexStringError()
   const cddl = await cddlFromSrc(cddlSchemaRaw)
-  const decoder = new Decoder({mapsAsObjects: false})
-  const cbor: unknown = decoder.decode(Buffer.from(cborStringRaw, 'hex'))
+  const cbor: unknown = decodeCbor(cborStringRaw)
   for (const rule of cddl.rules) {
     if ('Type' in rule) {
       // First TypeRule is the root
