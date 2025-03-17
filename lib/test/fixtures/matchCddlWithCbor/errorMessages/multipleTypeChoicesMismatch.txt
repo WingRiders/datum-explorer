@@ -1,8 +1,9 @@
 When parsing TypeRule "LaunchpadNode":
   When parsing ValueMemberKey "key":
     When parsing its only type choice Typename:
-      Failed to parse cbor with any of the 2 type choices
-        When parsing TypeRule "JustNodeKey":
-          CDDL expects TaggedData, but CBOR is not a Tag, but Number
-        When parsing TypeRule "Nothing":
-          CDDL expects TaggedData, but CBOR is not a Tag, but Number
+      When parsing TypeRule "MaybeNodeKey":
+        Failed to parse cbor with any of the 2 type choices
+          When parsing TypeRule "JustNodeKey":
+            CDDL expects TaggedData, but CBOR is not a Tag, but Number
+          When parsing TypeRule "Nothing":
+            CDDL expects TaggedData, but CBOR is not a Tag, but Number

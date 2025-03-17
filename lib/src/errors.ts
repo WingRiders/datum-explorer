@@ -13,7 +13,8 @@ export class TypeChoicesAggregateError extends AggregateError {
 }
 export class TheOnlyTypeChoiceError extends Error {
   constructor(type2Name: string, cause: Error) {
-    super(`When parsing its only type choice ${type2Name}:`, cause)
+    super(`When parsing its only type choice ${type2Name}:`)
+    this.cause = cause
   }
 }
 
