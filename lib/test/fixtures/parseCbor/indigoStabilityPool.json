@@ -36,7 +36,7 @@
         "name": "epochToScaleToSum",
         "type": "EpochToScaleToSum",
         "value": {
-          "type": "Map",
+          "type": "Table",
           "value": [
             [
               {
