@@ -73,7 +73,7 @@ Then, start the development server:
 bun dev
 ```
 
-Next.js will automatically find a free port and output the URL (e.g. http://localhost:3000).
+Next.js will automatically find a free port and output the URL, such as http://localhost:3000 (it's just an example, there is no index page on the server and following the link will result in a 404 Not Found error).
 
 ### Triggering the cache update:
 
@@ -87,7 +87,7 @@ curl -X POST -H 'X-GitHub-Event: push' -d '{"ref": "refs/heads/main"}' http://lo
 ### Accessing the API
 
 - Visit http://localhost:3000/api/schemas to list all cached schemas.
-- Visit http://localhost:3000/api/schemas/wingriders/launchpadNode to see an example schema stored in the cache.
+- Visit http://localhost:3000/api/schemas/wingriders%2flaunchpadNode to see an example schema stored in the cache. Note, if `GITHUB_AUTH_TOKEN` is empty and mock data is used, this schema will not be found.
 
 ### Running tests
 
