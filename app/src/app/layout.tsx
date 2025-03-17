@@ -2,6 +2,7 @@ import type {Metadata, Viewport} from 'next'
 import './globals.css'
 import {ThemeProvider} from '@mui/material'
 import {AppRouterCacheProvider} from '@mui/material-nextjs/v15-appRouter'
+import CssBaseline from '@mui/material/CssBaseline'
 import {AppBackground} from '../components/AppBackground'
 import {ErrorBoundary} from '../components/ErrorBoundary'
 import {theme} from '../theme'
@@ -28,6 +29,7 @@ const RootLayout = ({
         <AppRouterCacheProvider>
           <QueryProvider>
             <ThemeProvider theme={theme}>
+              <CssBaseline />
               <AppBackground />
               <ErrorBoundary>{children}</ErrorBoundary>
             </ThemeProvider>

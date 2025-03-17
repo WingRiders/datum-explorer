@@ -1,15 +1,16 @@
 'use client'
 
-import {Box, Grid2, Stack, TextField, Typography} from '@mui/material'
+import {Grid2, Stack, TextField} from '@mui/material'
 import {useRouter, useSearchParams} from 'next/navigation'
 import type {SchemasResponse} from '../api/types'
+import {ParsedDatum} from '../components/ParsedDatum'
 import {SchemaSelect} from '../components/SchemaSelect'
 
-type DatumDecodingProps = {
+type DatumParsingProps = {
   schemas: SchemasResponse
 }
 
-export const DatumDecoding = ({schemas}: DatumDecodingProps) => {
+export const DatumParsing = ({schemas}: DatumParsingProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -61,16 +62,7 @@ export const DatumDecoding = ({schemas}: DatumDecodingProps) => {
         </Grid2>
 
         <Grid2 size={{xs: 12, md: 6}}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            bgcolor={({palette}) => palette.grey[400]}
-            height="100%"
-            //p={5}
-          >
-            <Typography variant="body1">Decoded datum</Typography>
-          </Box>
+          <ParsedDatum schemaFilePath={selectedSchemaFilePath} datumCbor={datum} />
         </Grid2>
       </Grid2>
     </Stack>

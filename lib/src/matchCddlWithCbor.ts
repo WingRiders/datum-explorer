@@ -31,7 +31,7 @@ import {
   UnsupportedMemberKeyError,
 } from './errors'
 import {enrichError, limitedZip} from './helpers'
-import type {GenericArray, PrimitiveValue, ReadableDatum, Value} from './readableDatumTypes'
+import type {DatumValue, GenericArray, PrimitiveValue, ReadableDatum} from './readableDatumTypes'
 import type {CddlAst, GroupEntry, Occurrence, Type2, TypeChoice, TypeRule} from './types'
 
 enum PrimitiveType {
@@ -149,7 +149,7 @@ const matchSingletonArrayGroupEntry = (
   cddl: CddlAst,
   groupEntry: GroupEntry,
   cbor: unknown,
-): Value => {
+): DatumValue => {
   if ('ValueMemberKey' in groupEntry) {
     const typeChoices = groupEntry.ValueMemberKey.ge.entry_type.type_choices
     if (typeChoices.length === 1)
@@ -163,7 +163,7 @@ const matchArrayGroupEntries = (
   cddl: CddlAst,
   groupEntries: GroupEntry[],
   cbor: unknown[],
-): Value => {
+): DatumValue => {
   if (groupEntries.some((groupEntry) => getOccurrenceOfGroupEntry(groupEntry) != null)) {
     return matchArray(cddl, groupEntries, cbor)
   }
@@ -195,7 +195,7 @@ const matchArrayGroupEntries = (
   })
 }
 
-const matchType2AsSingleChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): Value => {
+const matchType2AsSingleChoice = (cddl: CddlAst, type2: Type2, cbor: unknown): DatumValue => {
   if ('Array' in type2) {
     const groupEntries = groupChoicesToGroupEntries(type2.Array.group.group_choices)
     if (!Array.isArray(cbor)) throw new CBORisNotArrayError(cbor)
