@@ -1,0 +1,41 @@
+{
+  "name": "WingRiders V2 evolve pool",
+  "cddlFileName": "wingridersV2EvolvePool.cddl",
+  "cbor": "d8799f00029fd8799f0100ffffff",
+  "expectedParsed": {
+    "type": "EvolvePool",
+    "value": [
+      {
+        "name": "poolLocation",
+        "type": "int",
+        "value": 0
+      },
+      {
+        "name": "agentLocation",
+        "type": "int",
+        "value": 2
+      },
+      {
+        "name": "requestLocations",
+        "type": "RequestLocations",
+        "value": [
+          {
+            "type": "RequestLocationWithAdditionalData",
+            "value": [
+              {
+                "name": "requestLocation",
+                "type": "int",
+                "value": 1
+              },
+              {
+                "name": "additionalData",
+                "type": "int",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

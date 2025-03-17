@@ -1,0 +1,21 @@
+EvolvePool = #6.121([ poolLocation : int
+                    , agentLocation : int
+                    , requestLocations : RequestLocations
+                  ])
+
+RequestLocations = [ * RequestLocationWithAdditionalData ]
+
+RequestLocationWithAdditionalData = #6.121([ requestLocation : int
+                                           , additionalData : RequestAdditionalData
+                                           ])
+
+RequestAdditionalData = int / StableswapZapOutAdditionalData / StableswapAddLiquidityAdditionalData
+
+StableswapZapOutAdditionalData = [ dBeforeSwap : int
+                                 , dAfterSwap : int
+                                 ]
+
+StableswapAddLiquidityAdditionalData = [ dFullyAdded : int
+                                       , dFeesTaken : int
+                                       , dNew : int
+                                       ]
