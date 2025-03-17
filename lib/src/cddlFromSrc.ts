@@ -1,9 +1,12 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import {enrichError} from './helpers'
-import init, {cddl_from_src} from './pkg/cddl_from_src'
-import cddl_from_src_wasm from './pkg/cddl_from_src_bg.wasm'
+import init, {cddl_from_src, type InitOutput} from './pkg/cddl_from_src'
 import type {CddlAst} from './types.ts'
 
-let initialized: Promise<void> | null = null
+const wasmFilePath = path.resolve(__dirname, './pkg/cddl_from_src_bg.wasm')
+
+let initialized: InitOutput | null = null
 
 /**
  * Parses a CDDL schema into a JavaScript object using WebAssembly.
@@ -16,16 +19,18 @@ let initialized: Promise<void> | null = null
  */
 export const cddlFromSrc = async (cddlSchema: string): Promise<CddlAst> => {
   if (initialized === null) {
-    // @ts-ignore
-    initialized = init(cddl_from_src_wasm())
-      .then(() => void 0)
-      .catch((e) => {
-        initialized = null // Reset if initialization fails
-        throw new Error(`Failed to initialize WASM module: ${e.message}`)
-      })
+    try {
+      const wasmBuffer = await fs.promises.readFile(wasmFilePath)
+      initialized = await init({module_or_path: await WebAssembly.compile(wasmBuffer)})
+    } catch (e: unknown) {
+      initialized = null // Reset if initialization fails
+      if (e instanceof Error)
+        throw new Error(
+          `Failed to initialize WASM module: ${e.message}, wasmFilePath = ${wasmFilePath})`,
+        )
+      throw e
+    }
   }
-  // Wait for the WASM module to initialize
-  await initialized
 
   return enrichError(() => cddl_from_src(cddlSchema), 'CDDL parsing error') as CddlAst // We assume CddlAst type is defined correctly and the validation is performed in the Rust library
 }
