@@ -1,7 +1,7 @@
 import {Alert, AlertTitle, Box, Stack, Tab, Tabs, Typography} from '@mui/material'
 import {skipToken} from '@tanstack/react-query'
 import {useDebounce} from '@uidotdev/usehooks'
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {DATUM_INPUT_FIELD_DEBOUNCE_DELAY} from '../constants'
 import {useParseCborDetectQuery} from '../helpers/queries'
 import {DatumDisplay} from './DatumDisplay/DatumDisplay'
@@ -13,16 +13,7 @@ type ParsedDatumDetectProps = {
 }
 
 export const ParsedDatumDetect = ({datumCbor}: ParsedDatumDetectProps) => {
-  const parseCborDetectWorkerRef = useRef<Worker>(null)
-
   const [selectedSchemaTabIndex, setSelectedSchemaTabIndex] = useState(0)
-
-  useEffect(() => {
-    parseCborDetectWorkerRef.current = new Worker(
-      new URL('../workers/parseCborDetectWorker/worker.ts', import.meta.url),
-    )
-    return () => parseCborDetectWorkerRef.current?.terminate()
-  }, [])
 
   const debouncedDatumCbor = useDebounce(datumCbor, DATUM_INPUT_FIELD_DEBOUNCE_DELAY)
 
@@ -36,7 +27,6 @@ export const ParsedDatumDetect = ({datumCbor}: ParsedDatumDetectProps) => {
           datumCbor: debouncedDatumCbor,
         }
       : skipToken,
-    parseCborDetectWorkerRef.current,
   )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: We want to reset the selected schema tab index when the detected results change

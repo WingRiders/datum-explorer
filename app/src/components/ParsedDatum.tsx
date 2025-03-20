@@ -1,7 +1,6 @@
 import {Alert, AlertTitle, Stack, Typography} from '@mui/material'
 import {skipToken} from '@tanstack/react-query'
 import {useDebounce} from '@uidotdev/usehooks'
-import {useEffect, useRef} from 'react'
 import {DATUM_INPUT_FIELD_DEBOUNCE_DELAY} from '../constants'
 import {useParseCborQuery, useSchemaCddl} from '../helpers/queries'
 import type {SchemaId} from '../types'
@@ -15,15 +14,6 @@ type ParsedDatumProps = {
 }
 
 export const ParsedDatum = ({schemaId, datumCbor}: ParsedDatumProps) => {
-  const parseCborWorkerRef = useRef<Worker>(null)
-
-  useEffect(() => {
-    parseCborWorkerRef.current = new Worker(
-      new URL('../workers/parseCborWorker/worker.ts', import.meta.url),
-    )
-    return () => parseCborWorkerRef.current?.terminate()
-  }, [])
-
   const debouncedDatumCbor = useDebounce(datumCbor, DATUM_INPUT_FIELD_DEBOUNCE_DELAY)
 
   const {schemaCddl, isLoading: isLoadingSchemaCddl} = useSchemaCddl(schemaId)
@@ -39,7 +29,6 @@ export const ParsedDatum = ({schemaId, datumCbor}: ParsedDatumProps) => {
           datumCbor: debouncedDatumCbor,
         }
       : skipToken,
-    parseCborWorkerRef.current,
   )
 
   if (!schemaId || !debouncedDatumCbor)

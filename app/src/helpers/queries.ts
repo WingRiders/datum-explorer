@@ -35,22 +35,27 @@ type ParseCborQueryArgs = {
   datumCbor: string
 }
 
-export const useParseCborQuery = (
-  args: ParseCborQueryArgs | SkipToken,
-  parseCborWorker: Worker | null,
-) =>
+export const useParseCborQuery = (args: ParseCborQueryArgs | SkipToken) =>
   useQuery({
     queryKey: ['parse-cbor', args],
     queryFn:
-      args !== skipToken && !!parseCborWorker
+      args !== skipToken
         ? async () => {
             return new Promise<ReadableDatum>((resolve, reject) => {
+              const parseCborWorker = new Worker(
+                new URL('../workers/parseCborWorker/worker.ts', import.meta.url),
+              )
+
               parseCborWorker.onmessage = (event: MessageEvent<ParseCborWorkerResponse>) => {
+                parseCborWorker.terminate()
                 const data = event.data
                 if (data.isSuccess) resolve(data.readableDatum)
                 else reject(new Error(data.errorMessage))
               }
-              parseCborWorker.onerror = (event) => reject(event)
+              parseCborWorker.onerror = (event) => {
+                parseCborWorker.terminate()
+                reject(event)
+              }
 
               const input: ParseCborWorkerInput = {
                 cddlSchemaRaw: args.cddlSchemaRaw,
@@ -100,10 +105,7 @@ type ParseCborDetectQueryResult = Array<
     }
 >
 
-export const useParseCborDetectQuery = (
-  args: ParseCborDetectQueryArgs | SkipToken,
-  parseCborDetectWorker: Worker | null,
-) => {
+export const useParseCborDetectQuery = (args: ParseCborDetectQueryArgs | SkipToken) => {
   const {localSchemas} = useLocalSchemasStore(
     useShallow(({localSchemas}) => ({
       localSchemas,
@@ -113,13 +115,17 @@ export const useParseCborDetectQuery = (
   return useQuery({
     queryKey: ['parse-cbor-detect', args, localSchemas],
     queryFn:
-      args !== skipToken && !!parseCborDetectWorker
+      args !== skipToken
         ? async () => {
             const localDetectPromise = new Promise<ParseCborDetectQueryResult>(
               (resolve, reject) => {
+                const parseCborDetectWorker = new Worker(
+                  new URL('../workers/parseCborDetectWorker/worker.ts', import.meta.url),
+                )
                 parseCborDetectWorker.onmessage = (
                   event: MessageEvent<ParseCborDetectWorkerResponse>,
-                ) =>
+                ) => {
+                  parseCborDetectWorker.terminate()
                   resolve(
                     event.data.map(({schemaName, parsedDatum}) => ({
                       isLocal: true,
@@ -127,8 +133,12 @@ export const useParseCborDetectQuery = (
                       parsedDatum,
                     })),
                   )
+                }
 
-                parseCborDetectWorker.onerror = (event) => reject(event)
+                parseCborDetectWorker.onerror = (event) => {
+                  parseCborDetectWorker.terminate()
+                  reject(event)
+                }
 
                 const input: ParseCborDetectWorkerInput = {
                   cborStringRaw: args.datumCbor,
