@@ -59,7 +59,7 @@ env:
 jobs:
   build-and-push:
     name: Build and push
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     outputs:
       services: ${{ steps.get-service-list.outputs.services }}
@@ -131,7 +131,7 @@ jobs:
     needs: [build-and-push]
     if: ${{ needs.build-and-push.outputs.services != '' && toJson(fromJson(needs.build-and-push.outputs.services)) != '[]' }}
     name: Deploy
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       max-parallel: ${{ fromJson(needs.build-and-push.outputs.parallelism) }}
       matrix:
