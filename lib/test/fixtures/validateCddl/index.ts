@@ -18,6 +18,8 @@ export const fixtures: Fixture[] = [
   {name: 'minswapV2Pool', cddlFileName: 'minswapV2Pool.cddl'},
   {name: 'sundaeV3Order', cddlFileName: 'sundaeV3Order.cddl'},
   {name: 'sundaeV3Pool', cddlFileName: 'sundaeV3Pool.cddl'},
+  {name: 'vyfiOrder', cddlFileName: 'vyfiOrder.cddl'},
+  {name: 'vyfiPool', cddlFileName: 'vyfiPool.cddl'},
   {name: 'wingridersLaunchpadNode', cddlFileName: 'wingridersLaunchpadNode.cddl'},
   {name: 'wingridersV2Pool', cddlFileName: 'wingridersV2Pool.cddl'},
   {name: 'wingridersV2Request', cddlFileName: 'wingridersV2Request.cddl'},

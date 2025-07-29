@@ -1,0 +1,23 @@
+{
+  "name": "VyFi order",
+  "cddlFileName": "vyfiOrder.cddl",
+  "cbor": "d8799f5838cde136220b1fe70f6ee6f597e69207cdde1cc2b511c0cb1e5cf83c54c4dd6c6e2702871c13b758b10265e3c28d0e20391b837a957ac30e2bd87c9f1a0eb572d7ffff",
+  "expectedParsed": {
+    "type": "Order",
+    "value": [
+      {
+        "name": "owner",
+        "type": "bytes",
+        "value": "cde136220b1fe70f6ee6f597e69207cdde1cc2b511c0cb1e5cf83c54c4dd6c6e2702871c13b758b10265e3c28d0e20391b837a957ac30e2b"
+      },
+      {
+        "name": "orderDetails",
+        "type": "TradeAToB",
+        "value": {
+          "type": "int",
+          "value": 246772439
+        }
+      }
+    ]
+  }
+}

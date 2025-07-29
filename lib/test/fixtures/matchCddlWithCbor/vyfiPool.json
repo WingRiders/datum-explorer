@@ -1,0 +1,25 @@
+{
+  "name": "VyFi pool",
+  "cddlFileName": "vyfiPool.cddl",
+  "cbor": "d8799f1a001d0fff1a004f06521b00000002e2eb6a3aff",
+  "expectedParsed": {
+    "type": "Pool",
+    "value": [
+      {
+        "name": "treasuryA",
+        "type": "int",
+        "value": 1904639
+      },
+      {
+        "name": "treasuryB",
+        "type": "int",
+        "value": 5178962
+      },
+      {
+        "name": "issuedShares",
+        "type": "int",
+        "value": "12397013562"
+      }
+    ]
+  }
+}

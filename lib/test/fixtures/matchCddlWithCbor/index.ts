@@ -12,6 +12,8 @@ import minswapV2Order from './minswapV2Order.json'
 import minswapV2Pool from './minswapV2Pool.json'
 import sundaeV3Order from './sundaeV3Order.json'
 import sundaeV3Pool from './sundaeV3Pool.json'
+import vyfiOrder from './vyfiOrder.json'
+import vyfiPool from './vyfiPool.json'
 import wingridersLaunchpadNode from './wingridersLaunchpadNode.json'
 import wingridersV2EvolvePool from './wingridersV2EvolvePool.json'
 import wingridersV2Pool from './wingridersV2Pool.json'
@@ -38,6 +40,8 @@ export const fixtures: Fixture[] = [
   lenfiPoolConfig,
   minswapV2Order,
   minswapV2Pool,
+  vyfiOrder,
+  vyfiPool,
   wingridersLaunchpadNode,
   wingridersV2EvolvePool,
   wingridersV2Pool,
