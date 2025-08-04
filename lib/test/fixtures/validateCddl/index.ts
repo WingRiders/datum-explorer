@@ -14,6 +14,8 @@ export const fixtures: Fixture[] = [
   {name: 'indigoStabilityPool', cddlFileName: 'indigoStabilityPool.cddl'},
   {name: 'lenfiPool', cddlFileName: 'lenfiPool.cddl'},
   {name: 'lenfiPoolConfig', cddlFileName: 'lenfiPoolConfig.cddl'},
+  {name: 'minswapV1Order', cddlFileName: 'minswapV1Order.cddl'},
+  {name: 'minswapV1Pool', cddlFileName: 'minswapV1Pool.cddl'},
   {name: 'minswapV2Order', cddlFileName: 'minswapV2Order.cddl'},
   {name: 'minswapV2Pool', cddlFileName: 'minswapV2Pool.cddl'},
   {name: 'sundaeV3Order', cddlFileName: 'sundaeV3Order.cddl'},

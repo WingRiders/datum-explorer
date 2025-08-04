@@ -8,6 +8,8 @@ import indigoStabilityPool from './indigoStabilityPool.json'
 import indigoStabilityPoolAccount from './indigoStabilityPoolAccount.json'
 import lenfiPool from './lenfiPool.json'
 import lenfiPoolConfig from './lenfiPoolConfig.json'
+import minswapV1Order from './minswapV1Order.json'
+import minswapV1Pool from './minswapV1Pool.json'
 import minswapV2Order from './minswapV2Order.json'
 import minswapV2Pool from './minswapV2Pool.json'
 import sundaeV3Order from './sundaeV3Order.json'
@@ -38,6 +40,8 @@ export const fixtures: Fixture[] = [
   indigoStabilityPoolAccount,
   lenfiPool,
   lenfiPoolConfig,
+  minswapV1Order,
+  minswapV1Pool,
   minswapV2Order,
   minswapV2Pool,
   vyfiOrder,

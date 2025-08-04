@@ -1,0 +1,102 @@
+{
+  "name": "Minswap V1 order",
+  "cddlFileName": "minswapV1Order.cddl",
+  "cbor": "d8799fd8799fd8799f581c30f495c69007e0d136b682fe5750a4480353f492ed6d2164d9e2c89affd8799fd8799fd8799f581cd338d564e8528fb41318f752544259d1b5c03cb21cadb33a96f4e25affffffffd8799fd8799f581c30f495c69007e0d136b682fe5750a4480353f492ed6d2164d9e2c89affd8799fd8799fd8799f581cd338d564e8528fb41318f752544259d1b5c03cb21cadb33a96f4e25affffffffd87a80d8799fd8799f4040ff1a0dc6fa14ff1a000dbba01a001e8480ff",
+  "expectedParsed": {
+    "type": "OrderDatum",
+    "value": [
+      {
+        "name": "sender",
+        "type": "Address",
+        "value": [
+          {
+            "name": "paymentCredential",
+            "type": "KeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "30f495c69007e0d136b682fe5750a4480353f492ed6d2164d9e2c89a"
+            }
+          },
+          {
+            "name": "maybeStakeCredential",
+            "type": "StakeCredential",
+            "value": {
+              "type": "KeyCredential",
+              "value": {
+                "type": "bytes",
+                "value": "d338d564e8528fb41318f752544259d1b5c03cb21cadb33a96f4e25a"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "receiver",
+        "type": "Address",
+        "value": [
+          {
+            "name": "paymentCredential",
+            "type": "KeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "30f495c69007e0d136b682fe5750a4480353f492ed6d2164d9e2c89a"
+            }
+          },
+          {
+            "name": "maybeStakeCredential",
+            "type": "StakeCredential",
+            "value": {
+              "type": "KeyCredential",
+              "value": {
+                "type": "bytes",
+                "value": "d338d564e8528fb41318f752544259d1b5c03cb21cadb33a96f4e25a"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "receiverDatumHash",
+        "type": "None",
+        "value": []
+      },
+      {
+        "name": "step",
+        "type": "SwapExactIn",
+        "value": [
+          {
+            "name": "desiredAsset",
+            "type": "Asset",
+            "value": [
+              {
+                "name": "policyId",
+                "type": "bytes",
+                "value": ""
+              },
+              {
+                "name": "tokenName",
+                "type": "bytes",
+                "value": ""
+              }
+            ]
+          },
+          {
+            "name": "minimumReceived",
+            "type": "int",
+            "value": 231143956
+          }
+        ]
+      },
+      {
+        "name": "batcherFee",
+        "type": "int",
+        "value": 900000
+      },
+      {
+        "name": "depositADA",
+        "type": "int",
+        "value": 2000000
+      }
+    ]
+  }
+}

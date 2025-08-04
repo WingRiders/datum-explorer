@@ -1,0 +1,88 @@
+{
+  "name": "Minswap V1 pool",
+  "cddlFileName": "minswapV1Pool.cddl",
+  "cbor": "d8799fd8799f4040ffd8799f581c279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f44534e454bff1a30ef1b191a7ee49232d8799fd8799fd8799fd8799f581caafb1196434cb837fd6f21323ca37b302dff6387e8a84b3fa28faf56ffd8799fd8799fd8799f581c52563c5410bff6a0d43ccebb7c37e1f69f5eb260552521adff33b9c2ffffffffd87a80ffffff",
+  "expectedParsed": {
+    "type": "Pool",
+    "value": [
+      {
+        "name": "assetA",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": ""
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "name": "assetB",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "534e454b"
+          }
+        ]
+      },
+      {
+        "name": "totalLiquidity",
+        "type": "int",
+        "value": 820976409
+      },
+      {
+        "name": "rootKLast",
+        "type": "int",
+        "value": 2128908850
+      },
+      {
+        "name": "feeSharing",
+        "type": "PoolFeeSharing",
+        "value": [
+          {
+            "name": "feeTo",
+            "type": "Address",
+            "value": [
+              {
+                "name": "paymentCredential",
+                "type": "KeyCredential",
+                "value": {
+                  "type": "bytes",
+                  "value": "aafb1196434cb837fd6f21323ca37b302dff6387e8a84b3fa28faf56"
+                }
+              },
+              {
+                "name": "maybeStakeCredential",
+                "type": "StakeCredential",
+                "value": {
+                  "type": "KeyCredential",
+                  "value": {
+                    "type": "bytes",
+                    "value": "52563c5410bff6a0d43ccebb7c37e1f69f5eb260552521adff33b9c2"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "feeToDatumHash",
+            "type": "None",
+            "value": []
+          }
+        ]
+      }
+    ]
+  }
+}
