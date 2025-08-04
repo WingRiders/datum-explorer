@@ -1,0 +1,121 @@
+{
+  "name": "Splash treasury pool datum",
+  "cddlFileName": "splashTreasuryPoolDatum.cddl",
+  "cbor": "d8799fd8799f581c42019269344f20974cc563179e392a78dd3a3e9fe90adf30322abf8d4c4e696b655f4144415f4e4654ffd8799f4040ffd8799f581cc881c20e49dbaca3ff6cef365969354150983230c39520b917f5cf7c444e696b65ffd8799f581c61ae4caaa37eb801f174637a7f48e0a542da19878a9ddb52adbecea84b4e696b655f4144415f4c51ff1a0001831c185a1a3244c5391a0001578b9fd87981d87a81581c71274ba9678c80a3d4fe475b00320a297d31f5154920d26f9beff39cff00581c75c4570eb625ae881b32a34c52b159f6f3f3f2c7aaabf5bac4688133ff",
+  "expectedParsed": {
+    "type": "SplashTreasuryPoolDatum",
+    "value": [
+      {
+        "name": "poolNft",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "42019269344f20974cc563179e392a78dd3a3e9fe90adf30322abf8d"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "4e696b655f4144415f4e4654"
+          }
+        ]
+      },
+      {
+        "name": "poolX",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": ""
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "name": "poolY",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "c881c20e49dbaca3ff6cef365969354150983230c39520b917f5cf7c"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "4e696b65"
+          }
+        ]
+      },
+      {
+        "name": "poolLq",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "61ae4caaa37eb801f174637a7f48e0a542da19878a9ddb52adbecea8"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "4e696b655f4144415f4c51"
+          }
+        ]
+      },
+      {
+        "name": "poolFeeNum",
+        "type": "int",
+        "value": 99100
+      },
+      {
+        "name": "treasuryFee",
+        "type": "int",
+        "value": 90
+      },
+      {
+        "name": "treasuryX",
+        "type": "int",
+        "value": 843367737
+      },
+      {
+        "name": "treasuryY",
+        "type": "int",
+        "value": 87947
+      },
+      {
+        "name": "daoPolicy",
+        "type": "DaoPolicy",
+        "value": {
+          "type": "StakingCredential",
+          "value": {
+            "type": "ScriptCredential",
+            "value": {
+              "type": "bytes",
+              "value": "71274ba9678c80a3d4fe475b00320a297d31f5154920d26f9beff39c"
+            }
+          }
+        }
+      },
+      {
+        "name": "lqBound",
+        "type": "int",
+        "value": 0
+      },
+      {
+        "name": "treasuryAddress",
+        "type": "ValidatorHash",
+        "value": {
+          "type": "bytes",
+          "value": "75c4570eb625ae881b32a34c52b159f6f3f3f2c7aaabf5bac4688133"
+        }
+      }
+    ]
+  }
+}

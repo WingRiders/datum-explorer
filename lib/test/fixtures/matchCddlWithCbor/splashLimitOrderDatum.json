@@ -1,0 +1,126 @@
+{
+  "name": "Splash limit order datum",
+  "cddlFileName": "splashLimitOrderDatum.cddl",
+  "cbor": "d8798c4100581ce8b5e33885946edc3552f71a5510aa3089d6700d927f057f27f7967bd87982581c279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f44534e454b1a00061a801a000f42401a66986d16d879824040d879821b000f49b45868c7091b000000e8d4a510001a000f4240d87982d87981581cd014ae6e8eae727030ae0c784ed1422811964be92b2f7f4d3005ee5ad87981d87981d87981581cdd6c6622e1f2d00d3e443c309ed584f1e990ae41397ebb50e2447d8f581cd014ae6e8eae727030ae0c784ed1422811964be92b2f7f4d3005ee5a81581c5cb2c968e5d1c7197a6ce7615967310a375545d9bc65063a964335b2",
+  "expectedParsed": {
+    "type": "SplashLimitOrderDatum",
+    "value": [
+      {
+        "name": "tag",
+        "type": "bytes",
+        "value": "00"
+      },
+      {
+        "name": "beacon",
+        "type": "bytes",
+        "value": "e8b5e33885946edc3552f71a5510aa3089d6700d927f057f27f7967b"
+      },
+      {
+        "name": "input",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "534e454b"
+          }
+        ]
+      },
+      {
+        "name": "tradableInput",
+        "type": "int",
+        "value": 400000
+      },
+      {
+        "name": "costPerExStep",
+        "type": "int",
+        "value": 1000000
+      },
+      {
+        "name": "minMarginalOutput",
+        "type": "int",
+        "value": 1721265430
+      },
+      {
+        "name": "output",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": ""
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "name": "basePrice",
+        "type": "Rational",
+        "value": [
+          {
+            "name": "num",
+            "type": "int",
+            "value": "4303163576862473"
+          },
+          {
+            "name": "denom",
+            "type": "int",
+            "value": "1000000000000"
+          }
+        ]
+      },
+      {
+        "name": "fee",
+        "type": "int",
+        "value": 1000000
+      },
+      {
+        "name": "redeemerAddress",
+        "type": "Address",
+        "value": [
+          {
+            "name": "paymentCredential",
+            "type": "KeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "d014ae6e8eae727030ae0c784ed1422811964be92b2f7f4d3005ee5a"
+            }
+          },
+          {
+            "name": "maybeStakeCredential",
+            "type": "StakeCredential",
+            "value": {
+              "type": "KeyCredential",
+              "value": {
+                "type": "bytes",
+                "value": "dd6c6622e1f2d00d3e443c309ed584f1e990ae41397ebb50e2447d8f"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "cancellationPkh",
+        "type": "bytes",
+        "value": "d014ae6e8eae727030ae0c784ed1422811964be92b2f7f4d3005ee5a"
+      },
+      {
+        "name": "permittedExecutors",
+        "type": "BytesSingletonArray",
+        "value": {
+          "type": "bytes",
+          "value": "5cb2c968e5d1c7197a6ce7615967310a375545d9bc65063a964335b2"
+        }
+      }
+    ]
+  }
+}

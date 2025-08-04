@@ -91,7 +91,7 @@
       },
       {
         "name": "step",
-        "type": "OrderStep",
+        "type": "SwapExactIn",
         "value": [
           {
             "name": "direction",
@@ -100,7 +100,7 @@
           },
           {
             "name": "swapAmountOption",
-            "type": "SpecificAmount",
+            "type": "SpecificSwapAmount",
             "value": {
               "type": "int",
               "value": 1999999998

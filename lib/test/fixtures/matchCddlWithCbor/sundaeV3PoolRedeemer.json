@@ -1,0 +1,49 @@
+{
+  "name": "Sundae V3 pool redeemer",
+  "cddlFileName": "sundaeV3PoolRedeemer.cddl",
+  "cbor": "d87a9fd8799f000a9f9f01d87a8000ffffffff",
+  "expectedParsed": {
+    "type": "PoolScoopRedeemer",
+    "value": {
+      "type": "PoolScoopRedeemerContent",
+      "value": [
+        {
+          "name": "signatoryIndex",
+          "type": "int",
+          "value": 0
+        },
+        {
+          "name": "scooperIndex",
+          "type": "int",
+          "value": 10
+        },
+        {
+          "name": "inputOrder",
+          "type": "InputOrder",
+          "value": [
+            {
+              "type": "InputOrderItem",
+              "value": [
+                {
+                  "name": "inputIndex",
+                  "type": "int",
+                  "value": 1
+                },
+                {
+                  "name": "signedStrategyExecution",
+                  "type": "None",
+                  "value": []
+                },
+                {
+                  "name": "dummy",
+                  "type": "int",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

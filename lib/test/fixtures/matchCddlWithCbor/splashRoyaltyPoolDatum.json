@@ -1,0 +1,141 @@
+{
+  "name": "Splash royalty pool datum",
+  "cddlFileName": "splashRoyaltyPoolDatum.cddl",
+  "cbor": "d8799fd87982581cce1a4f1103fca3f93c1ba9b4e87fb0d9e855d66965ca3cf45165824a4c534e454b5f4144415f4e4654d879824040d87982581c279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f44534e454bd87982581c20343d8105ec88de289351efa1d667c9aa7165927a8e36cc3083887e4b534e454b5f4144415f4c511a000183d0185018c81aa4e2f14e1a0007e4361a0a1288de19ab7a9fd8799fd87a9f581c66e711a4bf9ddf46ff239143870b6893055a4fd4dea9f99fed6665cdffffff581c75c4570eb625ae881b32a34c52b159f6f3f3f2c7aaabf5bac468813358207f25663626f2b9d88e8b298874bed847538cfbc3f746cee82a62cb60cb94a94404ff",
+  "expectedParsed": {
+    "type": "SplashRoyaltyPoolDatum",
+    "value": [
+      {
+        "name": "poolNft",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "ce1a4f1103fca3f93c1ba9b4e87fb0d9e855d66965ca3cf45165824a"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "534e454b5f4144415f4e4654"
+          }
+        ]
+      },
+      {
+        "name": "poolX",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": ""
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "name": "poolY",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "534e454b"
+          }
+        ]
+      },
+      {
+        "name": "poolLq",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "20343d8105ec88de289351efa1d667c9aa7165927a8e36cc3083887e"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "534e454b5f4144415f4c51"
+          }
+        ]
+      },
+      {
+        "name": "poolFeeNum",
+        "type": "int",
+        "value": 99280
+      },
+      {
+        "name": "treasuryFee",
+        "type": "int",
+        "value": 80
+      },
+      {
+        "name": "royaltyFee",
+        "type": "int",
+        "value": 200
+      },
+      {
+        "name": "treasuryX",
+        "type": "int",
+        "value": 2766336334
+      },
+      {
+        "name": "treasuryY",
+        "type": "int",
+        "value": 517174
+      },
+      {
+        "name": "royaltyX",
+        "type": "int",
+        "value": 168986846
+      },
+      {
+        "name": "royaltyY",
+        "type": "int",
+        "value": 43898
+      },
+      {
+        "name": "daoPolicy",
+        "type": "DaoPolicy",
+        "value": {
+          "type": "StakingCredential",
+          "value": {
+            "type": "ScriptCredential",
+            "value": {
+              "type": "bytes",
+              "value": "66e711a4bf9ddf46ff239143870b6893055a4fd4dea9f99fed6665cd"
+            }
+          }
+        }
+      },
+      {
+        "name": "treasuryAddress",
+        "type": "ValidatorHash",
+        "value": {
+          "type": "bytes",
+          "value": "75c4570eb625ae881b32a34c52b159f6f3f3f2c7aaabf5bac4688133"
+        }
+      },
+      {
+        "name": "royaltyPubKey",
+        "type": "bytes",
+        "value": "7f25663626f2b9d88e8b298874bed847538cfbc3f746cee82a62cb60cb94a944"
+      },
+      {
+        "name": "nonce",
+        "type": "int",
+        "value": 4
+      }
+    ]
+  }
+}

@@ -12,8 +12,14 @@ import minswapV1Order from './minswapV1Order.json'
 import minswapV1Pool from './minswapV1Pool.json'
 import minswapV2Order from './minswapV2Order.json'
 import minswapV2Pool from './minswapV2Pool.json'
-import sundaeV3Order from './sundaeV3Order.json'
-import sundaeV3Pool from './sundaeV3Pool.json'
+import splashBasicPoolDatum from './splashBasicPoolDatum.json'
+import splashDepositDatum from './splashDepositDatum.json'
+import splashLimitOrderDatum from './splashLimitOrderDatum.json'
+import splashRoyaltyPoolDatum from './splashRoyaltyPoolDatum.json'
+import splashTreasuryPoolDatum from './splashTreasuryPoolDatum.json'
+import sundaeV3OrderDatum from './sundaeV3OrderDatum.json'
+import sundaeV3PoolDatum from './sundaeV3PoolDatum.json'
+import sundaeV3PoolRedeemer from './sundaeV3PoolRedeemer.json'
 import vyfiOrder from './vyfiOrder.json'
 import vyfiPool from './vyfiPool.json'
 import wingridersLaunchpadNode from './wingridersLaunchpadNode.json'
@@ -51,6 +57,12 @@ export const fixtures: Fixture[] = [
   wingridersV2Pool,
   wingridersV2RequestAddStakingRewards,
   wingridersV2RequestRoutedSwap,
-  sundaeV3Order,
-  sundaeV3Pool,
+  sundaeV3OrderDatum,
+  sundaeV3PoolDatum,
+  sundaeV3PoolRedeemer,
+  splashBasicPoolDatum,
+  splashTreasuryPoolDatum,
+  splashRoyaltyPoolDatum,
+  splashLimitOrderDatum,
+  splashDepositDatum, // https://cardanoscan.io/transaction/947503468c6ae77f8b917c079c2b1fda18efec50dc50c1df57a0d473f6d4bb5a?tab=utxo
 ]

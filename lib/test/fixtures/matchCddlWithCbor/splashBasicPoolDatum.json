@@ -1,0 +1,92 @@
+{
+  "name": "Splash basic pool datum",
+  "cddlFileName": "splashBasicPoolDatum.cddl",
+  "cbor": "d8799fd8799f581c5f4c10f0603a0106d3625922bd97e37e756657b7f253ca9b93fa61104b4e54585f4144415f4e4654ffd8799f4040ffd8799f581cedfd7a1d77bcb8b884c474bdc92a16002d1fb720e454fa6e99344479434e5458ffd8799f581c4137712e2046001a8a17d06f5e0ecf8b0fc80ca0da770f2dbf8b625a4a4e54585f4144415f4c51ff1903e59f581c6420e79e20de619c0c1b7c11b240b99e339e4c7662007e00109f67f9ff1b00000002540be400ff",
+  "expectedParsed": {
+    "type": "SplashBasicPoolDatum",
+    "value": [
+      {
+        "name": "poolNft",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "5f4c10f0603a0106d3625922bd97e37e756657b7f253ca9b93fa6110"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "4e54585f4144415f4e4654"
+          }
+        ]
+      },
+      {
+        "name": "poolX",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": ""
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": ""
+          }
+        ]
+      },
+      {
+        "name": "poolY",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "edfd7a1d77bcb8b884c474bdc92a16002d1fb720e454fa6e99344479"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "4e5458"
+          }
+        ]
+      },
+      {
+        "name": "poolLq",
+        "type": "Asset",
+        "value": [
+          {
+            "name": "policyId",
+            "type": "bytes",
+            "value": "4137712e2046001a8a17d06f5e0ecf8b0fc80ca0da770f2dbf8b625a"
+          },
+          {
+            "name": "tokenName",
+            "type": "bytes",
+            "value": "4e54585f4144415f4c51"
+          }
+        ]
+      },
+      {
+        "name": "poolFeeNum",
+        "type": "int",
+        "value": 997
+      },
+      {
+        "name": "unspecifiedField",
+        "type": "BytesSingletonArray",
+        "value": {
+          "type": "bytes",
+          "value": "6420e79e20de619c0c1b7c11b240b99e339e4c7662007e00109f67f9"
+        }
+      },
+      {
+        "name": "nonce",
+        "type": "int",
+        "value": "10000000000"
+      }
+    ]
+  }
+}

@@ -1,9 +1,9 @@
 {
-  "name": "Sundae V3 order",
-  "cddlFileName": "sundaeV3Order.cddl",
+  "name": "Sundae V3 order datum",
+  "cddlFileName": "sundaeV3OrderDatum.cddl",
   "cbor": "d8799fd8799f581cdfe69eaaf7b3785e6d8c1b5628d84b79094906ccf20c99b97dab49e2ffd8799f581cf65a13570c85b43fb32b56b22c4ee6eeb52da3fe94f240c6b07ed9b8ff1a00138800d8799fd8799fd8799f581c9b5b5e02fcfcd35826831182b258f0a3bf0ef3d3fbfe7c86d00f16adffd8799fd8799fd8799f581cf65a13570c85b43fb32b56b22c4ee6eeb52da3fe94f240c6b07ed9b8ffffffffd8799fffffd87a9f9f581cbd1c2b36071e74d1685aa2c7fa35d906ebe399ca542f04813d5a53bc504352595354414c20414e414c59534953191035ff9f40401a00379bc0ffff43d87980ff",
   "expectedParsed": {
-    "type": "Order",
+    "type": "OrderDatum",
     "value": [
       {
         "name": "poolIdent",
@@ -15,7 +15,7 @@
       },
       {
         "name": "owner",
-        "type": "MultiSigScript",
+        "type": "MultiSigScriptSignature",
         "value": {
           "type": "bytes",
           "value": "f65a13570c85b43fb32b56b22c4ee6eeb52da3fe94f240c6b07ed9b8"
@@ -53,8 +53,8 @@
           },
           {
             "name": "datum",
-            "type": "Datum",
-            "value": { "type": "NoDatum", "value": [] }
+            "type": "NoDatum",
+            "value": []
           }
         ]
       },
