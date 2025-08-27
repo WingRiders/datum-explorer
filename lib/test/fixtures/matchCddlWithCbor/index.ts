@@ -1,4 +1,6 @@
 import bigNumber from './bigNumber.json'
+import cswapOrderDatum from './cswapOrderDatum.json'
+import cswapPoolDatum from './cswapPoolDatum.json'
 import genericArrayOfInts from './genericArrayOfInts.json'
 import genericArrayOfTypes from './genericArrayOfTypes.json'
 import genericMap from './genericMap.json'
@@ -37,6 +39,8 @@ type Fixture = {
 
 export const fixtures: Fixture[] = [
   bigNumber,
+  cswapOrderDatum,
+  cswapPoolDatum,
   genericArrayOfInts,
   genericArrayOfTypes,
   genericMap,

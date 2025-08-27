@@ -1,0 +1,102 @@
+{
+  "name": "Cswap order datum",
+  "cddlFileName": "cswapOrderDatum.cddl",
+  "cbor": "d8799fd8799fd8799f581cfc65555d2155724c4bd2e5512244384f01ad1c708f0cf60268e8e40affd8799fd8799fd8799f581c2cbc24cb422413c0c1ffbbf9797a3cd2ab7d6a858a9819a97d8bd0aeffffffff818340401a0a2f26b78183581cc863ceaa796d5429b526c336ab45016abd636859f331758e67204e5c45435357415000d87980000fff",
+  "expectedParsed": {
+    "type": "Order",
+    "value": [
+      {
+        "name": "address",
+        "type": "Address",
+        "value": [
+          {
+            "name": "paymentCredential",
+            "type": "KeyCredential",
+            "value": {
+              "type": "bytes",
+              "value": "fc65555d2155724c4bd2e5512244384f01ad1c708f0cf60268e8e40a"
+            }
+          },
+          {
+            "name": "maybeStakeCredential",
+            "type": "StakeCredential",
+            "value": {
+              "type": "KeyCredential",
+              "value": {
+                "type": "bytes",
+                "value": "2cbc24cb422413c0c1ffbbf9797a3cd2ab7d6a858a9819a97d8bd0ae"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "targetAssets",
+        "type": "Assets",
+        "value": [
+          {
+            "type": "Asset",
+            "value": [
+              {
+                "name": "policy",
+                "type": "bytes",
+                "value": ""
+              },
+              {
+                "name": "name",
+                "type": "bytes",
+                "value": ""
+              },
+              {
+                "name": "amount",
+                "type": "int",
+                "value": 170862263
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "inputAssets",
+        "type": "Assets",
+        "value": [
+          {
+            "type": "Asset",
+            "value": [
+              {
+                "name": "policy",
+                "type": "bytes",
+                "value": "c863ceaa796d5429b526c336ab45016abd636859f331758e67204e5c"
+              },
+              {
+                "name": "name",
+                "type": "bytes",
+                "value": "4353574150"
+              },
+              {
+                "name": "amount",
+                "type": "int",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "orderType",
+        "type": "Swap",
+        "value": []
+      },
+      {
+        "name": "slippage",
+        "type": "int",
+        "value": 0
+      },
+      {
+        "name": "platformFee",
+        "type": "int",
+        "value": 15
+      }
+    ]
+  }
+}

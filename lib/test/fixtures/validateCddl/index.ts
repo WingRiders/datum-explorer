@@ -6,6 +6,8 @@ type Fixture = {
 
 export const fixtures: Fixture[] = [
   {name: 'int', cddlFileName: 'int.cddl'},
+  {name: 'cswapOrderDatum', cddlFileName: 'cswapOrderDatum.cddl'},
+  {name: 'cswapPoolDatum', cddlFileName: 'cswapPoolDatum.cddl'},
   {name: 'genericArrayOfInts', cddlFileName: 'genericArrayOfInts.cddl'},
   {name: 'genericArrayOfTypes', cddlFileName: 'genericArrayOfTypes.cddl'},
   {name: 'genericMap', cddlFileName: 'genericMap.cddl'},

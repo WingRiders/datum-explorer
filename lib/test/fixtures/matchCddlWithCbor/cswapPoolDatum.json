@@ -1,0 +1,50 @@
+{
+  "name": "Cswap pool datum",
+  "cddlFileName": "cswapPoolDatum.cddl",
+  "cbor": "d8799f1b000006a343cef51318554040581cc863ceaa796d5429b526c336ab45016abd636859f331758e67204e5c454353574150581ca3437274f93dfdf36e949a4d9533e964aebde7a1cd229baeca7bdafa51432d4c503a204144412078204353574150ff",
+  "expectedParsed": {
+    "type": "Pool",
+    "value": [
+      {
+        "name": "totalLpTokens",
+        "type": "int",
+        "value": "7298287072531"
+      },
+      {
+        "name": "poolFee",
+        "type": "int",
+        "value": 85
+      },
+      {
+        "name": "quotePolicy",
+        "type": "bytes",
+        "value": ""
+      },
+      {
+        "name": "quoteName",
+        "type": "bytes",
+        "value": ""
+      },
+      {
+        "name": "basePolicy",
+        "type": "bytes",
+        "value": "c863ceaa796d5429b526c336ab45016abd636859f331758e67204e5c"
+      },
+      {
+        "name": "baseName",
+        "type": "bytes",
+        "value": "4353574150"
+      },
+      {
+        "name": "lpTokenPolicy",
+        "type": "bytes",
+        "value": "a3437274f93dfdf36e949a4d9533e964aebde7a1cd229baeca7bdafa"
+      },
+      {
+        "name": "lpTokenName",
+        "type": "bytes",
+        "value": "432d4c503a204144412078204353574150"
+      }
+    ]
+  }
+}
