@@ -1,0 +1,113 @@
+{
+  "name": "Djed pool datum",
+  "cddlFileName": "djedPoolDatum.cddl",
+  "cbor": "d8799f1b00001c8907f24ca91b000002d71be922851b000015caa6520c1fd8799fd8799fd8799fd8799f5820d0804300556b9f74886628733ae3552673d500e4ac5152ed7259d6efdbd2ad64ff00ff1b000001961c44a558ffff1a001bd19a1a001758c2d87a80581c8db269c3ec630e06ae29f74bc39edd1f87c819f1056206e879a1cd61d8799fd8799f5820362e24ab3b1aacf8108c52aec7ddc6c2e007fef3c3a125eebe849a0be4203902ff00ffd8799fd8799f582037116bb7647aeccd235c4e3dbd8e186bb209ca2eef7fc801298d96727e8d3879ff00ffff",
+  "expectedParsed": {
+    "type": "PoolDatum",
+    "value": [
+      {
+        "name": "adaInPool",
+        "type": "int",
+        "value": "31374869417129"
+      },
+      {
+        "name": "djedInCirculation",
+        "type": "int",
+        "value": "3122909487749"
+      },
+      {
+        "name": "shenInCirculation",
+        "type": "int",
+        "value": "23960117971999"
+      },
+      {
+        "name": "lastAction",
+        "type": "Action",
+        "value": [
+          {
+            "name": "order",
+            "type": "OutputReference",
+            "value": [
+              {
+                "name": "txHash",
+                "type": "TxHash",
+                "value": {
+                  "type": "bytes",
+                  "value": "d0804300556b9f74886628733ae3552673d500e4ac5152ed7259d6efdbd2ad64"
+                }
+              },
+              {
+                "name": "outputIndex",
+                "type": "int",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "name": "time",
+            "type": "int",
+            "value": "1744230983000"
+          }
+        ]
+      },
+      {
+        "name": "minAda",
+        "type": "int",
+        "value": 1823130
+      },
+      {
+        "name": "_1",
+        "type": "int",
+        "value": 1530050
+      },
+      {
+        "name": "_2",
+        "type": "None",
+        "value": []
+      },
+      {
+        "name": "mintingPolicyId",
+        "type": "bytes",
+        "value": "8db269c3ec630e06ae29f74bc39edd1f87c819f1056206e879a1cd61"
+      },
+      {
+        "name": "mintingPolicyUniqRef",
+        "type": "OutputReference",
+        "value": [
+          {
+            "name": "txHash",
+            "type": "TxHash",
+            "value": {
+              "type": "bytes",
+              "value": "362e24ab3b1aacf8108c52aec7ddc6c2e007fef3c3a125eebe849a0be4203902"
+            }
+          },
+          {
+            "name": "outputIndex",
+            "type": "int",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "name": "_3",
+        "type": "OutputReference",
+        "value": [
+          {
+            "name": "txHash",
+            "type": "TxHash",
+            "value": {
+              "type": "bytes",
+              "value": "37116bb7647aeccd235c4e3dbd8e186bb209ca2eef7fc801298d96727e8d3879"
+            }
+          },
+          {
+            "name": "outputIndex",
+            "type": "int",
+            "value": 0
+          }
+        ]
+      }
+    ]
+  }
+}

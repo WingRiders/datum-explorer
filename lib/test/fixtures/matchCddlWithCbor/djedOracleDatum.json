@@ -1,0 +1,91 @@
+{
+  "name": "Djed oracle datum",
+  "cddlFileName": "djedOracleDatum.cddl",
+  "cbor": "d8799f58407a6aa9acfdbdef2b80238bf436e1b39d5e8636204890b2a4f6ad915a21c6062b5fe519c583c87bab4be0bc2196415537ec84bd0cc3289629cda2401f3ecfc707d8799fd8799f1a001e84801a00169335ffd8799fd8799fd87a9f1b0000019874534ce8ffd87a80ffd8799fd87a9f1b0000019874610888ffd87a80ffff43555344ff581c815aca02042ba9188a2ca4f8ce7b276046e2376b4bce56391342299eff",
+  "expectedParsed": {
+    "type": "OracleDatum",
+    "value": [
+      {
+        "name": "_0",
+        "type": "bytes",
+        "value": "7a6aa9acfdbdef2b80238bf436e1b39d5e8636204890b2a4f6ad915a21c6062b5fe519c583c87bab4be0bc2196415537ec84bd0cc3289629cda2401f3ecfc707"
+      },
+      {
+        "name": "oracleFields",
+        "type": "OracleFields",
+        "value": [
+          {
+            "name": "adaUsdExchangeRate",
+            "type": "Rational",
+            "value": [
+              {
+                "name": "denominator",
+                "type": "int",
+                "value": 2000000
+              },
+              {
+                "name": "numerator",
+                "type": "int",
+                "value": 1479477
+              }
+            ]
+          },
+          {
+            "name": "validityRange",
+            "type": "ValidityRange",
+            "value": [
+              {
+                "name": "lowerBound",
+                "type": "Bound",
+                "value": [
+                  {
+                    "name": "value",
+                    "type": "Value",
+                    "value": {
+                      "type": "int",
+                      "value": "1754298273000"
+                    }
+                  },
+                  {
+                    "name": "_1",
+                    "type": "None",
+                    "value": []
+                  }
+                ]
+              },
+              {
+                "name": "upperBound",
+                "type": "Bound",
+                "value": [
+                  {
+                    "name": "value",
+                    "type": "Value",
+                    "value": {
+                      "type": "int",
+                      "value": "1754299173000"
+                    }
+                  },
+                  {
+                    "name": "_1",
+                    "type": "None",
+                    "value": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "expressedIn",
+            "type": "bytes",
+            "value": "555344"
+          }
+        ]
+      },
+      {
+        "name": "oracleTokenPolicyId",
+        "type": "bytes",
+        "value": "815aca02042ba9188a2ca4f8ce7b276046e2376b4bce56391342299e"
+      }
+    ]
+  }
+}

@@ -1,6 +1,9 @@
 import bigNumber from './bigNumber.json'
 import cswapOrderDatum from './cswapOrderDatum.json'
 import cswapPoolDatum from './cswapPoolDatum.json'
+import djedOracleDatum from './djedOracleDatum.json'
+import djedOrderDatum from './djedOrderDatum.json'
+import djedPoolDatum from './djedPoolDatum.json'
 import genericArrayOfInts from './genericArrayOfInts.json'
 import genericArrayOfTypes from './genericArrayOfTypes.json'
 import genericMap from './genericMap.json'
@@ -41,6 +44,9 @@ export const fixtures: Fixture[] = [
   bigNumber,
   cswapOrderDatum,
   cswapPoolDatum,
+  djedOracleDatum,
+  djedOrderDatum,
+  djedPoolDatum,
   genericArrayOfInts,
   genericArrayOfTypes,
   genericMap,
