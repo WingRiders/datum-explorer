@@ -11,8 +11,8 @@ const gqlClient = config.GITHUB_AUTH_TOKEN
   ? new GraphQLClient(githubGqlUrl, {
       headers: {Authorization: `Bearer ${config.GITHUB_AUTH_TOKEN}`},
       // Add AbortSignal to the request with a specified timeout
-      fetch: (input: RequestInfo | URL, init?: RequestInit) =>
-        fetch(input, {...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT)}),
+      fetch: ((input: RequestInfo | URL, init?: RequestInit) =>
+        fetch(input, {...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT)})) as typeof fetch,
     })
   : null
 

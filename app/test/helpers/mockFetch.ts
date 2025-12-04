@@ -18,7 +18,7 @@ const mockedRequests: {
 
 let originalFetch: typeof fetch | null = null
 
-const mockedFetch: typeof fetch = async (requestInfo, opts) => {
+const mockedFetch: typeof fetch = (async (requestInfo, opts) => {
   const url =
     typeof requestInfo === 'string'
       ? requestInfo
@@ -53,7 +53,7 @@ const mockedFetch: typeof fetch = async (requestInfo, opts) => {
     })
   }
   throw new Error(`Unsupported response body type: ${typeof body}`)
-}
+}) as typeof fetch
 
 export const mockFetch = (mockedRequestsOptions: MockRequestOptions, response: MockResponse) => {
   if (originalFetch == null) {

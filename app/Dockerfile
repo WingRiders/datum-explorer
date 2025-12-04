@@ -9,7 +9,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Bun
-RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.2.3"
+RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.3"
 ENV PATH="/root/.bun/bin:${PATH}"
 
 # Install Rust
@@ -31,7 +31,7 @@ RUN bun run build --filter=./app
 # Install only production dependencies after build
 RUN bun install --production --frozen-lockfile
 
-FROM oven/bun:1.2.3-slim
+FROM oven/bun:1.3.3-slim
 
 # Install wget
 RUN apt-get update && \
